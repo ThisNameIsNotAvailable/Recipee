@@ -8,8 +8,8 @@
 import UIKit
 
 extension UIColor {
-    static let background = UIColor(red: 0.87, green: 0.96, blue: 0.90, alpha: 1.00)
-    static let secondaryBackground = UIColor(red: 0.74, green: 0.92, blue: 0.84, alpha: 1.00)
-    static let element = UIColor(red: 0.56, green: 0.76, blue: 0.69, alpha: 1.00)
-    static let selection = UIColor(red: 0.31, green: 0.63, blue: 0.58, alpha: 1.00)
+    static let background = UIColor(red: 0.75, green: 0.93, blue: 0.89, alpha: 1.00)
+    static let secondaryBackground = UIColor(red: 0.97, green: 0.98, blue: 0.53, alpha: 1.00)
+    static let element = UIColor(red: 1.00, green: 0.79, blue: 0.78, alpha: 1.00)
+    static let selection = UIColor(red: 1.00, green: 0.62, blue: 0.62, alpha: 1.00)
 }
