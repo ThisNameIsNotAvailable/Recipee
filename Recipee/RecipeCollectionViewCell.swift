@@ -29,6 +29,7 @@ class RecipeCollectionViewCell: UICollectionViewCell {
         label.textAlignment = .left
         label.numberOfLines = 0
         label.translatesAutoresizingMaskIntoConstraints = false
+        label.textColor = .black
         return label
     }()
     
@@ -37,12 +38,6 @@ class RecipeCollectionViewCell: UICollectionViewCell {
         contentView.layer.cornerRadius = 8
         contentView.clipsToBounds = true
         contentView.backgroundColor = .white
-        layer.shadowColor = UIColor.black.cgColor
-        layer.shadowOffset = CGSize(width: 0, height: 0)
-        layer.shadowRadius = 3
-        layer.shadowOpacity = 1
-//        layer.masksToBounds = false
-        
         layout()
     }
     

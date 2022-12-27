@@ -19,6 +19,15 @@ class RecipeCollectionViewHeader: UICollectionReusableView {
         return label
     }()
     
+    private let disclosureIndicator: UIImageView = {
+        let imageView = UIImageView()
+        imageView.tintColor = .darkGray
+        imageView.image = UIImage(systemName: "chevron.right")?.withConfiguration(UIImage.SymbolConfiguration(font: .systemFont(ofSize: 25, weight: .bold)))
+        imageView.contentMode = .scaleAspectFit
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        return imageView
+    }()
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         layout()
@@ -26,15 +35,31 @@ class RecipeCollectionViewHeader: UICollectionReusableView {
     
     private func layout() {
         addSubview(label)
+        addSubview(disclosureIndicator)
         NSLayoutConstraint.activate([
             label.leadingAnchor.constraint(equalTo: leadingAnchor),
             label.topAnchor.constraint(equalTo: topAnchor),
-            label.trailingAnchor.constraint(equalTo: trailingAnchor)
+            label.bottomAnchor.constraint(equalTo: bottomAnchor),
+            
+            disclosureIndicator.leadingAnchor.constraint(equalTo: label.trailingAnchor),
+            disclosureIndicator.centerYAnchor.constraint(equalTo: label.centerYAnchor),
+            disclosureIndicator.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -10)
         ])
     }
     
-    func configure(title: String) {
-        label.text = title + " >"
+    func configure(title: String, section: Int) {
+        if section == 0 || section == SearchManager.shared.headers.count - 1 {
+            disclosureIndicator.isHidden = true
+        }
+        label.attributedText = NSAttributedString(string: title, attributes: [
+            .underlineStyle: NSUnderlineStyle.single.rawValue
+        ])
+    }
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        label.attributedText = NSAttributedString(string: "")
+        disclosureIndicator.isHidden = false
     }
     
     required init?(coder: NSCoder) {
