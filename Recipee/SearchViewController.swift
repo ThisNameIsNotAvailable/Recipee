@@ -6,10 +6,13 @@
 //
 
 import UIKit
+import UIScrollView_InfiniteScroll
+import CoreData
 
 protocol SearchViewDelegate: AnyObject {
     func searchViewShouldBeginEditing()
     func searchBarCancelButtonClicked()
+    func refineButtonTapped()
 }
 
 protocol OptionCollectionViewCellDelegate: AnyObject {
@@ -54,7 +57,7 @@ class SearchViewController: UIViewController {
             switch section {
             default:
                 let item = NSCollectionLayoutItem(layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.5), heightDimension: .fractionalHeight(1)))
-                item.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 5, bottom: 0, trailing: 5)
+                item.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 5, bottom: 5, trailing: 5)
                 let horizontalGroup = NSCollectionLayoutGroup.horizontal(layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .fractionalWidth(0.7)), repeatingSubitem: item, count: 2)
                 let verticalGroup = NSCollectionLayoutGroup.vertical(layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .fractionalWidth(0.7)), repeatingSubitem: horizontalGroup, count: 1)
                 let section = NSCollectionLayoutSection(group: verticalGroup)
@@ -113,8 +116,11 @@ class SearchViewController: UIViewController {
         collection.translatesAutoresizingMaskIntoConstraints = false
         collection.backgroundColor = .background
         collection.showsVerticalScrollIndicator = false
+        collection.infiniteScrollDirection = .vertical
         return collection
     }()
+    
+    private var recommendations = 8
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -126,9 +132,160 @@ class SearchViewController: UIViewController {
             navigationController?.navigationBar.standardAppearance = appearance
             navigationController?.navigationBar.scrollEdgeAppearance = appearance
         }
+        fetchData()
         configureCollectionViews()
         configureSearchView()
         layout()
+    }
+    
+    private func fetchData() {
+        
+        let group = DispatchGroup()
+        group.enter()
+        group.enter()
+        group.enter()
+        group.enter()
+        group.enter()
+        group.enter()
+        group.enter()
+        group.enter()
+        if SearchManager.shared.needToChange {
+            APICaller.shared.getRandomRecipes(number: 1) { res in
+                defer {
+                    group.leave()
+                }
+                switch res {
+                case .success(let recipes):
+                    SearchManager.shared.viewModels[0] = recipes
+                    DispatchQueue.main.async {
+                        guard let context = SearchManager.shared.getContext(),
+                              let id = recipes.first?.id,
+                              let title = recipes.first?.title else {
+                            return
+                        }
+                        let r = Recipe(context: context)
+                        r.id = Int64(id)
+                        r.title = title
+                        r.imageURL = recipes.first?.image ?? ""
+                        SearchManager.shared.save()
+                    }
+                    UserDefaults.standard.set(Date(), forKey: "current_date")
+                    DispatchQueue.main.async {
+                        self.feedCollectionView.reloadData()
+                    }
+                case .failure(let error):
+                    print(error)
+                }
+            }
+        } else {
+            let fetchRequest: NSFetchRequest<Recipe> = Recipe.fetchRequest()
+            DispatchQueue.main.async {
+                do {
+                    // Peform Fetch Request
+                    
+                    guard let context = SearchManager.shared.getContext() else {
+                        return
+                    }
+                    let recipes = try context.fetch(fetchRequest)
+                    guard let recipeCD = recipes.first, let title = recipeCD.title, let imageURL = recipeCD.imageURL else {
+                        return
+                    }
+                    let recipe = RecipeResponse(id: Int(recipeCD.id), title: title, image: imageURL)
+                    SearchManager.shared.viewModels[0] = [recipe]
+                    self.feedCollectionView.insertItems(at: [IndexPath(item: 0, section: 0)])
+                } catch {
+                    print("Unable to Fetch Recipe, (\(error))")
+                }
+            }
+            
+        }
+        APICaller.shared.getMealType(type: "breakfast") { res in
+            defer {
+                group.leave()
+            }
+            switch res {
+            case .success(let recipes):
+                SearchManager.shared.viewModels[1] = recipes
+            case .failure(let error):
+                print(error)
+            }
+        }
+        
+        APICaller.shared.getMealType(type: "drink") { res in
+            defer {
+                group.leave()
+            }
+            switch res {
+            case .success(let recipes):
+                SearchManager.shared.viewModels[2] = recipes
+            case .failure(let error):
+                print(error)
+            }
+        }
+        
+        APICaller.shared.getCusine(cuisine: "american") { res in
+            defer {
+                group.leave()
+            }
+            switch res {
+            case .success(let recipes):
+                SearchManager.shared.viewModels[3] = recipes
+            case .failure(let error):
+                print(error)
+            }
+        }
+        
+        APICaller.shared.getCusine(cuisine: "Chinese") { res in
+            defer {
+                group.leave()
+            }
+            switch res {
+            case .success(let recipes):
+                SearchManager.shared.viewModels[4] = recipes
+            case .failure(let error):
+                print(error)
+            }
+        }
+        
+        APICaller.shared.getCusine(cuisine: "middle%20eastern") { res in
+            defer {
+                group.leave()
+            }
+            switch res {
+            case .success(let recipes):
+                SearchManager.shared.viewModels[5] = recipes
+            case .failure(let error):
+                print(error)
+            }
+        }
+        
+        APICaller.shared.getMaxReadyTime(maxReadyTime: 30) { res in
+            defer {
+                group.leave()
+            }
+            switch res {
+            case .success(let recipes):
+                SearchManager.shared.viewModels[6] = recipes
+            case .failure(let error):
+                print(error)
+            }
+        }
+        
+        APICaller.shared.getRandomRecipes(number: 20) { res in
+            defer {
+                group.leave()
+            }
+            switch res {
+            case .success(let recipes):
+                SearchManager.shared.viewModels[7] = recipes
+            case .failure(let error):
+                print(error)
+            }
+        }
+        
+        group.notify(queue: .main) {
+            self.feedCollectionView.reloadData()
+        }
     }
     
     private func configureSearchView() {
@@ -137,7 +294,26 @@ class SearchViewController: UIViewController {
         searchView.delegate = self
         navigationItem.titleView = searchView
     }
+    
     private func configureCollectionViews() {
+        feedCollectionView.addInfiniteScroll { collection in
+            APICaller.shared.getRandomRecipes(number: 20) { res in
+                switch res {
+                case .success(let recipes):
+                    recipes.forEach { recipe in
+                        DispatchQueue.main.async {
+                            SearchManager.shared.viewModels[7].append(recipe)
+                            collection.insertItems(at: [IndexPath(item: SearchManager.shared.viewModels[7].count - 1, section: 7)])
+                        }
+                    }
+                case .failure(let error):
+                    print(error)
+                }
+                DispatchQueue.main.async {
+                    collection.finishInfiniteScroll()
+                }
+            }
+        }
         feedCollectionView.delegate = self
         feedCollectionView.dataSource = self
         resultCollectionView.delegate = self
@@ -185,6 +361,62 @@ class SearchViewController: UIViewController {
             searchTableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
         ])
     }
+    
+    private func addButtonToStackView(with option: String) {
+        if !SearchManager.shared.allSelected.insert(option).inserted {
+            return
+        }
+        
+        if option.starts(with: "Under") {
+            stackView.arrangedSubviews.forEach { view in
+                guard let button = view as? UIButton, let title = button.titleLabel?.text else {
+                    return
+                }
+                
+                if title.starts(with: "Under") {
+                    SearchManager.shared.allSelected.remove(title)
+                    for v in SearchManager.shared.currentlySelected {
+                        if v.value.contains(title) {
+                            SearchManager.shared.currentlySelected[v.key]?.remove(title)
+                            break
+                        }
+                    }
+                    view.removeFromSuperview()
+                }
+            }
+        }
+        
+        let button = UIButton()
+        button.setTitle(option, for: [])
+        button.setImage(UIImage(systemName: "xmark.circle"), for: .normal)
+        button.tintColor = .black
+        button.semanticContentAttribute = .forceRightToLeft
+        button.setTitleColor(.black, for: [])
+        button.imageEdgeInsets = UIEdgeInsets(top: 0, left: 5, bottom: 0, right: 0)
+        button.contentEdgeInsets = UIEdgeInsets(top: 8, left: 10, bottom: 8, right: 10)
+        button.backgroundColor = .element
+        button.sizeToFit()
+        button.layer.cornerRadius = button.frame.size.height / 2
+        button.clipsToBounds = true
+        button.addTarget(self, action: #selector(didDeselectOption(_:)), for: .touchUpInside)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        stackView.insertArrangedSubview(button, at: 0)
+    }
+    
+    @objc private func didDeselectOption(_ sender: UIButton) {
+        guard let title = sender.titleLabel?.text else {
+            return
+        }
+        SearchManager.shared.allSelected.remove(title)
+        for v in SearchManager.shared.currentlySelected {
+            if v.value.contains(title) {
+                SearchManager.shared.currentlySelected[v.key]?.remove(title)
+                break
+            }
+        }
+        sender.removeFromSuperview()
+        stackView.removeArrangedSubview(sender)
+    }
 }
 
 extension SearchViewController: SearchViewDelegate {
@@ -202,6 +434,22 @@ extension SearchViewController: SearchViewDelegate {
         scrollView.isHidden = true
         SearchManager.shared.isInResultVC = false
         SearchManager.shared.currentlySelected.removeAll()
+        SearchManager.shared.allSelected.removeAll()
+        stackView.arrangedSubviews.forEach {
+            $0.removeFromSuperview()
+        }
+    }
+    
+    func refineButtonTapped() {
+        let vc = OptionsViewController()
+        let nc = UINavigationController(rootViewController: vc)
+        vc.completion = { [weak self] title in
+            DispatchQueue.main.async {
+                self?.addButtonToStackView(with: title)
+                self?.scrollView.setContentOffset(CGPoint(x: 0, y: 0), animated: true)
+            }
+        }
+        present(nc, animated: true)
     }
 }
 
@@ -211,23 +459,7 @@ extension SearchViewController: OptionCollectionViewCellDelegate {
         resultCollectionView.isHidden = false
         searchView.endEditing(true)
         scrollView.isHidden = false
-        stackView.arrangedSubviews.forEach {
-            $0.removeFromSuperview()
-        }
-        var title = option
-        if let _ = Int(option) {
-            title = "Under " + option + " minutes"
-        }
-        let button = UIButton()
-        button.setTitle(title, for: [])
-        button.setTitleColor(.black, for: [])
-        button.contentEdgeInsets = UIEdgeInsets(top: 8, left: 10, bottom: 8, right: 10)
-        button.backgroundColor = .element
-        button.sizeToFit()
-        button.layer.cornerRadius = button.frame.size.height / 2
-        button.clipsToBounds = true
-        button.translatesAutoresizingMaskIntoConstraints = false
-        stackView.addArrangedSubview(button)
+        addButtonToStackView(with: option)
     }
 }
 
@@ -236,6 +468,16 @@ extension SearchViewController: UICollectionViewDelegate, UICollectionViewDataSo
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: RecipeCollectionViewCell.identifier, for: indexPath) as? RecipeCollectionViewCell else {
             return UICollectionViewCell()
         }
+        //refactor
+        let fontSize: CGFloat
+        if indexPath.section == 0 {
+            fontSize = 24
+        } else if indexPath.section == 7 {
+            fontSize = 20
+        } else {
+            fontSize = 14
+        }
+        cell.configure(text: SearchManager.shared.viewModels[indexPath.section][indexPath.row].title, imageID: SearchManager.shared.viewModels[indexPath.section][indexPath.row].id, fontSize: fontSize)
         return cell
     }
     
@@ -243,13 +485,13 @@ extension SearchViewController: UICollectionViewDelegate, UICollectionViewDataSo
         if collectionView == resultCollectionView {
             return 1
         }
-        return SearchManager.shared.headers.count
+        return SearchManager.shared.viewModels.count
     }
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         if collectionView == resultCollectionView {
             return 8
         }
-        return section == 0 ? 1 : 8
+        return SearchManager.shared.viewModels[section].count
     }
     
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {

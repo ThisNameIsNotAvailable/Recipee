@@ -64,11 +64,12 @@ class OptionsTableViewCell: UITableViewCell {
     
     @objc private func optionTapped(_ sender: UIButton) { //refactor?
         SearchManager.shared.isInResultVC = true
+        NotificationCenter.default.post(name: NSNotification.Name("Showed Result VC"), object: nil)
         guard let option = sender.titleLabel?.text else {
             return
         }
         if option.starts(with: "Under") {
-            SearchManager.shared.currentlySelected["Difficulty"] = [option.components(separatedBy: " ")[1]]
+            SearchManager.shared.currentlySelected["Difficulty"] = [option]
         } else {
             if let _ = SearchManager.shared.currentlySelected[SearchManager.shared.headersForSearch[sender.tag]] {
                 SearchManager.shared.currentlySelected[SearchManager.shared.headersForSearch[sender.tag]]?.insert(option)

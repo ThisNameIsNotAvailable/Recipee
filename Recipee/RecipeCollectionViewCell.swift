@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SDWebImage
 
 class RecipeCollectionViewCell: UICollectionViewCell {
     
@@ -15,7 +16,7 @@ class RecipeCollectionViewCell: UICollectionViewCell {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFill
         imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.image = UIImage(named: "test")
+        imageView.image = UIImage(systemName: "xmark")?.withTintColor(.black)
         imageView.clipsToBounds = true
         return imageView
     }()
@@ -58,10 +59,20 @@ class RecipeCollectionViewCell: UICollectionViewCell {
         ])
     }
     
-    func configure(text: String) {
-        
+    func configure(text: String, imageID: Int, fontSize: CGFloat) {
+        recipeLabel.font = .systemFont(ofSize: fontSize)
+        recipeLabel.text = text
+        guard let url = URL(string: "https://spoonacular.com/recipeImages/\(imageID)-480x360.jpg") else {
+            return
+        }
+        imageView.sd_setImage(with: url)
     }
     
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        recipeLabel.text = ""
+        imageView.image = nil
+    }
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }

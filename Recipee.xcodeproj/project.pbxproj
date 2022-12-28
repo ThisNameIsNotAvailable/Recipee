@@ -13,6 +13,13 @@
 		3A168EB9295B29FC004F592A /* SearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A168EB8295B29FC004F592A /* SearchView.swift */; };
 		3A168EBB295B622E004F592A /* OptionsCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A168EBA295B622E004F592A /* OptionsCollectionViewCell.swift */; };
 		3A168EBD295B88BE004F592A /* SearchTableViewHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A168EBC295B88BE004F592A /* SearchTableViewHeader.swift */; };
+		3A168EBF295C6C46004F592A /* OptionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A168EBE295C6C46004F592A /* OptionsViewController.swift */; };
+		3A168EC2295C8C7E004F592A /* UIScrollView_InfiniteScroll in Frameworks */ = {isa = PBXBuildFile; productRef = 3A168EC1295C8C7E004F592A /* UIScrollView_InfiniteScroll */; };
+		3A168EC4295CAC07004F592A /* APICaller.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A168EC3295CAC07004F592A /* APICaller.swift */; };
+		3A168EC6295CAFA5004F592A /* RecipesResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A168EC5295CAFA5004F592A /* RecipesResponse.swift */; };
+		3A168EC9295CCB9F004F592A /* SDWebImage in Frameworks */ = {isa = PBXBuildFile; productRef = 3A168EC8295CCB9F004F592A /* SDWebImage */; };
+		3A168ECB295CD349004F592A /* ComplexSearchResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A168ECA295CD349004F592A /* ComplexSearchResponse.swift */; };
+		3A168ECE295CDD4C004F592A /* RecipeModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 3A168ECC295CDD4C004F592A /* RecipeModel.xcdatamodeld */; };
 		3A5610F12958D955005F9760 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A5610F02958D955005F9760 /* AppDelegate.swift */; };
 		3A5610F32958D955005F9760 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A5610F22958D955005F9760 /* SceneDelegate.swift */; };
 		3A5610F52958D955005F9760 /* TabBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A5610F42958D955005F9760 /* TabBarViewController.swift */; };
@@ -32,6 +39,11 @@
 		3A168EB8295B29FC004F592A /* SearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchView.swift; sourceTree = "<group>"; };
 		3A168EBA295B622E004F592A /* OptionsCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionsCollectionViewCell.swift; sourceTree = "<group>"; };
 		3A168EBC295B88BE004F592A /* SearchTableViewHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchTableViewHeader.swift; sourceTree = "<group>"; };
+		3A168EBE295C6C46004F592A /* OptionsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionsViewController.swift; sourceTree = "<group>"; };
+		3A168EC3295CAC07004F592A /* APICaller.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APICaller.swift; sourceTree = "<group>"; };
+		3A168EC5295CAFA5004F592A /* RecipesResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipesResponse.swift; sourceTree = "<group>"; };
+		3A168ECA295CD349004F592A /* ComplexSearchResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComplexSearchResponse.swift; sourceTree = "<group>"; };
+		3A168ECD295CDD4C004F592A /* Recipe.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Recipe.xcdatamodel; sourceTree = "<group>"; };
 		3A5610ED2958D955005F9760 /* Recipee.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Recipee.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3A5610F02958D955005F9760 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		3A5610F22958D955005F9760 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -51,6 +63,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3A168EC9295CCB9F004F592A /* SDWebImage in Frameworks */,
+				3A168EC2295C8C7E004F592A /* UIScrollView_InfiniteScroll in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -73,6 +87,9 @@
 			isa = PBXGroup;
 			children = (
 				3A168EB6295B14E5004F592A /* SearchManager.swift */,
+				3A168EC3295CAC07004F592A /* APICaller.swift */,
+				3A168EC5295CAFA5004F592A /* RecipesResponse.swift */,
+				3A168ECA295CD349004F592A /* ComplexSearchResponse.swift */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -102,6 +119,7 @@
 				3A5611082958E5DD005F9760 /* Controllers */,
 				3A5610FB2958D957005F9760 /* LaunchScreen.storyboard */,
 				3A5611042958E2C8005F9760 /* UIColor+Utils.swift */,
+				3A168ECC295CDD4C004F592A /* RecipeModel.xcdatamodeld */,
 			);
 			path = Recipee;
 			sourceTree = "<group>";
@@ -133,6 +151,7 @@
 			isa = PBXGroup;
 			children = (
 				3A5611072958E5C5005F9760 /* MainViewControllers */,
+				3A168EBE295C6C46004F592A /* OptionsViewController.swift */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -153,6 +172,10 @@
 			dependencies = (
 			);
 			name = Recipee;
+			packageProductDependencies = (
+				3A168EC1295C8C7E004F592A /* UIScrollView_InfiniteScroll */,
+				3A168EC8295CCB9F004F592A /* SDWebImage */,
+			);
 			productName = Recipee;
 			productReference = 3A5610ED2958D955005F9760 /* Recipee.app */;
 			productType = "com.apple.product-type.application";
@@ -181,6 +204,10 @@
 				Base,
 			);
 			mainGroup = 3A5610E42958D955005F9760;
+			packageReferences = (
+				3A168EC0295C8C7E004F592A /* XCRemoteSwiftPackageReference "UIScrollView-InfiniteScroll" */,
+				3A168EC7295CCB9F004F592A /* XCRemoteSwiftPackageReference "SDWebImage" */,
+			);
 			productRefGroup = 3A5610EE2958D955005F9760 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -211,14 +238,19 @@
 				3A56110C2958E60C005F9760 /* FavouritesViewController.swift in Sources */,
 				3A56110A2958E5F4005F9760 /* SearchViewController.swift in Sources */,
 				3A5610F52958D955005F9760 /* TabBarViewController.swift in Sources */,
+				3A168ECE295CDD4C004F592A /* RecipeModel.xcdatamodeld in Sources */,
+				3A168EC6295CAFA5004F592A /* RecipesResponse.swift in Sources */,
 				3A168EB9295B29FC004F592A /* SearchView.swift in Sources */,
 				3A5610F12958D955005F9760 /* AppDelegate.swift in Sources */,
 				3A5611102958E657005F9760 /* ShoppingListViewController.swift in Sources */,
+				3A168EC4295CAC07004F592A /* APICaller.swift in Sources */,
 				3A56110E2958E62E005F9760 /* ProfileViewController.swift in Sources */,
 				3A168EB7295B14E5004F592A /* SearchManager.swift in Sources */,
+				3A168EBF295C6C46004F592A /* OptionsViewController.swift in Sources */,
 				3A5610F32958D955005F9760 /* SceneDelegate.swift in Sources */,
 				3A168EB4295A3BA7004F592A /* RecipeCollectionViewHeader.swift in Sources */,
 				3A168EBB295B622E004F592A /* OptionsCollectionViewCell.swift in Sources */,
+				3A168ECB295CD349004F592A /* ComplexSearchResponse.swift in Sources */,
 				3A168EBD295B88BE004F592A /* SearchTableViewHeader.swift in Sources */,
 				3A5611052958E2C8005F9760 /* UIColor+Utils.swift in Sources */,
 			);
@@ -428,6 +460,51 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		3A168EC0295C8C7E004F592A /* XCRemoteSwiftPackageReference "UIScrollView-InfiniteScroll" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/pronebird/UIScrollView-InfiniteScroll";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.0;
+			};
+		};
+		3A168EC7295CCB9F004F592A /* XCRemoteSwiftPackageReference "SDWebImage" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SDWebImage/SDWebImage.git";
+			requirement = {
+				branch = master;
+				kind = branch;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		3A168EC1295C8C7E004F592A /* UIScrollView_InfiniteScroll */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 3A168EC0295C8C7E004F592A /* XCRemoteSwiftPackageReference "UIScrollView-InfiniteScroll" */;
+			productName = UIScrollView_InfiniteScroll;
+		};
+		3A168EC8295CCB9F004F592A /* SDWebImage */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 3A168EC7295CCB9F004F592A /* XCRemoteSwiftPackageReference "SDWebImage" */;
+			productName = SDWebImage;
+		};
+/* End XCSwiftPackageProductDependency section */
+
+/* Begin XCVersionGroup section */
+		3A168ECC295CDD4C004F592A /* RecipeModel.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				3A168ECD295CDD4C004F592A /* Recipe.xcdatamodel */,
+			);
+			currentVersion = 3A168ECD295CDD4C004F592A /* Recipe.xcdatamodel */;
+			path = RecipeModel.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 3A5610E52958D955005F9760 /* Project object */;
 }

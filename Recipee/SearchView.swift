@@ -14,6 +14,9 @@ class SearchView: UIView {
     }
     
     private var cancelTrailingAnchor: NSLayoutConstraint?
+    private var searchBarTrailingAnchor: NSLayoutConstraint?
+    private var refineLeadingAnchor: NSLayoutConstraint?
+    private var searchBarLeadingAnchor: NSLayoutConstraint?
     
     weak var delegate: SearchViewDelegate?
     
@@ -29,24 +32,49 @@ class SearchView: UIView {
     }()
     
     private let cancelButton: UIButton = {
+        let button = UIButton(type: .custom)
+        button.setImage(UIImage(systemName: "xmark")?.withConfiguration(UIImage.SymbolConfiguration(font: .systemFont(ofSize: 20, weight: .bold))), for: [])
+        button.tintColor = .black
+        button.translatesAutoresizingMaskIntoConstraints = false
+        return button
+    }()
+    
+    private let refineButton: UIButton = {
         let button = UIButton(type: .system)
-        button.setTitle("Cancel", for: [])
-        button.titleLabel?.font = .systemFont(ofSize: 16)
-        button.tintColor = UIColor(red: 0.14, green: 0.22, blue: 0.39, alpha: 1.00)
+        button.setTitle("Refine", for: [])
+        button.titleLabel?.font = .systemFont(ofSize: 18, weight: .semibold)
+        button.tintColor = .black
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
+        NotificationCenter.default.addObserver(self, selector: #selector(showRefineButton), name: NSNotification.Name("Showed Result VC"), object: nil)
         cancelButton.addTarget(self, action: #selector(cancelTapped), for: .touchUpInside)
         searchBar.delegate = self
+        refineButton.addTarget(self, action: #selector(refineButtonTapped), for: .touchUpInside)
         layout()
+    }
+    
+    @objc private func showRefineButton() {
+        UIViewPropertyAnimator(duration: 0.2, curve: .easeInOut) { [weak self] in
+            self?.refineLeadingAnchor?.constant = 0
+            self?.searchBarLeadingAnchor?.constant = 8
+            self?.layoutIfNeeded()
+        }.startAnimation()
+    }
+    
+    @objc private func refineButtonTapped() {
+        delegate?.refineButtonTapped()
     }
     
     @objc private func cancelTapped() {
         UIViewPropertyAnimator(duration: 0.2, curve: .easeInOut) { [weak self] in
             self?.cancelTrailingAnchor?.constant = (self?.cancelButton.frame.size.width ?? 0) + 20
+            self?.searchBarTrailingAnchor?.constant = -20
+            self?.refineLeadingAnchor?.constant = -((self?.refineButton.frame.size.width ?? 0) + 20)
+            self?.searchBarLeadingAnchor?.constant = 20
             self?.layoutIfNeeded()
             self?.searchBar.endEditing(true)
             self?.searchBar.searchTextField.text = ""
@@ -57,18 +85,28 @@ class SearchView: UIView {
     private func layout() {
         addSubview(searchBar)
         addSubview(cancelButton)
+        addSubview(refineButton)
         cancelButton.sizeToFit()
+        refineButton.sizeToFit()
         
         NSLayoutConstraint.activate([
-            searchBar.leadingAnchor.constraint(equalToSystemSpacingAfter: leadingAnchor, multiplier: 1),
             searchBar.topAnchor.constraint(equalTo: topAnchor),
-            searchBar.trailingAnchor.constraint(equalTo: cancelButton.leadingAnchor, constant: -20),
             bottomAnchor.constraint(equalToSystemSpacingBelow: searchBar.bottomAnchor, multiplier: 1),
             
-            cancelButton.centerYAnchor.constraint(equalTo: searchBar.centerYAnchor)
+            cancelButton.centerYAnchor.constraint(equalTo: searchBar.centerYAnchor),
+            refineButton.centerYAnchor.constraint(equalTo: searchBar.centerYAnchor)
         ])
         cancelTrailingAnchor = cancelButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: cancelButton.frame.size.width + 20)
         cancelTrailingAnchor?.isActive = true
+        
+        searchBarTrailingAnchor = searchBar.trailingAnchor.constraint(equalTo: cancelButton.leadingAnchor, constant: -20)
+        searchBarTrailingAnchor?.isActive = true
+        
+        refineLeadingAnchor = refineButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: -(refineButton.frame.size.width + 20))
+        refineLeadingAnchor?.isActive = true
+        
+        searchBarLeadingAnchor = searchBar.leadingAnchor.constraint(equalTo: refineButton.trailingAnchor, constant: 20)
+        searchBarLeadingAnchor?.isActive = true
     }
     
     required init?(coder: NSCoder) {
@@ -80,6 +118,7 @@ extension SearchView: UISearchBarDelegate {
     func searchBarShouldBeginEditing(_ searchBar: UISearchBar) -> Bool {
         UIViewPropertyAnimator(duration: 0.2, curve: .easeInOut) { [weak self] in
             self?.cancelTrailingAnchor?.constant = 0
+            self?.searchBarTrailingAnchor?.constant = -8
             self?.layoutIfNeeded()
         }.startAnimation()
         delegate?.searchViewShouldBeginEditing()

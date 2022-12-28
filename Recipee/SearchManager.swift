@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import CoreData
 
 class SearchManager {
     
@@ -62,7 +63,41 @@ class SearchManager {
     
     public var currentlySelected = [String: Set<String>]()
     
-    private init() {}
+    public var allSelected = Set<String>()
+    
+    public var viewModels = [[RecipeResponse]](repeating: [RecipeResponse](), count: 8)
+    
+    private init() {
+        viewModels = [[RecipeResponse]](repeating: [RecipeResponse](), count: headers.count)
+    }
+    
+    func getContext() -> NSManagedObjectContext? {
+        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
+            return nil
+        }
+        return appDelegate.persistentContainer.viewContext
+    }
+    
+    func save() {
+        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
+            return
+        }
+        appDelegate.saveContext()
+    }
+    
+    var needToChange: Bool {
+        if let date = UserDefaults.standard.value(forKey: "current_date") as? Date {
+            let calendar = Calendar.current
+            let dateWritten = calendar.dateComponents([.day, .month, .year], from: date)
+            let dateCurrent = calendar.dateComponents([.day, .month, .year], from: Date())
+            if dateWritten.date == dateCurrent.date && dateCurrent.month == dateWritten.month && dateWritten.year == dateCurrent.year {
+                return false
+            } else {
+                return true
+            }
+        }
+        return true
+    }
     
     class Row {
         var sum: CGFloat = 0
