@@ -12,6 +12,20 @@ class SearchManager {
     
     public static let shared = SearchManager()
     
+    var needToChange: Bool {
+        if let date = UserDefaults.standard.value(forKey: "current_date") as? Date {
+            let calendar = Calendar.current
+            let dateWritten = calendar.dateComponents([.day, .month, .year], from: date)
+            let dateCurrent = calendar.dateComponents([.day, .month, .year], from: Date())
+            if dateWritten.date == dateCurrent.date && dateCurrent.month == dateWritten.month && dateWritten.year == dateCurrent.year {
+                return false
+            } else {
+                return true
+            }
+        }
+        return true
+    }
+    
     public let headers =  ["Meal Of The Day", "Breakfast", "Drinks", "American cuisine", "Chinese cuisine", "Middle Eastern cuisine", "Under 30 minutes", "You may like"]
     
     public let headersForSearch = ["Difficulty", "Meal", "Diet", "Cuisine"]
@@ -65,10 +79,11 @@ class SearchManager {
     
     public var allSelected = Set<String>()
     
-    public var viewModels = [[RecipeResponse]](repeating: [RecipeResponse](), count: 8)
+    #warning("change")
+    public var feedViewModels = [[RecipeResponse]]()
     
     private init() {
-        viewModels = [[RecipeResponse]](repeating: [RecipeResponse](), count: headers.count)
+        feedViewModels = [[RecipeResponse]](repeating: [RecipeResponse](), count: headers.count)
     }
     
     func getContext() -> NSManagedObjectContext? {
@@ -83,20 +98,6 @@ class SearchManager {
             return
         }
         appDelegate.saveContext()
-    }
-    
-    var needToChange: Bool {
-        if let date = UserDefaults.standard.value(forKey: "current_date") as? Date {
-            let calendar = Calendar.current
-            let dateWritten = calendar.dateComponents([.day, .month, .year], from: date)
-            let dateCurrent = calendar.dateComponents([.day, .month, .year], from: Date())
-            if dateWritten.date == dateCurrent.date && dateCurrent.month == dateWritten.month && dateWritten.year == dateCurrent.year {
-                return false
-            } else {
-                return true
-            }
-        }
-        return true
     }
     
     class Row {

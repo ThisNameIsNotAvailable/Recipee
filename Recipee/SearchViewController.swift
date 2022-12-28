@@ -41,29 +41,13 @@ class SearchViewController: UIViewController {
     }()
     
     private let searchTableView: UITableView = {
-        let tv = UITableView(frame: .zero, style: .grouped)
-        tv.translatesAutoresizingMaskIntoConstraints = false
-        tv.separatorColor = .clear
-        tv.register(OptionsTableViewCell.self, forCellReuseIdentifier: OptionsTableViewCell.identifier)
-        tv.delaysContentTouches = false
-        tv.backgroundColor = .background
-        tv.register(SearchTableViewHeader.self, forHeaderFooterViewReuseIdentifier: SearchTableViewHeader.identifier)
+        let tv = OptionsTableView(frame: .zero, style: .grouped)
         tv.isHidden = true
         return tv
     }()
     
     private let resultCollectionView: UICollectionView = {
-        let collection = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewCompositionalLayout(sectionProvider: { section, _ in
-            switch section {
-            default:
-                let item = NSCollectionLayoutItem(layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.5), heightDimension: .fractionalHeight(1)))
-                item.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 5, bottom: 5, trailing: 5)
-                let horizontalGroup = NSCollectionLayoutGroup.horizontal(layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .fractionalWidth(0.7)), repeatingSubitem: item, count: 2)
-                let verticalGroup = NSCollectionLayoutGroup.vertical(layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .fractionalWidth(0.7)), repeatingSubitem: horizontalGroup, count: 1)
-                let section = NSCollectionLayoutSection(group: verticalGroup)
-                return section
-            }
-        }))
+        let collection = SearchViewController.createResultCollectionView()
         collection.translatesAutoresizingMaskIntoConstraints = false
         collection.backgroundColor = .background
         collection.showsVerticalScrollIndicator = false
@@ -73,44 +57,7 @@ class SearchViewController: UIViewController {
     }()
     
     private let feedCollectionView: UICollectionView = {
-        let collection = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewCompositionalLayout(sectionProvider: { section, _ in
-            let header = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .absolute(50)), elementKind: UICollectionView.elementKindSectionHeader, alignment: .top)
-            header.contentInsets = NSDirectionalEdgeInsets(top: 2, leading: 8, bottom: 2, trailing: 2)
-            switch section {
-            case 0:
-                let item = NSCollectionLayoutItem(layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .fractionalWidth(1.2)))
-                item.contentInsets = NSDirectionalEdgeInsets(top: 2, leading: 5, bottom: 2, trailing: 5)
-                let group = NSCollectionLayoutGroup.horizontal(layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .fractionalWidth(1.2)), repeatingSubitem: item, count: 1)
-                let section = NSCollectionLayoutSection(group: group)
-                section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 20, trailing: 0)
-                section.boundarySupplementaryItems = [header]
-                return section
-            case 1...6:
-                let item = NSCollectionLayoutItem(layoutSize: NSCollectionLayoutSize(widthDimension: .absolute(150), heightDimension: .absolute(220)))
-                item.contentInsets = NSDirectionalEdgeInsets(top: 2, leading: 5, bottom: 2, trailing: 5)
-                let group = NSCollectionLayoutGroup.horizontal(layoutSize: NSCollectionLayoutSize(widthDimension: .absolute(150), heightDimension: .absolute(220)), repeatingSubitem: item, count: 1)
-                let section = NSCollectionLayoutSection(group: group)
-                section.orthogonalScrollingBehavior = .continuousGroupLeadingBoundary
-                section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 20, trailing: 0)
-                section.boundarySupplementaryItems = [header]
-                return section
-            case 7:
-                let item = NSCollectionLayoutItem(layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .fractionalHeight(1)))
-                item.contentInsets = NSDirectionalEdgeInsets(top: 2, leading: 5, bottom: 5, trailing: 5)
-                let horizontalGroup = NSCollectionLayoutGroup.horizontal(layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.5), heightDimension: .fractionalWidth(0.7)), repeatingSubitem: item, count: 2)
-                let verticalGroup = NSCollectionLayoutGroup.vertical(layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .fractionalWidth(0.7)), repeatingSubitem: horizontalGroup, count: 1)
-                let section = NSCollectionLayoutSection(group: verticalGroup)
-                section.boundarySupplementaryItems = [header]
-                return section
-            default:
-                let item = NSCollectionLayoutItem(layoutSize: NSCollectionLayoutSize(widthDimension: .absolute(200), heightDimension: .absolute(300)))
-                item.contentInsets = NSDirectionalEdgeInsets(top: 2, leading: 2, bottom: 2, trailing: 2)
-                let group = NSCollectionLayoutGroup.horizontal(layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .fractionalHeight(1)), repeatingSubitem: item, count: 1)
-                let section = NSCollectionLayoutSection(group: group)
-                section.orthogonalScrollingBehavior = .continuous
-                return section
-            }
-        }))
+        let collection = SearchViewController.createFeedCollectionView()
         collection.register(RecipeCollectionViewCell.self, forCellWithReuseIdentifier: RecipeCollectionViewCell.identifier)
         collection.register(RecipeCollectionViewHeader.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: RecipeCollectionViewHeader.identifier)
         collection.translatesAutoresizingMaskIntoConstraints = false
@@ -156,7 +103,7 @@ class SearchViewController: UIViewController {
                 }
                 switch res {
                 case .success(let recipes):
-                    SearchManager.shared.viewModels[0] = recipes
+                    SearchManager.shared.feedViewModels[0] = recipes
                     DispatchQueue.main.async {
                         guard let context = SearchManager.shared.getContext(),
                               let id = recipes.first?.id,
@@ -181,8 +128,6 @@ class SearchViewController: UIViewController {
             let fetchRequest: NSFetchRequest<Recipe> = Recipe.fetchRequest()
             DispatchQueue.main.async {
                 do {
-                    // Peform Fetch Request
-                    
                     guard let context = SearchManager.shared.getContext() else {
                         return
                     }
@@ -191,7 +136,7 @@ class SearchViewController: UIViewController {
                         return
                     }
                     let recipe = RecipeResponse(id: Int(recipeCD.id), title: title, image: imageURL)
-                    SearchManager.shared.viewModels[0] = [recipe]
+                    SearchManager.shared.feedViewModels[0] = [recipe]
                     self.feedCollectionView.insertItems(at: [IndexPath(item: 0, section: 0)])
                 } catch {
                     print("Unable to Fetch Recipe, (\(error))")
@@ -205,7 +150,7 @@ class SearchViewController: UIViewController {
             }
             switch res {
             case .success(let recipes):
-                SearchManager.shared.viewModels[1] = recipes
+                SearchManager.shared.feedViewModels[1] = recipes
             case .failure(let error):
                 print(error)
             }
@@ -217,7 +162,7 @@ class SearchViewController: UIViewController {
             }
             switch res {
             case .success(let recipes):
-                SearchManager.shared.viewModels[2] = recipes
+                SearchManager.shared.feedViewModels[2] = recipes
             case .failure(let error):
                 print(error)
             }
@@ -229,7 +174,7 @@ class SearchViewController: UIViewController {
             }
             switch res {
             case .success(let recipes):
-                SearchManager.shared.viewModels[3] = recipes
+                SearchManager.shared.feedViewModels[3] = recipes
             case .failure(let error):
                 print(error)
             }
@@ -241,7 +186,7 @@ class SearchViewController: UIViewController {
             }
             switch res {
             case .success(let recipes):
-                SearchManager.shared.viewModels[4] = recipes
+                SearchManager.shared.feedViewModels[4] = recipes
             case .failure(let error):
                 print(error)
             }
@@ -253,7 +198,7 @@ class SearchViewController: UIViewController {
             }
             switch res {
             case .success(let recipes):
-                SearchManager.shared.viewModels[5] = recipes
+                SearchManager.shared.feedViewModels[5] = recipes
             case .failure(let error):
                 print(error)
             }
@@ -265,7 +210,7 @@ class SearchViewController: UIViewController {
             }
             switch res {
             case .success(let recipes):
-                SearchManager.shared.viewModels[6] = recipes
+                SearchManager.shared.feedViewModels[6] = recipes
             case .failure(let error):
                 print(error)
             }
@@ -277,7 +222,7 @@ class SearchViewController: UIViewController {
             }
             switch res {
             case .success(let recipes):
-                SearchManager.shared.viewModels[7] = recipes
+                SearchManager.shared.feedViewModels[7] = recipes
             case .failure(let error):
                 print(error)
             }
@@ -302,8 +247,8 @@ class SearchViewController: UIViewController {
                 case .success(let recipes):
                     recipes.forEach { recipe in
                         DispatchQueue.main.async {
-                            SearchManager.shared.viewModels[7].append(recipe)
-                            collection.insertItems(at: [IndexPath(item: SearchManager.shared.viewModels[7].count - 1, section: 7)])
+                            SearchManager.shared.feedViewModels[7].append(recipe)
+                            collection.insertItems(at: [IndexPath(item: SearchManager.shared.feedViewModels[7].count - 1, section: 7)])
                         }
                     }
                 case .failure(let error):
@@ -386,21 +331,7 @@ class SearchViewController: UIViewController {
             }
         }
         
-        let button = UIButton()
-        button.setTitle(option, for: [])
-        button.setImage(UIImage(systemName: "xmark.circle"), for: .normal)
-        button.tintColor = .black
-        button.semanticContentAttribute = .forceRightToLeft
-        button.setTitleColor(.black, for: [])
-        button.imageEdgeInsets = UIEdgeInsets(top: 0, left: 5, bottom: 0, right: 0)
-        button.contentEdgeInsets = UIEdgeInsets(top: 8, left: 10, bottom: 8, right: 10)
-        button.backgroundColor = .element
-        button.sizeToFit()
-        button.layer.cornerRadius = button.frame.size.height / 2
-        button.clipsToBounds = true
-        button.addTarget(self, action: #selector(didDeselectOption(_:)), for: .touchUpInside)
-        button.translatesAutoresizingMaskIntoConstraints = false
-        stackView.insertArrangedSubview(button, at: 0)
+        stackView.insertArrangedSubview(createButton(with: option), at: 0)
     }
     
     @objc private func didDeselectOption(_ sender: UIButton) {
@@ -477,7 +408,9 @@ extension SearchViewController: UICollectionViewDelegate, UICollectionViewDataSo
         } else {
             fontSize = 14
         }
-        cell.configure(text: SearchManager.shared.viewModels[indexPath.section][indexPath.row].title, imageID: SearchManager.shared.viewModels[indexPath.section][indexPath.row].id, fontSize: fontSize)
+        if collectionView == feedCollectionView {
+            cell.configure(text: SearchManager.shared.feedViewModels[indexPath.section][indexPath.row].title, imageID: SearchManager.shared.feedViewModels[indexPath.section][indexPath.row].id, fontSize: fontSize)
+        }
         return cell
     }
     
@@ -485,13 +418,13 @@ extension SearchViewController: UICollectionViewDelegate, UICollectionViewDataSo
         if collectionView == resultCollectionView {
             return 1
         }
-        return SearchManager.shared.viewModels.count
+        return SearchManager.shared.feedViewModels.count
     }
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         if collectionView == resultCollectionView {
             return 8
         }
-        return SearchManager.shared.viewModels[section].count
+        return SearchManager.shared.feedViewModels[section].count
     }
     
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
@@ -534,5 +467,81 @@ extension SearchViewController: UITableViewDelegate, UITableViewDataSource {
         
         header.configure(title: SearchManager.shared.headersForSearch[section])
         return header
+    }
+}
+
+//MARK: - View Creation
+extension SearchViewController {
+    private static func createResultCollectionView() -> UICollectionView {
+        return UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewCompositionalLayout(sectionProvider: { section, _ in
+            switch section {
+            default:
+                let item = NSCollectionLayoutItem(layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.5), heightDimension: .fractionalHeight(1)))
+                item.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 5, bottom: 5, trailing: 5)
+                let horizontalGroup = NSCollectionLayoutGroup.horizontal(layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .fractionalWidth(0.7)), repeatingSubitem: item, count: 2)
+                let verticalGroup = NSCollectionLayoutGroup.vertical(layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .fractionalWidth(0.7)), repeatingSubitem: horizontalGroup, count: 1)
+                let section = NSCollectionLayoutSection(group: verticalGroup)
+                return section
+            }
+        }))
+    }
+    
+    private static func createFeedCollectionView() -> UICollectionView {
+        return UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewCompositionalLayout(sectionProvider: { section, _ in
+            let header = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .absolute(50)), elementKind: UICollectionView.elementKindSectionHeader, alignment: .top)
+            header.contentInsets = NSDirectionalEdgeInsets(top: 2, leading: 8, bottom: 2, trailing: 2)
+            switch section {
+            case 0:
+                let item = NSCollectionLayoutItem(layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .fractionalWidth(1.2)))
+                item.contentInsets = NSDirectionalEdgeInsets(top: 2, leading: 5, bottom: 2, trailing: 5)
+                let group = NSCollectionLayoutGroup.horizontal(layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .fractionalWidth(1.2)), repeatingSubitem: item, count: 1)
+                let section = NSCollectionLayoutSection(group: group)
+                section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 20, trailing: 0)
+                section.boundarySupplementaryItems = [header]
+                return section
+            case 1...6:
+                let item = NSCollectionLayoutItem(layoutSize: NSCollectionLayoutSize(widthDimension: .absolute(150), heightDimension: .absolute(220)))
+                item.contentInsets = NSDirectionalEdgeInsets(top: 2, leading: 5, bottom: 2, trailing: 5)
+                let group = NSCollectionLayoutGroup.horizontal(layoutSize: NSCollectionLayoutSize(widthDimension: .absolute(150), heightDimension: .absolute(220)), repeatingSubitem: item, count: 1)
+                let section = NSCollectionLayoutSection(group: group)
+                section.orthogonalScrollingBehavior = .continuousGroupLeadingBoundary
+                section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 20, trailing: 0)
+                section.boundarySupplementaryItems = [header]
+                return section
+            case 7:
+                let item = NSCollectionLayoutItem(layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .fractionalHeight(1)))
+                item.contentInsets = NSDirectionalEdgeInsets(top: 2, leading: 5, bottom: 5, trailing: 5)
+                let horizontalGroup = NSCollectionLayoutGroup.horizontal(layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.5), heightDimension: .fractionalWidth(0.7)), repeatingSubitem: item, count: 2)
+                let verticalGroup = NSCollectionLayoutGroup.vertical(layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .fractionalWidth(0.7)), repeatingSubitem: horizontalGroup, count: 1)
+                let section = NSCollectionLayoutSection(group: verticalGroup)
+                section.boundarySupplementaryItems = [header]
+                return section
+            default:
+                let item = NSCollectionLayoutItem(layoutSize: NSCollectionLayoutSize(widthDimension: .absolute(200), heightDimension: .absolute(300)))
+                item.contentInsets = NSDirectionalEdgeInsets(top: 2, leading: 2, bottom: 2, trailing: 2)
+                let group = NSCollectionLayoutGroup.horizontal(layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .fractionalHeight(1)), repeatingSubitem: item, count: 1)
+                let section = NSCollectionLayoutSection(group: group)
+                section.orthogonalScrollingBehavior = .continuous
+                return section
+            }
+        }))
+    }
+    
+    private func createButton(with option: String) -> UIButton {
+        let button = UIButton()
+        button.setTitle(option, for: [])
+        button.setImage(UIImage(systemName: "xmark.circle"), for: .normal)
+        button.tintColor = .black
+        button.semanticContentAttribute = .forceRightToLeft
+        button.setTitleColor(.black, for: [])
+        button.imageEdgeInsets = UIEdgeInsets(top: 0, left: 5, bottom: 0, right: 0)
+        button.contentEdgeInsets = UIEdgeInsets(top: 8, left: 10, bottom: 8, right: 10)
+        button.backgroundColor = .element
+        button.sizeToFit()
+        button.layer.cornerRadius = button.frame.size.height / 2
+        button.clipsToBounds = true
+        button.addTarget(self, action: #selector(didDeselectOption(_:)), for: .touchUpInside)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        return button
     }
 }

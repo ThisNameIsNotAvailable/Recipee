@@ -15,13 +15,7 @@ class OptionsViewController: UIViewController, OptionCollectionViewCellDelegate 
     }
     
     private let searchTableView: UITableView = {
-        let tv = UITableView(frame: .zero, style: .grouped)
-        tv.translatesAutoresizingMaskIntoConstraints = false
-        tv.separatorColor = .clear
-        tv.register(OptionsTableViewCell.self, forCellReuseIdentifier: OptionsTableViewCell.identifier)
-        tv.delaysContentTouches = false
-        tv.backgroundColor = .background
-        tv.register(SearchTableViewHeader.self, forHeaderFooterViewReuseIdentifier: SearchTableViewHeader.identifier)
+        let tv = OptionsTableView(frame: .zero, style: .grouped)
         return tv
     }()
     

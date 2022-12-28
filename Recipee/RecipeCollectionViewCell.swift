@@ -16,7 +16,8 @@ class RecipeCollectionViewCell: UICollectionViewCell {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFill
         imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.image = UIImage(systemName: "xmark")?.withTintColor(.black)
+        imageView.image = UIImage(systemName: "xmark")
+        imageView.tintColor = .black
         imageView.clipsToBounds = true
         return imageView
     }()
