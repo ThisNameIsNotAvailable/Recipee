@@ -14,6 +14,7 @@ protocol SearchViewDelegate: AnyObject {
     func searchBarCancelButtonClicked()
     func refineButtonTapped()
     func searchButtonClicked(with query: String)
+    func searchBarTextDidChange()
 }
 
 protocol OptionCollectionViewCellDelegate: AnyObject {
@@ -41,7 +42,7 @@ class SearchViewController: UIViewController {
         return stack
     }()
     
-    private let searchTableView: UITableView = {
+    private let optionsTableView: UITableView = {
         let tv = OptionsTableView(frame: .zero, style: .grouped)
         tv.isHidden = true
         return tv
@@ -54,6 +55,7 @@ class SearchViewController: UIViewController {
         collection.showsVerticalScrollIndicator = false
         collection.register(RecipeCollectionViewCell.self, forCellWithReuseIdentifier: RecipeCollectionViewCell.identifier)
         collection.isHidden = true
+        collection.infiniteScrollDirection = .vertical
         return collection
     }()
     
@@ -67,6 +69,39 @@ class SearchViewController: UIViewController {
         collection.infiniteScrollDirection = .vertical
         return collection
     }()
+    
+    private var feedIsShown = false {
+        didSet {
+            if feedIsShown {
+                scrollView.isHidden = true
+                resultCollectionView.isHidden = true
+                optionsTableView.isHidden = true
+                feedCollectionView.isHidden = false
+            }
+        }
+    }
+    
+    private var resultsIsShown = false {
+        didSet {
+            if resultsIsShown {
+                scrollView.isHidden = false
+                resultCollectionView.isHidden = false
+                optionsTableView.isHidden = true
+                feedCollectionView.isHidden = true
+            }
+        }
+    }
+    
+    private var optionsIsShown = false {
+        didSet {
+            if optionsIsShown {
+                optionsTableView.isHidden = false
+                resultCollectionView.isHidden = true
+                scrollView.isHidden = true
+                feedCollectionView.isHidden = true
+            }
+        }
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -228,23 +263,49 @@ class SearchViewController: UIViewController {
                 }
             }
         }
+        
+        resultCollectionView.addInfiniteScroll { collection in
+            guard var options = SearchManager.shared.getOptionsForURL(), !options.isEmpty else {
+                return
+            }
+            options += "&offset=\(SearchManager.shared.offsetForResult)"
+            APICaller.shared.getRecipesWithOptions(options: options) { res in
+                switch res {
+                case .failure(let error):
+                    print(error)
+                case .success(let recipes):
+                    SearchManager.shared.offsetForResult += 20
+                    recipes.forEach { recipe in
+                        DispatchQueue.main.async {
+                            SearchManager.shared.resultsViewModels.append(recipe)
+                            collection.insertItems(at: [IndexPath(item: SearchManager.shared.resultsViewModels.count - 1, section: 0)])
+                        }
+                    }
+                }
+                DispatchQueue.main.async {
+                    collection.finishInfiniteScroll()
+                }
+            }
+        }
         feedCollectionView.delegate = self
         feedCollectionView.dataSource = self
         resultCollectionView.delegate = self
         resultCollectionView.dataSource = self
+        optionsTableView.delegate = self
+        optionsTableView.dataSource = self
+        
         feedCollectionView.keyboardDismissMode = .onDrag
         resultCollectionView.keyboardDismissMode = .onDrag
-        searchTableView.keyboardDismissMode = .onDrag
-        searchTableView.delegate = self
-        searchTableView.dataSource = self
-        searchTableView.rowHeight = UITableView.automaticDimension
-        searchTableView.estimatedRowHeight = 600
+        optionsTableView.keyboardDismissMode = .onDrag
+        
+        optionsTableView.rowHeight = UITableView.automaticDimension
+        optionsTableView.estimatedRowHeight = 600
     }
     
     private func layout() {
         view.addSubview(feedCollectionView)
         view.addSubview(resultCollectionView)
-        view.addSubview(searchTableView)
+        view.addSubview(optionsTableView)
         scrollView.addSubview(stackView)
         view.addSubview(scrollView)
         
@@ -270,10 +331,10 @@ class SearchViewController: UIViewController {
             resultCollectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
             resultCollectionView.heightAnchor.constraint(greaterThanOrEqualToConstant: 1),
             
-            searchTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            searchTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            searchTableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            searchTableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
+            optionsTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            optionsTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            optionsTableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            optionsTableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
         ])
     }
     
@@ -297,7 +358,10 @@ class SearchViewController: UIViewController {
         }
         stackView.insertArrangedSubview(createButton(with: option), at: 0)
     }
-    
+}
+
+//MARK: - Actions
+extension SearchViewController {
     @objc private func didDeselectOption(_ sender: UIButton) {
         guard let title = sender.titleLabel?.text else {
             return
@@ -316,25 +380,19 @@ class SearchViewController: UIViewController {
 
 extension SearchViewController: SearchViewDelegate {
     func searchButtonClicked(with query: String) {
-        searchTableView.isHidden = true
-        resultCollectionView.isHidden = false
-        scrollView.isHidden = false
+        resultsIsShown = true
         searchView.endEditing(true)
         updateResultCollectionView()
     }
     
     func searchViewShouldBeginEditing() {
         if !SearchManager.shared.isInResultVC {
-            feedCollectionView.isHidden = true
-            searchTableView.isHidden = false
+            optionsIsShown = true
         }
     }
     
     func searchBarCancelButtonClicked() {
-        feedCollectionView.isHidden = false
-        searchTableView.isHidden = true
-        resultCollectionView.isHidden = true
-        scrollView.isHidden = true
+        feedIsShown = true
         SearchManager.shared.isInResultVC = false
         SearchManager.shared.currentQuery = ""
         SearchManager.shared.currentlySelected.removeAll()
@@ -355,39 +413,20 @@ extension SearchViewController: SearchViewDelegate {
         }
         present(nc, animated: true)
     }
+    
+    func searchBarTextDidChange() {
+        resultsIsShown = true
+        updateResultCollectionView()
+    }
 }
 
 extension SearchViewController: OptionCollectionViewCellDelegate {
     func optionButtonClicked(with option: String, shouldAddButton: Bool) {
-        searchTableView.isHidden = true
-        resultCollectionView.isHidden = false
+        resultsIsShown = true
         searchView.endEditing(true)
-        scrollView.isHidden = false
         if shouldAddButton {
             addButtonToStackView(with: option)
             updateResultCollectionView()
-        }
-    }
-    
-    func updateResultCollectionView() {
-        guard let optionsForURL = SearchManager.shared.getOptionsForURL(), !optionsForURL.isEmpty else {
-            return
-        }
-        APICaller.shared.getRecipesWithOptions(options: optionsForURL) { [weak self] res in
-            switch res {
-            case .failure(let error):
-                print(error)
-            case .success(let recipes):
-                SearchManager.shared.resultsViewModels = recipes
-                if recipes.isEmpty {
-                    // hide refine
-                } else {
-                    // show refine
-                }
-                DispatchQueue.main.async {
-                    self?.resultCollectionView.reloadData()
-                }
-            }
         }
     }
 }
@@ -443,7 +482,7 @@ extension SearchViewController: UICollectionViewDelegate, UICollectionViewDataSo
 
 extension SearchViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = searchTableView.dequeueReusableCell(withIdentifier: OptionsTableViewCell.identifier, for: indexPath) as? OptionsTableViewCell else {
+        guard let cell = optionsTableView.dequeueReusableCell(withIdentifier: OptionsTableViewCell.identifier, for: indexPath) as? OptionsTableViewCell else {
             return UITableViewCell()
         }
         cell.configure(with: indexPath.section)
@@ -543,5 +582,36 @@ extension SearchViewController {
         button.addTarget(self, action: #selector(didDeselectOption(_:)), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
+    }
+}
+
+//MARK: - Result Collection View Update
+extension SearchViewController {
+    func updateResultCollectionView() {
+        guard let optionsForURL = SearchManager.shared.getOptionsForURL(), !optionsForURL.isEmpty else {
+            return
+        }
+        SearchManager.shared.offsetForResult = 20
+        APICaller.shared.getRecipesWithOptions(options: optionsForURL) { [weak self] res in
+            switch res {
+            case .failure(let error):
+                print(error)
+            case .success(let recipes):
+                SearchManager.shared.resultsViewModels = recipes
+                if recipes.isEmpty {
+                    DispatchQueue.main.async {
+                        NotificationCenter.default.post(name: NSNotification.Name("Hide Refine"), object: nil)
+                    }
+                    
+                } else {
+                    DispatchQueue.main.async {
+                        NotificationCenter.default.post(name: NSNotification.Name("Show Refine"), object: nil)
+                    }
+                }
+                DispatchQueue.main.async {
+                    self?.resultCollectionView.reloadData()
+                }
+            }
+        }
     }
 }

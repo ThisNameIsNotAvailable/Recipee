@@ -74,7 +74,7 @@ class SearchManager {
     var isInResultVC = false {
         didSet {
             if isInResultVC {
-                NotificationCenter.default.post(name: NSNotification.Name("Showed Result VC"), object: nil)
+                NotificationCenter.default.post(name: NSNotification.Name("Show Refine"), object: nil)
             }
         }
     }
@@ -90,6 +90,7 @@ class SearchManager {
     ]
     
     public var currentQuery = ""
+    public var offsetForResult = 20
     
     public var feedViewModels = [[RecipeResponse]]()
     public var resultsViewModels = [RecipeResponse]()
@@ -118,7 +119,7 @@ class SearchManager {
                 }
             }
         }
-        if !currentQuery.isEmpty {
+        if !currentQuery.trimmingCharacters(in: .whitespaces).isEmpty {
             str += "&query=\(currentQuery)"
         }
         return str.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)

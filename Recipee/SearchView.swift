@@ -50,7 +50,8 @@ class SearchView: UIView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        NotificationCenter.default.addObserver(self, selector: #selector(showRefineButton), name: NSNotification.Name("Showed Result VC"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(showRefineButton), name: NSNotification.Name("Show Refine"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(hideRefineButton), name: NSNotification.Name("Hide Refine"), object: nil)
         cancelButton.addTarget(self, action: #selector(cancelTapped), for: .touchUpInside)
         searchBar.delegate = self
         refineButton.addTarget(self, action: #selector(refineButtonTapped), for: .touchUpInside)
@@ -65,6 +66,14 @@ class SearchView: UIView {
         }.startAnimation()
     }
     
+    @objc private func hideRefineButton() {
+        UIViewPropertyAnimator(duration: 0.2, curve: .easeInOut) { [weak self] in
+            self?.refineLeadingAnchor?.constant = -((self?.refineButton.frame.size.width ?? 0) + 20)
+            self?.searchBarLeadingAnchor?.constant = 20
+            self?.layoutIfNeeded()
+        }.startAnimation()
+    }
+    
     @objc private func refineButtonTapped() {
         delegate?.refineButtonTapped()
     }
@@ -73,8 +82,7 @@ class SearchView: UIView {
         UIViewPropertyAnimator(duration: 0.2, curve: .easeInOut) { [weak self] in
             self?.cancelTrailingAnchor?.constant = (self?.cancelButton.frame.size.width ?? 0) + 20
             self?.searchBarTrailingAnchor?.constant = -20
-            self?.refineLeadingAnchor?.constant = -((self?.refineButton.frame.size.width ?? 0) + 20)
-            self?.searchBarLeadingAnchor?.constant = 20
+            self?.hideRefineButton()
             self?.layoutIfNeeded()
             self?.searchBar.endEditing(true)
             self?.searchBar.searchTextField.text = ""
@@ -123,6 +131,11 @@ extension SearchView: UISearchBarDelegate {
         }.startAnimation()
         delegate?.searchViewShouldBeginEditing()
         return true
+    }
+    
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        SearchManager.shared.currentQuery = searchText
+        delegate?.searchBarTextDidChange()
     }
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
