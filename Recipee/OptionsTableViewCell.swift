@@ -64,21 +64,30 @@ class OptionsTableViewCell: UITableViewCell {
     
     @objc private func optionTapped(_ sender: UIButton) { //refactor?
         SearchManager.shared.isInResultVC = true
-        NotificationCenter.default.post(name: NSNotification.Name("Showed Result VC"), object: nil)
         guard let option = sender.titleLabel?.text else {
             return
         }
-        if option.starts(with: "Under") {
-            SearchManager.shared.currentlySelected["Difficulty"] = [option]
-        } else {
-            if let _ = SearchManager.shared.currentlySelected[SearchManager.shared.headersForSearch[sender.tag]] {
-                SearchManager.shared.currentlySelected[SearchManager.shared.headersForSearch[sender.tag]]?.insert(option)
+        var isFound = false
+        SearchManager.shared.currentlySelected.forEach({ options in
+            if options.value.contains(option) {
+                isFound = true
+                return
+            }
+        })
+        
+        if !isFound {
+            if option.starts(with: "Under") {
+                SearchManager.shared.currentlySelected["Difficulty"] = [option]
             } else {
-                SearchManager.shared.currentlySelected[SearchManager.shared.headersForSearch[sender.tag]] = [option]
+                if let _ = SearchManager.shared.currentlySelected[SearchManager.shared.headersForSearch[sender.tag]] {
+                    SearchManager.shared.currentlySelected[SearchManager.shared.headersForSearch[sender.tag]]?.insert(option)
+                } else {
+                    SearchManager.shared.currentlySelected[SearchManager.shared.headersForSearch[sender.tag]] = [option]
+                }
             }
         }
         
-        delegate?.optionButtonClicked(with: option)
+        delegate?.optionButtonClicked(with: option, shouldAddButton: !isFound)
     }
     
     override func prepareForReuse() {

@@ -71,19 +71,57 @@ class SearchManager {
         ]
     ]
     
-    var isInResultVC = false
+    var isInResultVC = false {
+        didSet {
+            if isInResultVC {
+                NotificationCenter.default.post(name: NSNotification.Name("Showed Result VC"), object: nil)
+            }
+        }
+    }
     
     public private(set) var buttons = [[Row]]()
     
     public var currentlySelected = [String: Set<String>]()
+    public var translateHeaderToAPIField = [
+        "Difficulty": "maxReadyTime",
+        "Meal": "type",
+        "Diet": "diet",
+        "Cuisine": "cuisine"
+    ]
     
-    public var allSelected = Set<String>()
+    public var currentQuery = ""
     
-    #warning("change")
     public var feedViewModels = [[RecipeResponse]]()
+    public var resultsViewModels = [RecipeResponse]()
     
     private init() {
         feedViewModels = [[RecipeResponse]](repeating: [RecipeResponse](), count: headers.count)
+    }
+    
+    func getOptionsForURL() -> String? {
+        var str = ""
+        currentlySelected.forEach { title in
+            if !title.value.isEmpty {
+                if title.key == "Difficulty" {
+                    str += "&\(translateHeaderToAPIField[title.key]!)="
+                    title.value.forEach { option in
+                        let time = option.components(separatedBy: " ")[1]
+                        str += "\(time),"
+                    }
+                    str.removeLast()
+                }else {
+                    str += "&\(translateHeaderToAPIField[title.key]!)="
+                    title.value.forEach { option in
+                        str += "\(option),"
+                    }
+                    str.removeLast()
+                }
+            }
+        }
+        if !currentQuery.isEmpty {
+            str += "&query=\(currentQuery)"
+        }
+        return str.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
     }
     
     func getContext() -> NSManagedObjectContext? {
@@ -93,11 +131,56 @@ class SearchManager {
         return appDelegate.persistentContainer.viewContext
     }
     
+    func save(recipe: RecipeResponse) {
+        guard let context = getContext() else {
+            return
+        }
+        let r = Recipe(context: context)
+        r.id = Int64(recipe.id)
+        r.title = recipe.title
+        r.imageURL = recipe.image
+        SearchManager.shared.save()
+    }
+    
     func save() {
         guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
             return
         }
         appDelegate.saveContext()
+    }
+    
+    func getRecipeOfTheDay() -> RecipeResponse? {
+        let fetchRequest: NSFetchRequest<Recipe> = Recipe.fetchRequest()
+        do {
+            guard let context = getContext() else {
+                return nil
+            }
+            let recipes = try context.fetch(fetchRequest)
+            guard let recipeCD = recipes.first, let title = recipeCD.title, let imageURL = recipeCD.imageURL else {
+                return nil
+            }
+            let recipe = RecipeResponse(id: Int(recipeCD.id), title: title, image: imageURL)
+            return recipe
+        } catch {
+            print("Unable to Fetch Recipe, (\(error))")
+        }
+        return nil
+    }
+    
+    func deleteAll() {
+        let fetchRequest: NSFetchRequest<NSFetchRequestResult> = NSFetchRequest(entityName: "Recipe")
+        let deleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
+        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
+            return
+        }
+        do {
+            guard let context = getContext() else {
+                return
+            }
+            try appDelegate.persistentContainer.persistentStoreCoordinator.execute(deleteRequest, with: context)
+        } catch {
+            print(error.localizedDescription)
+        }
     }
     
     class Row {

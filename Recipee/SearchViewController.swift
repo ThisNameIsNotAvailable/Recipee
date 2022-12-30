@@ -13,10 +13,11 @@ protocol SearchViewDelegate: AnyObject {
     func searchViewShouldBeginEditing()
     func searchBarCancelButtonClicked()
     func refineButtonTapped()
+    func searchButtonClicked(with query: String)
 }
 
 protocol OptionCollectionViewCellDelegate: AnyObject {
-    func optionButtonClicked(with option: String)
+    func optionButtonClicked(with option: String, shouldAddButton: Bool)
 }
 
 class SearchViewController: UIViewController {
@@ -67,8 +68,6 @@ class SearchViewController: UIViewController {
         return collection
     }()
     
-    private var recommendations = 8
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .background
@@ -79,23 +78,17 @@ class SearchViewController: UIViewController {
             navigationController?.navigationBar.standardAppearance = appearance
             navigationController?.navigationBar.scrollEdgeAppearance = appearance
         }
-        fetchData()
+//        fetchData()
         configureCollectionViews()
         configureSearchView()
         layout()
     }
     
     private func fetchData() {
-        
         let group = DispatchGroup()
-        group.enter()
-        group.enter()
-        group.enter()
-        group.enter()
-        group.enter()
-        group.enter()
-        group.enter()
-        group.enter()
+        for _ in 0..<SearchManager.shared.headers.count {
+            group.enter()
+        }
         if SearchManager.shared.needToChange {
             APICaller.shared.getRandomRecipes(number: 1) { res in
                 defer {
@@ -105,45 +98,21 @@ class SearchViewController: UIViewController {
                 case .success(let recipes):
                     SearchManager.shared.feedViewModels[0] = recipes
                     DispatchQueue.main.async {
-                        guard let context = SearchManager.shared.getContext(),
-                              let id = recipes.first?.id,
-                              let title = recipes.first?.title else {
-                            return
-                        }
-                        let r = Recipe(context: context)
-                        r.id = Int64(id)
-                        r.title = title
-                        r.imageURL = recipes.first?.image ?? ""
-                        SearchManager.shared.save()
+                        SearchManager.shared.deleteAll()
+                        SearchManager.shared.save(recipe: recipes.first!)
                     }
                     UserDefaults.standard.set(Date(), forKey: "current_date")
-                    DispatchQueue.main.async {
-                        self.feedCollectionView.reloadData()
-                    }
                 case .failure(let error):
                     print(error)
                 }
             }
         } else {
-            let fetchRequest: NSFetchRequest<Recipe> = Recipe.fetchRequest()
-            DispatchQueue.main.async {
-                do {
-                    guard let context = SearchManager.shared.getContext() else {
-                        return
-                    }
-                    let recipes = try context.fetch(fetchRequest)
-                    guard let recipeCD = recipes.first, let title = recipeCD.title, let imageURL = recipeCD.imageURL else {
-                        return
-                    }
-                    let recipe = RecipeResponse(id: Int(recipeCD.id), title: title, image: imageURL)
-                    SearchManager.shared.feedViewModels[0] = [recipe]
-                    self.feedCollectionView.insertItems(at: [IndexPath(item: 0, section: 0)])
-                } catch {
-                    print("Unable to Fetch Recipe, (\(error))")
-                }
+            if let recipe = SearchManager.shared.getRecipeOfTheDay() {
+                SearchManager.shared.feedViewModels[0] = [recipe]
             }
-            
+            group.leave()
         }
+        
         APICaller.shared.getMealType(type: "breakfast") { res in
             defer {
                 group.leave()
@@ -299,6 +268,7 @@ class SearchViewController: UIViewController {
             resultCollectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             resultCollectionView.topAnchor.constraint(equalTo: scrollView.bottomAnchor, constant: 5),
             resultCollectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+            resultCollectionView.heightAnchor.constraint(greaterThanOrEqualToConstant: 1),
             
             searchTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             searchTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
@@ -308,10 +278,6 @@ class SearchViewController: UIViewController {
     }
     
     private func addButtonToStackView(with option: String) {
-        if !SearchManager.shared.allSelected.insert(option).inserted {
-            return
-        }
-        
         if option.starts(with: "Under") {
             stackView.arrangedSubviews.forEach { view in
                 guard let button = view as? UIButton, let title = button.titleLabel?.text else {
@@ -319,7 +285,6 @@ class SearchViewController: UIViewController {
                 }
                 
                 if title.starts(with: "Under") {
-                    SearchManager.shared.allSelected.remove(title)
                     for v in SearchManager.shared.currentlySelected {
                         if v.value.contains(title) {
                             SearchManager.shared.currentlySelected[v.key]?.remove(title)
@@ -330,7 +295,6 @@ class SearchViewController: UIViewController {
                 }
             }
         }
-        
         stackView.insertArrangedSubview(createButton(with: option), at: 0)
     }
     
@@ -338,19 +302,27 @@ class SearchViewController: UIViewController {
         guard let title = sender.titleLabel?.text else {
             return
         }
-        SearchManager.shared.allSelected.remove(title)
         for v in SearchManager.shared.currentlySelected {
             if v.value.contains(title) {
                 SearchManager.shared.currentlySelected[v.key]?.remove(title)
                 break
             }
         }
+        updateResultCollectionView()
         sender.removeFromSuperview()
         stackView.removeArrangedSubview(sender)
     }
 }
 
 extension SearchViewController: SearchViewDelegate {
+    func searchButtonClicked(with query: String) {
+        searchTableView.isHidden = true
+        resultCollectionView.isHidden = false
+        scrollView.isHidden = false
+        searchView.endEditing(true)
+        updateResultCollectionView()
+    }
+    
     func searchViewShouldBeginEditing() {
         if !SearchManager.shared.isInResultVC {
             feedCollectionView.isHidden = true
@@ -364,8 +336,8 @@ extension SearchViewController: SearchViewDelegate {
         resultCollectionView.isHidden = true
         scrollView.isHidden = true
         SearchManager.shared.isInResultVC = false
+        SearchManager.shared.currentQuery = ""
         SearchManager.shared.currentlySelected.removeAll()
-        SearchManager.shared.allSelected.removeAll()
         stackView.arrangedSubviews.forEach {
             $0.removeFromSuperview()
         }
@@ -376,6 +348,7 @@ extension SearchViewController: SearchViewDelegate {
         let nc = UINavigationController(rootViewController: vc)
         vc.completion = { [weak self] title in
             DispatchQueue.main.async {
+                self?.updateResultCollectionView()
                 self?.addButtonToStackView(with: title)
                 self?.scrollView.setContentOffset(CGPoint(x: 0, y: 0), animated: true)
             }
@@ -385,12 +358,37 @@ extension SearchViewController: SearchViewDelegate {
 }
 
 extension SearchViewController: OptionCollectionViewCellDelegate {
-    func optionButtonClicked(with option: String) {
+    func optionButtonClicked(with option: String, shouldAddButton: Bool) {
         searchTableView.isHidden = true
         resultCollectionView.isHidden = false
         searchView.endEditing(true)
         scrollView.isHidden = false
-        addButtonToStackView(with: option)
+        if shouldAddButton {
+            addButtonToStackView(with: option)
+            updateResultCollectionView()
+        }
+    }
+    
+    func updateResultCollectionView() {
+        guard let optionsForURL = SearchManager.shared.getOptionsForURL(), !optionsForURL.isEmpty else {
+            return
+        }
+        APICaller.shared.getRecipesWithOptions(options: optionsForURL) { [weak self] res in
+            switch res {
+            case .failure(let error):
+                print(error)
+            case .success(let recipes):
+                SearchManager.shared.resultsViewModels = recipes
+                if recipes.isEmpty {
+                    // hide refine
+                } else {
+                    // show refine
+                }
+                DispatchQueue.main.async {
+                    self?.resultCollectionView.reloadData()
+                }
+            }
+        }
     }
 }
 
@@ -399,17 +397,18 @@ extension SearchViewController: UICollectionViewDelegate, UICollectionViewDataSo
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: RecipeCollectionViewCell.identifier, for: indexPath) as? RecipeCollectionViewCell else {
             return UICollectionViewCell()
         }
-        //refactor
-        let fontSize: CGFloat
-        if indexPath.section == 0 {
-            fontSize = 24
-        } else if indexPath.section == 7 {
-            fontSize = 20
-        } else {
-            fontSize = 14
-        }
         if collectionView == feedCollectionView {
+            let fontSize: CGFloat
+            if indexPath.section == 0 {
+                fontSize = 24
+            } else if indexPath.section == 7 {
+                fontSize = 20
+            } else {
+                fontSize = 14
+            }
             cell.configure(text: SearchManager.shared.feedViewModels[indexPath.section][indexPath.row].title, imageID: SearchManager.shared.feedViewModels[indexPath.section][indexPath.row].id, fontSize: fontSize)
+        } else if collectionView == resultCollectionView {
+            cell.configure(text: SearchManager.shared.resultsViewModels[indexPath.row].title, imageID: SearchManager.shared.resultsViewModels[indexPath.row].id, fontSize: 20)
         }
         return cell
     }
@@ -420,9 +419,10 @@ extension SearchViewController: UICollectionViewDelegate, UICollectionViewDataSo
         }
         return SearchManager.shared.feedViewModels.count
     }
+    
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         if collectionView == resultCollectionView {
-            return 8
+            return SearchManager.shared.resultsViewModels.count
         }
         return SearchManager.shared.feedViewModels[section].count
     }

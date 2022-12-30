@@ -124,4 +124,13 @@ extension SearchView: UISearchBarDelegate {
         delegate?.searchViewShouldBeginEditing()
         return true
     }
+    
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        guard let query = searchBar.searchTextField.text, !query.trimmingCharacters(in: .whitespaces).isEmpty else {
+            return
+        }
+        SearchManager.shared.isInResultVC = true
+        SearchManager.shared.currentQuery = query
+        delegate?.searchButtonClicked(with: query)
+    }
 }

@@ -9,8 +9,10 @@ import UIKit
 
 class OptionsViewController: UIViewController, OptionCollectionViewCellDelegate {
     
-    func optionButtonClicked(with option: String) {
-        completion?(option)
+    func optionButtonClicked(with option: String, shouldAddButton: Bool) {
+        if shouldAddButton {
+            completion?(option)
+        }
         dismiss(animated: true)
     }
     
