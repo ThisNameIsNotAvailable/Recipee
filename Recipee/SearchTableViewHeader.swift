@@ -14,7 +14,7 @@ class SearchTableViewHeader: UITableViewHeaderFooterView {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textAlignment = .left
-        label.font = .systemFont(ofSize: 24, weight: .bold)
+        label.font = UIFont.appFont(of: 24)
         return label
     }()
     

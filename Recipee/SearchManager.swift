@@ -12,7 +12,7 @@ class SearchManager {
     
     public static let shared = SearchManager()
     
-    var needToChange: Bool {
+    var needToChangeMealOfTheDay: Bool {
         if let date = UserDefaults.standard.value(forKey: "current_date") as? Date {
             let calendar = Calendar.current
             let dateWritten = calendar.dateComponents([.day, .month, .year], from: date)
@@ -95,6 +95,8 @@ class SearchManager {
     public var feedViewModels = [[RecipeResponse]]()
     public var resultsViewModels = [RecipeResponse]()
     
+    public let optionButtonPadding: CGFloat = 10
+    
     private init() {
         feedViewModels = [[RecipeResponse]](repeating: [RecipeResponse](), count: headers.count)
     }
@@ -125,6 +127,53 @@ class SearchManager {
         return str.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
     }
     
+    class Row {
+        var sum: CGFloat = 0
+        var titles = [String]()
+    }
+    
+    public func sortForLabels(screenWidth: CGFloat) {
+        for option in options {
+            var rows = [Row]()
+            for title in option {
+                let button = createButton(with: title)
+                let width = button.frame.size.width + 6 + 2*optionButtonPadding // spacing between buttons is 6
+                var isFound = false
+                for row in rows {
+                    if row.sum + width < screenWidth - 8 { // 4*2 is indentation of scroll view to the ends of screen
+                        isFound = true
+                        row.sum += width
+                        row.titles.append(title)
+                        break
+                    }
+                }
+                if !isFound {
+                    let row = Row()
+                    row.sum = width
+                    row.titles.append(title)
+                    rows.append(row)
+                }
+            }
+            rows.sort { row1, row2 in
+                row1.sum > row2.sum
+            }
+            buttons.append(rows)
+        }
+    }
+    
+    public func createButton(with title: String) -> UIButton {
+        let button = UIButton(type: .system)
+        button.setTitle(title, for: [])
+        button.titleLabel?.font = UIFont.appFont(of: 18)
+        button.sizeToFit()
+        button.layer.cornerRadius = button.frame.size.height / 2
+        button.clipsToBounds = true
+        return button
+    }
+}
+
+//MARK: - Core Data
+extension SearchManager {
     func getContext() -> NSManagedObjectContext? {
         guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
             return nil
@@ -181,44 +230,6 @@ class SearchManager {
             try appDelegate.persistentContainer.persistentStoreCoordinator.execute(deleteRequest, with: context)
         } catch {
             print(error.localizedDescription)
-        }
-    }
-    
-    class Row {
-        var sum: CGFloat = 0
-        var titles = [String]()
-    }
-    
-    public func sortForLabels(screenWidth: CGFloat) {
-        let button = UIButton(type: .system)
-        for option in options {
-            var rows = [Row]()
-            for el in option {
-                button.setTitle(el, for: [])
-                button.titleLabel?.font = .systemFont(ofSize: 18)
-                button.sizeToFit()
-                button.layer.cornerRadius = button.frame.size.height / 2
-                let width = button.frame.size.width + 26
-                var isFound = false
-                for row in rows {
-                    if row.sum + width < screenWidth - 8 {
-                        isFound = true
-                        row.sum += width
-                        row.titles.append(el)
-                        break
-                    }
-                }
-                if !isFound {
-                    let row = Row()
-                    row.sum = width
-                    row.titles.append(el)
-                    rows.append(row)
-                }
-            }
-            rows.sort { row1, row2 in
-                row1.sum > row2.sum
-            }
-            buttons.append(rows)
         }
     }
 }

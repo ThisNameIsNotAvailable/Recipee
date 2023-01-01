@@ -124,7 +124,7 @@ class SearchViewController: UIViewController {
         for _ in 0..<SearchManager.shared.headers.count {
             group.enter()
         }
-        if SearchManager.shared.needToChange {
+        if SearchManager.shared.needToChangeMealOfTheDay {
             APICaller.shared.getRandomRecipes(number: 1) { res in
                 defer {
                     group.leave()
@@ -378,6 +378,7 @@ extension SearchViewController {
     }
 }
 
+//MARK: - SearchViewDelegate
 extension SearchViewController: SearchViewDelegate {
     func searchButtonClicked(with query: String) {
         resultsIsShown = true
@@ -420,6 +421,7 @@ extension SearchViewController: SearchViewDelegate {
     }
 }
 
+//MARK: - OptionCollectionViewCellDelegate
 extension SearchViewController: OptionCollectionViewCellDelegate {
     func optionButtonClicked(with option: String, shouldAddButton: Bool) {
         resultsIsShown = true
@@ -431,6 +433,7 @@ extension SearchViewController: OptionCollectionViewCellDelegate {
     }
 }
 
+//MARK: - Collection View Delegate
 extension SearchViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: RecipeCollectionViewCell.identifier, for: indexPath) as? RecipeCollectionViewCell else {
@@ -443,7 +446,7 @@ extension SearchViewController: UICollectionViewDelegate, UICollectionViewDataSo
             } else if indexPath.section == 7 {
                 fontSize = 20
             } else {
-                fontSize = 14
+                fontSize = 16
             }
             cell.configure(text: SearchManager.shared.feedViewModels[indexPath.section][indexPath.row].title, imageID: SearchManager.shared.feedViewModels[indexPath.section][indexPath.row].id, fontSize: fontSize)
         } else if collectionView == resultCollectionView {
@@ -477,6 +480,17 @@ extension SearchViewController: UICollectionViewDelegate, UICollectionViewDataSo
         default:
             return UICollectionReusableView()
         }
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        if collectionView == resultCollectionView {
+            let vc = RecipeViewController(id: SearchManager.shared.resultsViewModels[indexPath.row].id)
+            navigationController?.pushViewController(vc, animated: true)
+        } else if collectionView == feedCollectionView {
+            let vc = RecipeViewController(id: SearchManager.shared.feedViewModels[indexPath.section][indexPath.row].id)
+            navigationController?.pushViewController(vc, animated: true)
+        }
+        
     }
 }
 
@@ -573,6 +587,7 @@ extension SearchViewController {
         button.tintColor = .black
         button.semanticContentAttribute = .forceRightToLeft
         button.setTitleColor(.black, for: [])
+        button.titleLabel?.font = UIFont.appFont(of: 18)
         button.imageEdgeInsets = UIEdgeInsets(top: 0, left: 5, bottom: 0, right: 0)
         button.contentEdgeInsets = UIEdgeInsets(top: 8, left: 10, bottom: 8, right: 10)
         button.backgroundColor = .element

@@ -132,4 +132,27 @@ class APICaller {
             }
         }.resume()
     }
+    
+    public func getRecipeInfo(id: Int, completion: @escaping (Result<RecipeInfoResponse, APICallerError>) -> ()) {
+        let urlString = "\(Constants.baseApiURL)recipes/\(id)/information?apiKey=\(Constants.apiKey)"
+        guard let url = URL(string: urlString) else {
+            return
+        }
+        var request = URLRequest(url: url)
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.httpMethod = "GET"
+        URLSession.shared.dataTask(with: request) { data, _, error in
+            guard let data = data, error == nil else {
+                completion(.failure(.failedToGetData(error!.localizedDescription)))
+                return
+            }
+            do {
+                let result = try JSONDecoder().decode(RecipeInfoResponse.self, from: data)
+                completion(.success(result))
+            } catch {
+                print(error)
+                completion(.failure(.failedToDecodeData(error.localizedDescription)))
+            }
+        }.resume()
+    }
 }

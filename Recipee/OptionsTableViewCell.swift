@@ -44,16 +44,12 @@ class OptionsTableViewCell: UITableViewCell {
             stackView.alignment = .leading
             stackView.translatesAutoresizingMaskIntoConstraints = false
             for title in row.titles {
-                let button = UIButton(type: .system)
-                button.setTitle(title, for: [])
-                button.titleLabel?.font = .systemFont(ofSize: 18)
+                let button = SearchManager.shared.createButton(with: title)
                 button.tintColor = .black
-                button.contentEdgeInsets = UIEdgeInsets(top: 8, left: 10, bottom: 8, right: 10)
+                button.contentEdgeInsets = UIEdgeInsets(top: 8, left: SearchManager.shared.optionButtonPadding, bottom: 8, right: SearchManager.shared.optionButtonPadding)
                 button.tag = section
-                button.sizeToFit()
                 button.addTarget(self, action: #selector(optionTapped(_:)), for: .touchUpInside)
                 button.backgroundColor = .element
-                button.layer.cornerRadius = button.frame.size.height / 2
                 button.clipsToBounds = true
                 button.translatesAutoresizingMaskIntoConstraints = false
                 stackView.addArrangedSubview(button)

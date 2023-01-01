@@ -42,7 +42,7 @@ class SearchView: UIView {
     private let refineButton: UIButton = {
         let button = UIButton(type: .system)
         button.setTitle("Refine", for: [])
-        button.titleLabel?.font = .systemFont(ofSize: 18, weight: .semibold)
+        button.titleLabel?.font = UIFont.appFont(of: 18)
         button.tintColor = .black
         button.translatesAutoresizingMaskIntoConstraints = false
         return button

@@ -15,7 +15,7 @@ class RecipeCollectionViewHeader: UICollectionReusableView {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textAlignment = .left
-        label.font = .systemFont(ofSize: 30, weight: .bold)
+        label.font = UIFont.appFont(of: 30)
         return label
     }()
     

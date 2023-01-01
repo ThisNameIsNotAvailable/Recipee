@@ -27,7 +27,7 @@ class RecipeCollectionViewCell: UICollectionViewCell {
         label.text = "Pasta with Garlic, Scallions, Cauliflower & Breadcrumbs"
         label.adjustsFontSizeToFitWidth = true
         label.minimumScaleFactor = 0.8
-        label.font = .systemFont(ofSize: 14, weight: .semibold)
+        label.font = UIFont.appFont(of: 12)
         label.textAlignment = .left
         label.numberOfLines = 0
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -61,7 +61,7 @@ class RecipeCollectionViewCell: UICollectionViewCell {
     }
     
     func configure(text: String, imageID: Int, fontSize: CGFloat) {
-        recipeLabel.font = .systemFont(ofSize: fontSize)
+        recipeLabel.font = UIFont.appFont(of: fontSize)
         recipeLabel.text = text
         guard let url = URL(string: "https://spoonacular.com/recipeImages/\(imageID)-480x360.jpg") else {
             return
