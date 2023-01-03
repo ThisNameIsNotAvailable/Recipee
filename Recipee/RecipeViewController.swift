@@ -26,7 +26,7 @@ class RecipeViewController: UIViewController {
         let stack = UIStackView()
         stack.axis = .vertical
         stack.alignment = .top
-        stack.spacing = 10
+        stack.spacing = 6
         stack.translatesAutoresizingMaskIntoConstraints = false
         return stack
     }()
@@ -36,7 +36,7 @@ class RecipeViewController: UIViewController {
     private let titleLabel: UILabel = {
         let label = UILabel()
         label.numberOfLines = 0
-        label.font = .appFont(of: 26)
+        label.font = .appFont(of: 30)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -109,8 +109,7 @@ class RecipeViewController: UIViewController {
     }()
     
     private let id: Int
-    private var instructions: [Instruction]!
-    private var ingredients: [Ingredient]!
+    private var recipeInfo: RecipeInfoResponse!
     private var sourceURL = ""
     
     init(id: Int) {
@@ -122,10 +121,18 @@ class RecipeViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
+    private var heartButton: UIBarButtonItem!
+    private var listButton: UIBarButtonItem!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationController?.navigationBar.tintColor = .black
-        navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "heart"), style: .plain, target: self, action: #selector(heartTapped))
+        listButton = UIBarButtonItem(image: UIImage(systemName: "text.justify"), style: .plain, target: self, action: #selector(listTapped))
+        if RecipeManager.shared.isRecipeAlreadyAdded(id: id) {
+            listButton.image = UIImage(systemName: "text.badge.checkmark")
+            listButton.isSelected = true
+        }
+        navigationItem.rightBarButtonItems = [listButton]
         view.backgroundColor = .white
         title = "Recipe Info"
         imageWithButton.delegate = self
@@ -133,8 +140,16 @@ class RecipeViewController: UIViewController {
         fetchData()
     }
     
-    @objc private func heartTapped() {
-        
+    @objc private func listTapped() {
+        if listButton.isSelected {
+            listButton.image = UIImage(systemName: "text.justify")
+            RecipeManager.shared.deleteRecipe(id: id)
+        } else {
+            listButton.image = UIImage(systemName: "text.badge.checkmark")
+            RecipeManager.shared.save(recipe: recipeInfo)
+        }
+        NotificationCenter.default.post(name: NSNotification.Name("update tablewView"), object: nil)
+        listButton.isSelected.toggle()
     }
     
     @objc private func sourceTapped() {
@@ -152,8 +167,7 @@ class RecipeViewController: UIViewController {
             case .failure(let error):
                 print(error)
             case .success(let recipeInfo):
-                self?.instructions = recipeInfo.analyzedInstructions
-                self?.ingredients = recipeInfo.extendedIngredients
+                self?.recipeInfo = recipeInfo
                 DispatchQueue.main.async {
                     self?.titleLabel.text = recipeInfo.title
                     
@@ -263,7 +277,7 @@ class RecipeViewController: UIViewController {
 
 extension RecipeViewController: ImageViewWithStepButtonDelegate {
     func stepButtonTapped() {
-        let vc = UINavigationController(rootViewController: StepByStepViewController(instructions: instructions, ingredients: ingredients))
+        let vc = UINavigationController(rootViewController: StepByStepViewController(instructions: recipeInfo.analyzedInstructions, ingredients: recipeInfo.extendedIngredients))
         present(vc, animated: true)
     }
 }

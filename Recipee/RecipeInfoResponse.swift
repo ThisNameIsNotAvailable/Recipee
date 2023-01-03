@@ -20,6 +20,7 @@ struct Ingredient: Codable {
     let name: String
     let image: String?
     let measures: Measure
+    let id: Int
 }
 
 struct IngredientWithoutMeasures: Codable {

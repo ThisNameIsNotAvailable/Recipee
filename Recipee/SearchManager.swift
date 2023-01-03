@@ -185,7 +185,7 @@ extension SearchManager {
         guard let context = getContext() else {
             return
         }
-        let r = Recipe(context: context)
+        let r = RecipeOfTheDay(context: context)
         r.id = Int64(recipe.id)
         r.title = recipe.title
         r.imageURL = recipe.image
@@ -200,7 +200,7 @@ extension SearchManager {
     }
     
     func getRecipeOfTheDay() -> RecipeResponse? {
-        let fetchRequest: NSFetchRequest<Recipe> = Recipe.fetchRequest()
+        let fetchRequest: NSFetchRequest<RecipeOfTheDay> = RecipeOfTheDay.fetchRequest()
         do {
             guard let context = getContext() else {
                 return nil
@@ -218,7 +218,7 @@ extension SearchManager {
     }
     
     func deleteAll() {
-        let fetchRequest: NSFetchRequest<NSFetchRequestResult> = NSFetchRequest(entityName: "Recipe")
+        let fetchRequest: NSFetchRequest<NSFetchRequestResult> = NSFetchRequest(entityName: "RecipeOfTheDay")
         let deleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
         guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
             return
