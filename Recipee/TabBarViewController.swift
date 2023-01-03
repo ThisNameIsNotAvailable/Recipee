@@ -28,6 +28,21 @@ class TabBarViewController: UITabBarController {
             tabBar.standardAppearance = appearance
             tabBar.scrollEdgeAppearance = appearance
         }
+//        var instructions = [Instruction]()
+//        for _ in 0...5 {
+//            var steps = [Step]()
+//            for i in 0...4 {
+//                var equipments = [Equipment]()
+//                var ingredients = [Ingredient]()
+//                for _ in 0...10 {
+//                    equipments.append(Equipment(name: "something", image: "slow-cooker.jpg"))
+//                    ingredients.append(Ingredient(name: "name", image: "", measures: Measure(metric: MetricMeasure(amount: 1, unitShort: "tbs"))))
+//                }
+//                steps.append(Step(step: "Combine the bourbon and sugar in a small saucepan and cook over high heat until reduced to 3 tablespoons, remove and let cool.", number: i+1, equipment: equipments, ingredients: ingredients))
+//            }
+//            let instr = Instruction(name: "qwer", steps: steps)
+//            instructions.append(instr)
+//        }
         
         let nc1 = UINavigationController(rootViewController: SearchViewController())
         let nc2 = UINavigationController(rootViewController: FavouritesViewController())

@@ -52,24 +52,31 @@ class ExpandableLabel: UIView {
             isExpanded = true
         }
     }
-    
+    private var labelBottomConstraint: NSLayoutConstraint?
     private func layout() {
         addSubview(label)
-        addSubview(showMoreLessButton)
-        showMoreLessButton.sizeToFit()
+        label.sizeToFit()
         
         NSLayoutConstraint.activate([
             label.leadingAnchor.constraint(equalTo: leadingAnchor),
             label.trailingAnchor.constraint(equalTo: trailingAnchor),
-            label.topAnchor.constraint(equalTo: topAnchor),
-            
-            showMoreLessButton.topAnchor.constraint(equalTo: label.bottomAnchor, constant: -3),
-            showMoreLessButton.leadingAnchor.constraint(equalTo: leadingAnchor),
-            showMoreLessButton.bottomAnchor.constraint(equalTo: bottomAnchor)
+            label.topAnchor.constraint(equalTo: topAnchor)
         ])
+        labelBottomConstraint = label.bottomAnchor.constraint(equalTo: bottomAnchor)
+        labelBottomConstraint?.isActive = true
     }
     
     public func setTextforLabel(_ text: String) {
         label.text = text
+        if label.isTruncated() {
+            addSubview(showMoreLessButton)
+            showMoreLessButton.sizeToFit()
+            labelBottomConstraint?.isActive = false
+            NSLayoutConstraint.activate([
+                showMoreLessButton.topAnchor.constraint(equalTo: label.bottomAnchor, constant: -3),
+                showMoreLessButton.leadingAnchor.constraint(equalTo: leadingAnchor),
+                showMoreLessButton.bottomAnchor.constraint(equalTo: bottomAnchor)
+            ])
+        }
     }
 }

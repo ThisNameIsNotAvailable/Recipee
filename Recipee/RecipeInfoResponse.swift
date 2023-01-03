@@ -22,6 +22,11 @@ struct Ingredient: Codable {
     let measures: Measure
 }
 
+struct IngredientWithoutMeasures: Codable {
+    let name: String
+    let image: String?
+}
+
 struct Equipment: Codable {
     let name: String
     let image: String
@@ -31,6 +36,7 @@ struct Step: Codable {
     let step: String
     let number: Int
     let equipment: [Equipment]
+    let ingredients: [IngredientWithoutMeasures]
 }
 
 struct Instruction: Codable {
@@ -48,4 +54,5 @@ struct RecipeInfoResponse: Codable {
     let summary: String // X
     let diets: [String] // X
     let analyzedInstructions: [Instruction]
+    let sourceName: String
 }

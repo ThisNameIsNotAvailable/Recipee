@@ -29,6 +29,17 @@
 		3A168EE6296209A6004F592A /* ExpandableLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A168EE5296209A6004F592A /* ExpandableLabel.swift */; };
 		3A168EE82962371D004F592A /* IngredientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A168EE72962371D004F592A /* IngredientView.swift */; };
 		3A168EEA296237F9004F592A /* IngredientViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A168EE9296237F9004F592A /* IngredientViewModel.swift */; };
+		3A168EEC296314F7004F592A /* ImageViewWithStepButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A168EEB296314F7004F592A /* ImageViewWithStepButton.swift */; };
+		3A168EEE29631CD9004F592A /* StepByStepViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A168EED29631CD9004F592A /* StepByStepViewController.swift */; };
+		3A168EF0296331FF004F592A /* InstructionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A168EEF296331FF004F592A /* InstructionView.swift */; };
+		3A168EF2296339FF004F592A /* StepView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A168EF1296339FF004F592A /* StepView.swift */; };
+		3A168EF42963515D004F592A /* StepViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A168EF32963515D004F592A /* StepViewModel.swift */; };
+		3A168EF629636955004F592A /* EquipmentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A168EF529636955004F592A /* EquipmentView.swift */; };
+		3A168EF829636B87004F592A /* EquipmentCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A168EF729636B87004F592A /* EquipmentCellView.swift */; };
+		3A168EFA296375D9004F592A /* EquipmentModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A168EF9296375D9004F592A /* EquipmentModel.swift */; };
+		3A168EFC2963AA15004F592A /* IngredientCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A168EFB2963AA15004F592A /* IngredientCollectionViewCell.swift */; };
+		3A168EFE2963B7CD004F592A /* IngredientCollectionViewHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A168EFD2963B7CD004F592A /* IngredientCollectionViewHeader.swift */; };
+		3A168F002963BE4B004F592A /* UILabel+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A168EFF2963BE4B004F592A /* UILabel+Utils.swift */; };
 		3A5610F12958D955005F9760 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A5610F02958D955005F9760 /* AppDelegate.swift */; };
 		3A5610F32958D955005F9760 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A5610F22958D955005F9760 /* SceneDelegate.swift */; };
 		3A5610F52958D955005F9760 /* TabBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A5610F42958D955005F9760 /* TabBarViewController.swift */; };
@@ -62,6 +73,17 @@
 		3A168EE5296209A6004F592A /* ExpandableLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpandableLabel.swift; sourceTree = "<group>"; };
 		3A168EE72962371D004F592A /* IngredientView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IngredientView.swift; sourceTree = "<group>"; };
 		3A168EE9296237F9004F592A /* IngredientViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IngredientViewModel.swift; sourceTree = "<group>"; };
+		3A168EEB296314F7004F592A /* ImageViewWithStepButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageViewWithStepButton.swift; sourceTree = "<group>"; };
+		3A168EED29631CD9004F592A /* StepByStepViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StepByStepViewController.swift; sourceTree = "<group>"; };
+		3A168EEF296331FF004F592A /* InstructionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstructionView.swift; sourceTree = "<group>"; };
+		3A168EF1296339FF004F592A /* StepView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StepView.swift; sourceTree = "<group>"; };
+		3A168EF32963515D004F592A /* StepViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StepViewModel.swift; sourceTree = "<group>"; };
+		3A168EF529636955004F592A /* EquipmentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EquipmentView.swift; sourceTree = "<group>"; };
+		3A168EF729636B87004F592A /* EquipmentCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EquipmentCellView.swift; sourceTree = "<group>"; };
+		3A168EF9296375D9004F592A /* EquipmentModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EquipmentModel.swift; sourceTree = "<group>"; };
+		3A168EFB2963AA15004F592A /* IngredientCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IngredientCollectionViewCell.swift; sourceTree = "<group>"; };
+		3A168EFD2963B7CD004F592A /* IngredientCollectionViewHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IngredientCollectionViewHeader.swift; sourceTree = "<group>"; };
+		3A168EFF2963BE4B004F592A /* UILabel+Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UILabel+Utils.swift"; sourceTree = "<group>"; };
 		3A5610ED2958D955005F9760 /* Recipee.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Recipee.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3A5610F02958D955005F9760 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		3A5610F22958D955005F9760 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -100,6 +122,13 @@
 				3A168ED1295CF33D004F592A /* OptionsTableView.swift */,
 				3A168EE5296209A6004F592A /* ExpandableLabel.swift */,
 				3A168EE72962371D004F592A /* IngredientView.swift */,
+				3A168EEB296314F7004F592A /* ImageViewWithStepButton.swift */,
+				3A168EEF296331FF004F592A /* InstructionView.swift */,
+				3A168EF1296339FF004F592A /* StepView.swift */,
+				3A168EF529636955004F592A /* EquipmentView.swift */,
+				3A168EF729636B87004F592A /* EquipmentCellView.swift */,
+				3A168EFB2963AA15004F592A /* IngredientCollectionViewCell.swift */,
+				3A168EFD2963B7CD004F592A /* IngredientCollectionViewHeader.swift */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -113,6 +142,8 @@
 				3A168ECA295CD349004F592A /* ComplexSearchResponse.swift */,
 				3A168EE12961E63F004F592A /* RecipeInfoResponse.swift */,
 				3A168EE9296237F9004F592A /* IngredientViewModel.swift */,
+				3A168EF32963515D004F592A /* StepViewModel.swift */,
+				3A168EF9296375D9004F592A /* EquipmentModel.swift */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -131,6 +162,7 @@
 				3A5611042958E2C8005F9760 /* UIColor+Utils.swift */,
 				3A168EDC295F6C36004F592A /* UIFont+Utils.swift */,
 				3A168EE32961F79E004F592A /* String+Utils.swift */,
+				3A168EFF2963BE4B004F592A /* UILabel+Utils.swift */,
 			);
 			name = Utils;
 			sourceTree = "<group>";
@@ -195,6 +227,7 @@
 				3A5611072958E5C5005F9760 /* MainViewControllers */,
 				3A168EBE295C6C46004F592A /* OptionsViewController.swift */,
 				3A168EDE2961DDC8004F592A /* RecipeViewController.swift */,
+				3A168EED29631CD9004F592A /* StepByStepViewController.swift */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -279,7 +312,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				3A168EB2295A35C2004F592A /* RecipeCollectionViewCell.swift in Sources */,
+				3A168EF829636B87004F592A /* EquipmentCellView.swift in Sources */,
 				3A56110C2958E60C005F9760 /* FavouritesViewController.swift in Sources */,
+				3A168EEC296314F7004F592A /* ImageViewWithStepButton.swift in Sources */,
 				3A56110A2958E5F4005F9760 /* SearchViewController.swift in Sources */,
 				3A5610F52958D955005F9760 /* TabBarViewController.swift in Sources */,
 				3A168ECE295CDD4C004F592A /* RecipeModel.xcdatamodeld in Sources */,
@@ -287,24 +322,33 @@
 				3A168EB9295B29FC004F592A /* SearchView.swift in Sources */,
 				3A5610F12958D955005F9760 /* AppDelegate.swift in Sources */,
 				3A168EE6296209A6004F592A /* ExpandableLabel.swift in Sources */,
+				3A168EEE29631CD9004F592A /* StepByStepViewController.swift in Sources */,
+				3A168EF2296339FF004F592A /* StepView.swift in Sources */,
 				3A168EEA296237F9004F592A /* IngredientViewModel.swift in Sources */,
+				3A168EFE2963B7CD004F592A /* IngredientCollectionViewHeader.swift in Sources */,
 				3A168EE42961F79E004F592A /* String+Utils.swift in Sources */,
 				3A5611102958E657005F9760 /* ShoppingListViewController.swift in Sources */,
+				3A168EF629636955004F592A /* EquipmentView.swift in Sources */,
 				3A168EC4295CAC07004F592A /* APICaller.swift in Sources */,
 				3A56110E2958E62E005F9760 /* ProfileViewController.swift in Sources */,
+				3A168F002963BE4B004F592A /* UILabel+Utils.swift in Sources */,
 				3A168EB7295B14E5004F592A /* SearchManager.swift in Sources */,
 				3A168ED2295CF33D004F592A /* OptionsTableView.swift in Sources */,
 				3A168EDD295F6C36004F592A /* UIFont+Utils.swift in Sources */,
 				3A168EBF295C6C46004F592A /* OptionsViewController.swift in Sources */,
 				3A5610F32958D955005F9760 /* SceneDelegate.swift in Sources */,
+				3A168EF42963515D004F592A /* StepViewModel.swift in Sources */,
 				3A168EDF2961DDC8004F592A /* RecipeViewController.swift in Sources */,
 				3A168EB4295A3BA7004F592A /* RecipeCollectionViewHeader.swift in Sources */,
 				3A168EE22961E63F004F592A /* RecipeInfoResponse.swift in Sources */,
 				3A168EE82962371D004F592A /* IngredientView.swift in Sources */,
 				3A168EBB295B622E004F592A /* OptionsTableViewCell.swift in Sources */,
 				3A168ECB295CD349004F592A /* ComplexSearchResponse.swift in Sources */,
+				3A168EFA296375D9004F592A /* EquipmentModel.swift in Sources */,
 				3A168EBD295B88BE004F592A /* SearchTableViewHeader.swift in Sources */,
+				3A168EFC2963AA15004F592A /* IngredientCollectionViewCell.swift in Sources */,
 				3A5611052958E2C8005F9760 /* UIColor+Utils.swift in Sources */,
+				3A168EF0296331FF004F592A /* InstructionView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

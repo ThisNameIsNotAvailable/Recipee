@@ -8,6 +8,10 @@
 import UIKit
 import SDWebImage
 
+protocol ImageViewWithStepButtonDelegate: AnyObject {
+    func stepButtonTapped()
+}
+
 class RecipeViewController: UIViewController {
     
     private let scrollView: UIScrollView = {
@@ -26,19 +30,12 @@ class RecipeViewController: UIViewController {
         return stack
     }()
     
-    private let imageView: UIImageView = {
-        let imageView = UIImageView()
-        imageView.contentMode = .scaleAspectFill
-        imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.layer.cornerRadius = 5
-        imageView.clipsToBounds = true
-        return imageView
-    }()
+    private let imageWithButton = ImageViewWithStepButton()
     
     private let titleLabel: UILabel = {
         let label = UILabel()
         label.numberOfLines = 0
-        label.font = .appFont(of: 24)
+        label.font = .appFont(of: 26)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -104,6 +101,7 @@ class RecipeViewController: UIViewController {
     }()
     
     private let id: Int
+    private var instructions: [Instruction]!
     
     init(id: Int) {
         self.id = id
@@ -118,21 +116,35 @@ class RecipeViewController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = .white
         title = "Recipe Info"
-        layout()
-//        716429 324694
+        imageWithButton.delegate = self
+        fetchData()
+    }
+    
+    private func fetchData() {
         APICaller.shared.getRecipeInfo(id: id) { [weak self] res in
             switch res {
             case .failure(let error):
                 print(error)
             case .success(let recipeInfo):
+                self?.instructions = recipeInfo.analyzedInstructions
                 DispatchQueue.main.async {
                     self?.titleLabel.text = recipeInfo.title
+                    
                     self?.summaryLabel.setTextforLabel(recipeInfo.summary.htmlToString)
+                    
                     if let imageURL = URL(string: "https://spoonacular.com/recipeImages/\(recipeInfo.id)-480x360.jpg") {
-                        self?.imageView.sd_setImage(with: imageURL)
+                        self?.imageWithButton.configure(with: imageURL)
+                        if !recipeInfo.analyzedInstructions.isEmpty {
+                            self?.imageWithButton.makeButtonVisible()
+                        }
                     }
+                    
                     self?.readyTimeLabel.setTitle("Ready in \(recipeInfo.readyInMinutes) minutes", for: [])
+                    self?.readyTimeLabel.sizeToFit()
+                    
                     self?.numOfServingsLabel.setTitle("Servings: \(recipeInfo.servings)", for: [])
+                    self?.numOfServingsLabel.sizeToFit()
+                    
                     for dietTitle in recipeInfo.diets {
                         let label = SearchManager.shared.createButton(with: dietTitle)
                         label.backgroundColor = .secondaryBackground
@@ -147,6 +159,9 @@ class RecipeViewController: UIViewController {
                         let ingredientView = IngredientView(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: 70))
                         let labelText = "\(ingredient.name.capitalized) - \(ingredient.measures.metric.amount) \(ingredient.measures.metric.unitShort)"
                         ingredientView.configure(with: IngredientViewModel(imageURL: ingredient.image, info: labelText))
+                        NSLayoutConstraint.activate([
+                            ingredientView.heightAnchor.constraint(equalToConstant: 70)
+                        ])
                         self?.ingredientsStackView.addArrangedSubview(ingredientView)
                     }
                     
@@ -157,14 +172,14 @@ class RecipeViewController: UIViewController {
     }
     
     private func layout() {
-        stackView.addArrangedSubview(imageView)
+        stackView.addArrangedSubview(titleLabel)
+        
+        stackView.addArrangedSubview(imageWithButton)
         
         dietsScrollView.addSubview(dietsStackView)
         if !dietsStackView.arrangedSubviews.isEmpty {
             stackView.addArrangedSubview(dietsScrollView)
         }
-        
-        stackView.addArrangedSubview(titleLabel)
         
         stackView.addArrangedSubview(summaryLabel)
         
@@ -176,12 +191,9 @@ class RecipeViewController: UIViewController {
         
         scrollView.addSubview(stackView)
         
-        
-        
         view.addSubview(scrollView)
         
         NSLayoutConstraint.activate([
-            scrollView.topAnchor.constraint(equalToSystemSpacingBelow: view.safeAreaLayoutGuide.topAnchor, multiplier: 1),
             scrollView.leadingAnchor.constraint(equalToSystemSpacingAfter: view.leadingAnchor, multiplier: 1),
             view.trailingAnchor.constraint(equalToSystemSpacingAfter: scrollView.trailingAnchor, multiplier: 1),
             scrollView.topAnchor.constraint(equalToSystemSpacingBelow: view.topAnchor, multiplier: 1),
@@ -189,7 +201,7 @@ class RecipeViewController: UIViewController {
             
             stackView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
             stackView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
-            stackView.topAnchor.constraint(equalTo: scrollView.topAnchor),
+            stackView.topAnchor.constraint(equalToSystemSpacingBelow: scrollView.topAnchor, multiplier: 1),
             scrollView.bottomAnchor.constraint(equalToSystemSpacingBelow: stackView.bottomAnchor, multiplier: 1),
             stackView.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
             
@@ -206,5 +218,12 @@ class RecipeViewController: UIViewController {
         
         readyTimeLabel.layer.cornerRadius = readyTimeLabel.frame.size.height / 2
         numOfServingsLabel.layer.cornerRadius = numOfServingsLabel.frame.size.height / 2
+    }
+}
+
+extension RecipeViewController: ImageViewWithStepButtonDelegate {
+    func stepButtonTapped() {
+        let vc = UINavigationController(rootViewController: StepByStepViewController(instructions: instructions))
+        present(vc, animated: true)
     }
 }
