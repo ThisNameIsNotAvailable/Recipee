@@ -69,7 +69,7 @@ class IngredientView: UIView {
             divider.heightAnchor.constraint(equalToConstant: 1),
             divider.widthAnchor.constraint(equalTo: widthAnchor, multiplier: 0.8),
             divider.bottomAnchor.constraint(equalTo: bottomAnchor),
-            divider.leadingAnchor.constraint(equalTo: leadingAnchor)
+            divider.centerXAnchor.constraint(equalTo: centerXAnchor)
         ])
         
         imageView.setContentHuggingPriority(.defaultHigh, for: .horizontal)

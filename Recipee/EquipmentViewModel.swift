@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct EquipmentModel {
+struct EquipmentViewModel {
     let name: String
     let imageURL: String
 }

@@ -69,14 +69,15 @@ class EquipmentView: UIView {
         
     }
     
-    func configure(with model: [EquipmentModel]) {
+    func configure(with model: [EquipmentViewModel]) {
         for equipment in model {
             let equipmentCell = EquipmentCellView()
             equipmentCell.configure(with: equipment)
             NSLayoutConstraint.activate([
                 equipmentCell.widthAnchor.constraint(equalToConstant: 70),
-                equipmentCell.heightAnchor.constraint(equalToConstant: 110)
+                equipmentCell.heightAnchor.constraint(equalToConstant: 100)
             ])
+            equipmentCell.sizeToFit()
             stackView.addArrangedSubview(equipmentCell)
         }
     }

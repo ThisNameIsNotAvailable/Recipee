@@ -7,6 +7,7 @@
 
 import UIKit
 import SDWebImage
+import SafariServices
 
 protocol ImageViewWithStepButtonDelegate: AnyObject {
     func stepButtonTapped()
@@ -38,6 +39,13 @@ class RecipeViewController: UIViewController {
         label.font = .appFont(of: 26)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
+    }()
+    
+    private let sourceButton: UIButton = {
+        let button = UIButton()
+        button.setTitleColor(.black, for: [])
+        button.translatesAutoresizingMaskIntoConstraints = false
+        return button
     }()
     
     private let dietsScrollView: UIScrollView = {
@@ -102,6 +110,8 @@ class RecipeViewController: UIViewController {
     
     private let id: Int
     private var instructions: [Instruction]!
+    private var ingredients: [Ingredient]!
+    private var sourceURL = ""
     
     init(id: Int) {
         self.id = id
@@ -114,10 +124,26 @@ class RecipeViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        navigationController?.navigationBar.tintColor = .black
+        navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "heart"), style: .plain, target: self, action: #selector(heartTapped))
         view.backgroundColor = .white
         title = "Recipe Info"
         imageWithButton.delegate = self
+        sourceButton.addTarget(self, action: #selector(sourceTapped), for: .touchUpInside)
         fetchData()
+    }
+    
+    @objc private func heartTapped() {
+        
+    }
+    
+    @objc private func sourceTapped() {
+        guard let url = URL(string: sourceURL) else {
+            return
+        }
+        
+        let safariVC = SFSafariViewController(url: url)
+        present(safariVC, animated: true)
     }
     
     private func fetchData() {
@@ -127,8 +153,19 @@ class RecipeViewController: UIViewController {
                 print(error)
             case .success(let recipeInfo):
                 self?.instructions = recipeInfo.analyzedInstructions
+                self?.ingredients = recipeInfo.extendedIngredients
                 DispatchQueue.main.async {
                     self?.titleLabel.text = recipeInfo.title
+                    
+                    let title = NSMutableAttributedString(string: "By ", attributes: [
+                        .font: UIFont.systemFont(ofSize: 14)
+                    ])
+                    title.append(NSAttributedString(string: "\(recipeInfo.sourceName)", attributes: [
+                        .foregroundColor: UIColor.selection,
+                        .font: UIFont.systemFont(ofSize: 14, weight: .bold)
+                    ]))
+                    self?.sourceButton.setAttributedTitle(title, for: [])
+                    self?.sourceURL = recipeInfo.sourceUrl
                     
                     self?.summaryLabel.setTextforLabel(recipeInfo.summary.htmlToString)
                     
@@ -173,6 +210,9 @@ class RecipeViewController: UIViewController {
     
     private func layout() {
         stackView.addArrangedSubview(titleLabel)
+        
+        sourceButton.sizeToFit()
+        stackView.addArrangedSubview(sourceButton)
         
         stackView.addArrangedSubview(imageWithButton)
         
@@ -223,7 +263,7 @@ class RecipeViewController: UIViewController {
 
 extension RecipeViewController: ImageViewWithStepButtonDelegate {
     func stepButtonTapped() {
-        let vc = UINavigationController(rootViewController: StepByStepViewController(instructions: instructions))
+        let vc = UINavigationController(rootViewController: StepByStepViewController(instructions: instructions, ingredients: ingredients))
         present(vc, animated: true)
     }
 }

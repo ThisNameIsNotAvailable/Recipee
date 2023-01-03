@@ -77,6 +77,7 @@ class SearchViewController: UIViewController {
                 resultCollectionView.isHidden = true
                 optionsTableView.isHidden = true
                 feedCollectionView.isHidden = false
+                SearchManager.shared.isInResultVC = false
             }
         }
     }
@@ -88,6 +89,7 @@ class SearchViewController: UIViewController {
                 resultCollectionView.isHidden = false
                 optionsTableView.isHidden = true
                 feedCollectionView.isHidden = true
+                SearchManager.shared.isInResultVC = true
             }
         }
     }
@@ -99,6 +101,7 @@ class SearchViewController: UIViewController {
                 resultCollectionView.isHidden = true
                 scrollView.isHidden = true
                 feedCollectionView.isHidden = true
+                SearchManager.shared.isInResultVC = false
             }
         }
     }
@@ -394,7 +397,6 @@ extension SearchViewController: SearchViewDelegate {
     
     func searchBarCancelButtonClicked() {
         feedIsShown = true
-        SearchManager.shared.isInResultVC = false
         SearchManager.shared.currentQuery = ""
         SearchManager.shared.currentlySelected.removeAll()
         stackView.arrangedSubviews.forEach {
@@ -476,6 +478,15 @@ extension SearchViewController: UICollectionViewDelegate, UICollectionViewDataSo
                 return UICollectionReusableView()
             }
             header.configure(title: SearchManager.shared.headers[indexPath.section], section: indexPath.section)
+            let tap = UITapGestureRecognizer(target: self, action: #selector(headerTapped(_:)))
+            header.addGestureRecognizer(tap)
+            if (1...2).contains(indexPath.section) {
+                header.tag = 1
+            } else if (3...5).contains(indexPath.section) {
+                header.tag = 3
+            } else if 6 == indexPath.section {
+                header.tag = 0
+            }
             return header
         default:
             return UICollectionReusableView()
@@ -491,6 +502,26 @@ extension SearchViewController: UICollectionViewDelegate, UICollectionViewDataSo
             navigationController?.pushViewController(vc, animated: true)
         }
         
+    }
+    
+    @objc private func headerTapped(_ sender: UITapGestureRecognizer) {
+        guard let header = sender.view as? RecipeCollectionViewHeader,
+              let labelText = header.label.text,
+              labelText != SearchManager.shared.headers[0],
+              labelText != SearchManager.shared.headers[SearchManager.shared.headers.count - 1] else {
+            return
+        }
+        if labelText.starts(with: "Under") {
+            SearchManager.shared.currentlySelected["Difficulty"] = [labelText]
+        } else {
+            if let _ = SearchManager.shared.currentlySelected[SearchManager.shared.headersForSearch[header.tag]] {
+                SearchManager.shared.currentlySelected[SearchManager.shared.headersForSearch[header.tag]]?.insert(labelText)
+            } else {
+                SearchManager.shared.currentlySelected[SearchManager.shared.headersForSearch[header.tag]] = [labelText]
+            }
+        }
+        optionButtonClicked(with: labelText, shouldAddButton: true)
+        searchView.showCancelButton()
     }
 }
 

@@ -74,6 +74,14 @@ class SearchView: UIView {
         }.startAnimation()
     }
     
+    func showCancelButton() {
+        UIViewPropertyAnimator(duration: 0.2, curve: .easeInOut) { [weak self] in
+            self?.cancelTrailingAnchor?.constant = 0
+            self?.searchBarTrailingAnchor?.constant = -8
+            self?.layoutIfNeeded()
+        }.startAnimation()
+    }
+    
     @objc private func refineButtonTapped() {
         delegate?.refineButtonTapped()
     }
@@ -123,10 +131,10 @@ class SearchView: UIView {
 }
 
 extension SearchView: UISearchBarDelegate {
+    @discardableResult
     func searchBarShouldBeginEditing(_ searchBar: UISearchBar) -> Bool {
         UIViewPropertyAnimator(duration: 0.2, curve: .easeInOut) { [weak self] in
-            self?.cancelTrailingAnchor?.constant = 0
-            self?.searchBarTrailingAnchor?.constant = -8
+            self?.showCancelButton()
             self?.layoutIfNeeded()
         }.startAnimation()
         delegate?.searchViewShouldBeginEditing()

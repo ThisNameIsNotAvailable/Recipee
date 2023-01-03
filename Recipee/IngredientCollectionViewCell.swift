@@ -20,9 +20,10 @@ class IngredientCollectionViewCell: UICollectionViewCell {
     
     private let nameLabel: UILabel = {
         let label = UILabel()
-        label.font = .appFont(of: 12)
+        label.font = .appFont(of: 14)
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textAlignment = .right
+        label.numberOfLines = 0
         return label
     }()
     
@@ -56,7 +57,7 @@ class IngredientCollectionViewCell: UICollectionViewCell {
     }
     
     func configure(with model: IngredientViewModel) {
-        nameLabel.text = model.info
+        nameLabel.text = model.info.capitalized
         guard let imageStr = model.imageURL, let url = URL(string: "https://spoonacular.com/cdn/ingredients_100x100/\(imageStr)") else {
             return
         }

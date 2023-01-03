@@ -10,6 +10,7 @@ import UIKit
 class StepByStepViewController: UIViewController {
     
     private let instructions: [Instruction]
+    private let ingredients: [Ingredient]
     private var pagesHorizontal = [UIView]()
     
     private let scrollView: UIScrollView = {
@@ -38,8 +39,14 @@ class StepByStepViewController: UIViewController {
         return pageControl
     }()
     
-    init(instructions: [Instruction]) {
+    private var sideMenu: SideMenuView?
+    
+    private var sideMenuLeadingConstraint: NSLayoutConstraint?
+    private var sideMenuTrailingConstraint: NSLayoutConstraint?
+    
+    init(instructions: [Instruction], ingredients: [Ingredient]) {
         self.instructions = instructions
+        self.ingredients = ingredients
         if instructions.count == 1 {
             pageControl.isHidden = true
         }
@@ -59,9 +66,30 @@ class StepByStepViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .background
+        if #available(iOS 15, *) {
+            let appearance = UINavigationBarAppearance()
+            appearance.shadowColor = .gray
+            appearance.backgroundColor = .background
+            navigationController?.navigationBar.standardAppearance = appearance
+            navigationController?.navigationBar.scrollEdgeAppearance = appearance
+        }
+        if !ingredients.isEmpty {
+            navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Ingredients", style: .plain, target: self, action: #selector(ingredientsButtonTapped))
+            navigationItem.rightBarButtonItem?.tintColor = .black
+            sideMenu = SideMenuView(ingredients: ingredients)
+            sideMenu?.delegate = self
+        }
         scrollView.delegate = self
         pageControl.addTarget(self, action: #selector(pageDidChange), for: .valueChanged)
         layout()
+    }
+    
+    @objc private func ingredientsButtonTapped() {
+        UIView.animate(withDuration: 0.5) {
+            self.sideMenuLeadingConstraint?.constant = 0
+            self.sideMenuTrailingConstraint?.constant = 0
+            self.view.layoutIfNeeded()
+        }
     }
     
     @objc private func pageDidChange() {
@@ -71,6 +99,17 @@ class StepByStepViewController: UIViewController {
     private func layout() {
         view.addSubview(scrollView)
         view.addSubview(pageControl)
+        if let menu = sideMenu {
+            view.addSubview(menu)
+            NSLayoutConstraint.activate([
+                menu.topAnchor.constraint(equalTo: view.topAnchor),
+                menu.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+            ])
+            sideMenuTrailingConstraint = menu.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: UIScreen.main.bounds.width)
+            sideMenuLeadingConstraint = menu.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: UIScreen.main.bounds.width)
+            sideMenuLeadingConstraint?.isActive = true
+            sideMenuTrailingConstraint?.isActive = true
+        }
         scrollView.addSubview(stackViewContainer)
         
         NSLayoutConstraint.activate([
@@ -109,6 +148,16 @@ extension StepByStepViewController: UIScrollViewDelegate {
                 pageControl.currentPage = i
                 title = instructions[i].name.isEmpty ? "Main Dish" : instructions[i].name
             }
+        }
+    }
+}
+
+extension StepByStepViewController: SideMenuDelegate {
+    func hideMenu() {
+        UIView.animate(withDuration: 0.5) {
+            self.sideMenuLeadingConstraint?.constant = UIScreen.main.bounds.width
+            self.sideMenuTrailingConstraint?.constant = UIScreen.main.bounds.width
+            self.view.layoutIfNeeded()
         }
     }
 }

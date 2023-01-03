@@ -9,6 +9,6 @@ import UIKit
 
 extension UIFont {
     static func appFont(of size: CGFloat) -> UIFont {
-        return UIFont.init(name: "BalsamiqSans-Regular", size: size)!
+        return UIFont.init(name: "Tinos-Regular", size: size)!
     }
 }

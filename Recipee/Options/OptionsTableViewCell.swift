@@ -59,7 +59,6 @@ class OptionsTableViewCell: UITableViewCell {
     }
     
     @objc private func optionTapped(_ sender: UIButton) { //refactor?
-        SearchManager.shared.isInResultVC = true
         guard let option = sender.titleLabel?.text else {
             return
         }

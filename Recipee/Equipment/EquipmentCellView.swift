@@ -14,7 +14,7 @@ class EquipmentCellView: UIView {
         imageView.contentMode = .scaleAspectFit
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.clipsToBounds = true
-        imageView.layer.cornerRadius = 4
+        imageView.layer.cornerRadius = 10
         return imageView
     }()
     
@@ -22,7 +22,7 @@ class EquipmentCellView: UIView {
         let label = UILabel()
         label.numberOfLines = 0
         label.minimumScaleFactor = 0.8
-        label.font = .appFont(of: 10)
+        label.font = .appFont(of: 14)
         label.textAlignment = .center
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
@@ -40,6 +40,7 @@ class EquipmentCellView: UIView {
     
     private func layout() {
         addSubview(imageView)
+        titleLabel.sizeToFit()
         addSubview(titleLabel)
         
         NSLayoutConstraint.activate([
@@ -49,14 +50,12 @@ class EquipmentCellView: UIView {
             imageView.topAnchor.constraint(equalTo: topAnchor),
             
             titleLabel.topAnchor.constraint(equalToSystemSpacingBelow: imageView.bottomAnchor, multiplier: 0.5),
-            titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor),
-            titleLabel.trailingAnchor.constraint(equalTo: trailingAnchor),
-            titleLabel.bottomAnchor.constraint(equalTo: bottomAnchor)
+            titleLabel.centerXAnchor.constraint(equalTo: centerXAnchor)
         ])
     }
     
-    func configure(with model: EquipmentModel) {
-        titleLabel.text = model.name
+    func configure(with model: EquipmentViewModel) {
+        titleLabel.text = model.name.capitalized
         guard let url = URL(string: model.imageURL) else {
             return
         }

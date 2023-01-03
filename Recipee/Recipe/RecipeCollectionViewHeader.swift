@@ -11,7 +11,7 @@ class RecipeCollectionViewHeader: UICollectionReusableView {
     
     static let identifier = "RecipeCollectionViewHeader"
     
-    private let label: UILabel = {
+    public let label: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textAlignment = .left
@@ -51,14 +51,12 @@ class RecipeCollectionViewHeader: UICollectionReusableView {
         if section == 0 || section == SearchManager.shared.headers.count - 1 {
             disclosureIndicator.isHidden = true
         }
-        label.attributedText = NSAttributedString(string: title, attributes: [
-            .underlineStyle: NSUnderlineStyle.single.rawValue
-        ])
+        label.text = title
     }
     
     override func prepareForReuse() {
         super.prepareForReuse()
-        label.attributedText = NSAttributedString(string: "")
+        label.text = ""
         disclosureIndicator.isHidden = false
     }
     
