@@ -66,7 +66,7 @@ class RecipeManager {
         }
     }
     
-    func getAllRecipes() -> [RecipeResponse] {
+    func getAllRecipes() -> [ListViewModel] {
         let request: NSFetchRequest<RecipeCoreData> = RecipeCoreData.fetchRequest()
         var fetchedRecipes: [RecipeCoreData] = []
         do {
@@ -78,7 +78,15 @@ class RecipeManager {
             print("Error fetching singers \(error)")
         }
         return fetchedRecipes.compactMap { recipeCD in
-            RecipeResponse(id: Int(recipeCD.id), title: recipeCD.title ?? "", image: recipeCD.imageURL)
+            guard let set = recipeCD.indredients else {
+                return ListViewModel(id: 0, title: "", imageURL: "", ingredients: [])
+            }
+            let ingredients = set.compactMap { element in
+                return element as? IngredientCoreData
+            }
+            return ListViewModel(id: Int(recipeCD.id), title: recipeCD.title ?? "", imageURL: recipeCD.imageURL ?? "", ingredients: ingredients.compactMap({ ingredientCD in
+                IngredientViewModel(imageURL: ingredientCD.imageURL, info: ingredientCD.title ?? "")
+            }))
         }
     }
     

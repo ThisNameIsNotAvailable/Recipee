@@ -20,6 +20,9 @@ class EquipmentView: UIView {
         let scroll = UIScrollView()
         scroll.showsHorizontalScrollIndicator = false
         scroll.translatesAutoresizingMaskIntoConstraints = false
+        scroll.backgroundColor = .secondaryBackground
+        scroll.clipsToBounds = true
+        scroll.layer.cornerRadius = 8
         return scroll
     }()
     
@@ -29,6 +32,8 @@ class EquipmentView: UIView {
         stack.spacing = 6
         stack.alignment = .leading
         stack.translatesAutoresizingMaskIntoConstraints = false
+        stack.isLayoutMarginsRelativeArrangement = true
+        stack.layoutMargins = UIEdgeInsets(top: 4, left: 4, bottom: 4, right: 4)
         return stack
     }()
     

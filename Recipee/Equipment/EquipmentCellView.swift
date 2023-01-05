@@ -32,6 +32,11 @@ class EquipmentCellView: UIView {
         super.init(frame: frame)
         layout()
         translatesAutoresizingMaskIntoConstraints = false
+        layer.cornerRadius = 8
+        clipsToBounds = true
+        backgroundColor = .element
+        layer.borderColor = UIColor.black.cgColor
+        layer.borderWidth = 1
     }
     
     required init?(coder: NSCoder) {

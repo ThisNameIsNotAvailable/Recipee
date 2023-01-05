@@ -33,14 +33,12 @@ class SearchTableViewHeader: UITableViewHeaderFooterView {
     }
     
     func configure(title: String) {
-        label.attributedText = NSAttributedString(string: title, attributes: [
-            .underlineStyle: NSUnderlineStyle.single.rawValue
-        ])
+        label.text = title
     }
     
     override func prepareForReuse() {
         super.prepareForReuse()
-        label.attributedText = NSAttributedString(string: "")
+        label.text = ""
     }
     
     required init?(coder: NSCoder) {

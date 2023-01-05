@@ -84,6 +84,8 @@ class RecipeViewController: UIViewController {
         label.backgroundColor = .secondaryBackground
         label.clipsToBounds = true
         label.isUserInteractionEnabled = false
+        label.layer.borderWidth = 1
+        label.layer.borderColor = UIColor.black.cgColor
         return label
     }()
     
@@ -96,6 +98,8 @@ class RecipeViewController: UIViewController {
         label.backgroundColor = .secondaryBackground
         label.clipsToBounds = true
         label.isUserInteractionEnabled = false
+        label.layer.borderWidth = 1
+        label.layer.borderColor = UIColor.black.cgColor
         return label
     }()
     
@@ -130,7 +134,7 @@ class RecipeViewController: UIViewController {
         listButton = UIBarButtonItem(image: UIImage(systemName: "text.justify"), style: .plain, target: self, action: #selector(listTapped))
         if RecipeManager.shared.isRecipeAlreadyAdded(id: id) {
             listButton.image = UIImage(systemName: "text.badge.checkmark")
-            listButton.isSelected = true
+            listButton.tag = 1
         }
         navigationItem.rightBarButtonItems = [listButton]
         view.backgroundColor = .white
@@ -141,15 +145,16 @@ class RecipeViewController: UIViewController {
     }
     
     @objc private func listTapped() {
-        if listButton.isSelected {
+        if listButton.tag == 1 {
             listButton.image = UIImage(systemName: "text.justify")
+            listButton.tag = 0
             RecipeManager.shared.deleteRecipe(id: id)
         } else {
             listButton.image = UIImage(systemName: "text.badge.checkmark")
+            listButton.tag = 1
             RecipeManager.shared.save(recipe: recipeInfo)
         }
         NotificationCenter.default.post(name: NSNotification.Name("update tablewView"), object: nil)
-        listButton.isSelected.toggle()
     }
     
     @objc private func sourceTapped() {
@@ -278,6 +283,7 @@ class RecipeViewController: UIViewController {
 extension RecipeViewController: ImageViewWithStepButtonDelegate {
     func stepButtonTapped() {
         let vc = UINavigationController(rootViewController: StepByStepViewController(instructions: recipeInfo.analyzedInstructions, ingredients: recipeInfo.extendedIngredients))
+        vc.modalPresentationStyle = .fullScreen
         present(vc, animated: true)
     }
 }

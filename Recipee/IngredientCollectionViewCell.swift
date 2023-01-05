@@ -33,6 +33,8 @@ class IngredientCollectionViewCell: UICollectionViewCell {
         layer.cornerRadius = 10
         clipsToBounds = true
         backgroundColor = .white
+        layer.borderWidth = 1
+        layer.borderColor = UIColor.black.cgColor
     }
     
     required init?(coder: NSCoder) {

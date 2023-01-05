@@ -43,7 +43,7 @@ class RecipeCollectionViewCell: UICollectionViewCell {
         layout()
     }
     
-    private func layout() {
+    internal func layout() {
         contentView.addSubview(recipeLabel)
         contentView.addSubview(imageView)
         
@@ -74,6 +74,7 @@ class RecipeCollectionViewCell: UICollectionViewCell {
         recipeLabel.text = ""
         imageView.image = nil
     }
+    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }

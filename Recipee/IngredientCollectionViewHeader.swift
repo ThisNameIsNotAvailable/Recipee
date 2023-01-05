@@ -34,12 +34,14 @@ class IngredientCollectionViewHeader: UICollectionReusableView {
     }
     
     func configure(title: String) {
-        label.text = title
+        label.attributedText = NSAttributedString(string: title, attributes: [
+            .underlineStyle: NSUnderlineStyle.single.rawValue
+        ])
     }
     
     override func prepareForReuse() {
         super.prepareForReuse()
-        label.text = ""
+        label.attributedText = NSAttributedString(string: "")
     }
     
     required init?(coder: NSCoder) {

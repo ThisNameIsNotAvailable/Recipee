@@ -301,8 +301,6 @@ class SearchViewController: UIViewController {
         resultCollectionView.keyboardDismissMode = .onDrag
         optionsTableView.keyboardDismissMode = .onDrag
         
-        optionsTableView.rowHeight = UITableView.automaticDimension
-        optionsTableView.estimatedRowHeight = 600
     }
     
     private func layout() {
@@ -627,6 +625,8 @@ extension SearchViewController {
         button.clipsToBounds = true
         button.addTarget(self, action: #selector(didDeselectOption(_:)), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
+        button.layer.borderWidth = 1
+        button.layer.borderColor = UIColor.black.cgColor
         return button
     }
 }

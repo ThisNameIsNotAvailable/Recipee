@@ -37,6 +37,8 @@ class ImageViewWithStepButton: UIView {
         button.contentEdgeInsets = UIEdgeInsets(top: 5, left: 8, bottom: 5, right: 8)
         button.setImage(UIImage(systemName: "chevron.right")?.withConfiguration(UIImage.SymbolConfiguration(font: .appFont(of: 12))), for: [])
         button.semanticContentAttribute = .forceRightToLeft
+        button.layer.borderWidth = 1
+        button.layer.borderColor = UIColor.black.cgColor
         return button
     }()
     

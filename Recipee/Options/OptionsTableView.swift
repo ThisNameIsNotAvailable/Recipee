@@ -15,7 +15,10 @@ class OptionsTableView: UITableView {
         register(OptionsTableViewCell.self, forCellReuseIdentifier: OptionsTableViewCell.identifier)
         delaysContentTouches = false
         backgroundColor = .background
+        showsVerticalScrollIndicator = false
         register(SearchTableViewHeader.self, forHeaderFooterViewReuseIdentifier: SearchTableViewHeader.identifier)
+        rowHeight = UITableView.automaticDimension
+        estimatedRowHeight = 600
     }
     
     required init?(coder: NSCoder) {

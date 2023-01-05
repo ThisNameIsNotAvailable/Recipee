@@ -168,6 +168,8 @@ class SearchManager {
         button.sizeToFit()
         button.layer.cornerRadius = button.frame.size.height / 2
         button.clipsToBounds = true
+        button.layer.borderWidth = 1
+        button.layer.borderColor = UIColor.black.cgColor
         return button
     }
 }

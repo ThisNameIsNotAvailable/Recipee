@@ -79,9 +79,15 @@ class StepByStepViewController: UIViewController {
             sideMenu = SideMenuView(ingredients: ingredients)
             sideMenu?.delegate = self
         }
+        navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Back", style: .done, target: self, action: #selector(backTapped))
+        navigationItem.leftBarButtonItem?.tintColor = .black
         scrollView.delegate = self
         pageControl.addTarget(self, action: #selector(pageDidChange), for: .valueChanged)
         layout()
+    }
+    
+    @objc private func backTapped() {
+        dismiss(animated: true)
     }
     
     @objc private func ingredientsButtonTapped() {
