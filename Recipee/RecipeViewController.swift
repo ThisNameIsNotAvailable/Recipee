@@ -8,6 +8,7 @@
 import UIKit
 import SDWebImage
 import SafariServices
+import FirebaseAuth
 
 protocol ImageViewWithStepButtonDelegate: AnyObject {
     func stepButtonTapped()
@@ -132,21 +133,63 @@ class RecipeViewController: UIViewController {
         super.viewDidLoad()
         navigationController?.navigationBar.tintColor = .black
         listButton = UIBarButtonItem(image: UIImage(systemName: "text.justify"), style: .plain, target: self, action: #selector(listTapped))
+        heartButton = UIBarButtonItem(image: UIImage(systemName: "heart"), style: .plain, target: self, action: #selector(heartTapped))
+        heartButton.tintColor = .systemRed
         if RecipeManager.shared.isRecipeAlreadyAdded(id: id) {
             listButton.image = UIImage(systemName: "text.badge.checkmark")
             listButton.tag = 1
         }
-        navigationItem.rightBarButtonItems = [listButton]
+        
+        updateHeartButton()
+        
+        
+        navigationItem.rightBarButtonItems = [heartButton, listButton]
         view.backgroundColor = .white
         title = "Recipe Info"
         imageWithButton.delegate = self
         sourceButton.addTarget(self, action: #selector(sourceTapped), for: .touchUpInside)
         fetchData()
+        NotificationCenter.default.addObserver(self, selector: #selector(updateHeartButton), name: .updateHeartButton, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(updateListButton), name: .updateListButton, object: nil)
+    }
+    
+    @objc private func updateHeartButton() {
+        if let email = FirebaseAuth.Auth.auth().currentUser?.email {
+            DatabaseManager.shared.isInFavourites(id: id, email: email, completion: { [weak self] present in
+                if present {
+                    DispatchQueue.main.async {
+                        self?.heartButton.image = UIImage(systemName: "heart.fill")
+                        self?.heartButton.tag = 1
+                    }
+                } else {
+                    DispatchQueue.main.async {
+                        self?.heartButton.image = UIImage(systemName: "heart")
+                        self?.heartButton.tag = 0
+                    }
+                }
+            })
+        } else {
+            DispatchQueue.main.async {
+                self.heartButton.image = UIImage(systemName: "heart")
+                self.heartButton.tag = 0
+            }
+        }
+    }
+    
+    @objc private func updateListButton() {
+        if RecipeManager.shared.isRecipeAlreadyAdded(id: id) {
+            listButton.image = UIImage(systemName: "text.badge.checkmark")
+            listButton.tag = 1
+        } else {
+            listButton.image = UIImage(systemName: "text.justify")
+            listButton.tag = 0
+        }
     }
     
     @objc private func listTapped() {
         if listButton.tag == 1 {
             listButton.image = UIImage(systemName: "text.justify")
+            listButton.imageInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
             listButton.tag = 0
             RecipeManager.shared.deleteRecipe(id: id)
         } else {
@@ -154,7 +197,40 @@ class RecipeViewController: UIViewController {
             listButton.tag = 1
             RecipeManager.shared.save(recipe: recipeInfo)
         }
-        NotificationCenter.default.post(name: NSNotification.Name("update tablewView"), object: nil)
+        NotificationCenter.default.post(name: .updateTableView, object: nil)
+    }
+    
+    @objc private func heartTapped() {
+        if heartButton.tag == 1 {
+            guard let currentUserEmail = FirebaseAuth.Auth.auth().currentUser?.email else {
+                return
+            }
+            DatabaseManager.shared.removeFavourite(with: id, for: currentUserEmail) { [weak self] success in
+                if success {
+                    DispatchQueue.main.async {
+                        self?.heartButton.image = UIImage(systemName: "heart")
+                    }
+                    self?.heartButton.tag = 0
+                    NotificationCenter.default.post(name: .updateCollectionView, object: nil)
+                }
+            }
+        } else {
+            guard let currentUserEmail = FirebaseAuth.Auth.auth().currentUser?.email else {
+                let vc = LoginViewController()
+                present(vc, animated: true)
+                return
+            }
+            let recipe = RecipeResponse(id: id, title: recipeInfo.title, image: "https://spoonacular.com/recipeImages/\(id)-480x360.jpg")
+            DatabaseManager.shared.addNewFavourite(with: recipe, for: currentUserEmail) { [weak self] success in
+                if success {
+                    DispatchQueue.main.async {
+                        self?.heartButton.image = UIImage(systemName: "heart.fill")
+                    }
+                    self?.heartButton.tag = 1
+                    NotificationCenter.default.post(name: .updateCollectionView, object: nil)
+                }
+            }
+        }
     }
     
     @objc private func sourceTapped() {

@@ -49,7 +49,7 @@ class SearchViewController: UIViewController {
     }()
     
     private let resultCollectionView: UICollectionView = {
-        let collection = SearchViewController.createResultCollectionView()
+        let collection = UICollectionView.createStandardCollectionView()
         collection.translatesAutoresizingMaskIntoConstraints = false
         collection.backgroundColor = .background
         collection.showsVerticalScrollIndicator = false
@@ -554,19 +554,6 @@ extension SearchViewController: UITableViewDelegate, UITableViewDataSource {
 
 //MARK: - View Creation
 extension SearchViewController {
-    private static func createResultCollectionView() -> UICollectionView {
-        return UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewCompositionalLayout(sectionProvider: { section, _ in
-            switch section {
-            default:
-                let item = NSCollectionLayoutItem(layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.5), heightDimension: .fractionalHeight(1)))
-                item.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 5, bottom: 5, trailing: 5)
-                let horizontalGroup = NSCollectionLayoutGroup.horizontal(layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .fractionalWidth(0.7)), repeatingSubitem: item, count: 2)
-                let verticalGroup = NSCollectionLayoutGroup.vertical(layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .fractionalWidth(0.7)), repeatingSubitem: horizontalGroup, count: 1)
-                let section = NSCollectionLayoutSection(group: verticalGroup)
-                return section
-            }
-        }))
-    }
     
     private static func createFeedCollectionView() -> UICollectionView {
         return UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewCompositionalLayout(sectionProvider: { section, _ in
@@ -646,12 +633,12 @@ extension SearchViewController {
                 SearchManager.shared.resultsViewModels = recipes
                 if recipes.isEmpty {
                     DispatchQueue.main.async {
-                        NotificationCenter.default.post(name: NSNotification.Name("Hide Refine"), object: nil)
+                        NotificationCenter.default.post(name: .hideRefine, object: nil)
                     }
                     
                 } else {
                     DispatchQueue.main.async {
-                        NotificationCenter.default.post(name: NSNotification.Name("Show Refine"), object: nil)
+                        NotificationCenter.default.post(name: .showRefine, object: nil)
                     }
                 }
                 DispatchQueue.main.async {

@@ -50,8 +50,8 @@ class SearchView: UIView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        NotificationCenter.default.addObserver(self, selector: #selector(showRefineButton), name: NSNotification.Name("Show Refine"), object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(hideRefineButton), name: NSNotification.Name("Hide Refine"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(showRefineButton), name: .showRefine, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(hideRefineButton), name: .hideRefine, object: nil)
         cancelButton.addTarget(self, action: #selector(cancelTapped), for: .touchUpInside)
         searchBar.delegate = self
         refineButton.addTarget(self, action: #selector(refineButtonTapped), for: .touchUpInside)

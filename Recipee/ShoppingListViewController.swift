@@ -20,17 +20,7 @@ class ShoppingListViewController: UIViewController {
     }()
     
     private let collectionView: UICollectionView = {
-        let collection = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewCompositionalLayout(sectionProvider: { section, _ in
-            switch section {
-            default:
-                let item = NSCollectionLayoutItem(layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.5), heightDimension: .fractionalHeight(1)))
-                item.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 5, bottom: 5, trailing: 5)
-                let horizontalGroup = NSCollectionLayoutGroup.horizontal(layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .fractionalWidth(0.7)), repeatingSubitem: item, count: 2)
-                let verticalGroup = NSCollectionLayoutGroup.vertical(layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .fractionalWidth(0.7)), repeatingSubitem: horizontalGroup, count: 1)
-                let section = NSCollectionLayoutSection(group: verticalGroup)
-                return section
-            }
-        }))
+        let collection = UICollectionView.createStandardCollectionView()
         collection.showsVerticalScrollIndicator = false
         collection.translatesAutoresizingMaskIntoConstraints = false
         collection.backgroundColor = .background
@@ -56,7 +46,7 @@ class ShoppingListViewController: UIViewController {
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Edit", style: .plain, target: self, action: #selector(editTapped))
         navigationItem.rightBarButtonItem?.tag = 0
         
-        NotificationCenter.default.addObserver(self, selector: #selector(updateTableView), name: NSNotification.Name("update tablewView"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(updateTableView), name: .updateTableView, object: nil)
     }
     
     @objc private func editTapped() {
@@ -143,6 +133,7 @@ extension ShoppingListViewController: ListTableViewCellDelegate {
         recipes.remove(at: indexPath.row)
         tableView.deleteRows(at: [indexPath], with: .automatic)
         collectionView.deleteItems(at: [indexPath])
+        NotificationCenter.default.post(name: .updateListButton, object: nil)
     }
 }
 
@@ -155,7 +146,7 @@ extension ShoppingListViewController: UICollectionViewDelegate, UICollectionView
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: RecipeWithRemoveButtonCollectionViewCell.identifier, for: indexPath) as? RecipeWithRemoveButtonCollectionViewCell else {
             return UICollectionViewCell()
         }
-        cell.configure(text: recipes[indexPath.row].title, imageID: recipes[indexPath.row].id, fontSize: 14)
+        cell.configure(text: recipes[indexPath.row].title, imageID: recipes[indexPath.row].id, fontSize: 20)
         cell.delegate = self
         return cell
     }
@@ -170,5 +161,6 @@ extension ShoppingListViewController: RecipeWithRemoveButtonCollectionViewCellDe
         recipes.remove(at: indexPath.row)
         collectionView.deleteItems(at: [indexPath])
         tableView.deleteRows(at: [indexPath], with: .automatic)
+        NotificationCenter.default.post(name: .updateListButton, object: nil)
     }
 }

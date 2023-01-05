@@ -74,7 +74,7 @@ class SearchManager {
     var isInResultVC = false {
         didSet {
             if isInResultVC {
-                NotificationCenter.default.post(name: NSNotification.Name("Show Refine"), object: nil)
+                NotificationCenter.default.post(name: .showRefine, object: nil)
             }
         }
     }

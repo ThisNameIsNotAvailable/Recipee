@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>277802016891-uq7sp6vi9a7toe49prdjs4fm5puofni9.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.277802016891-uq7sp6vi9a7toe49prdjs4fm5puofni9</string>
+	<key>API_KEY</key>
+	<string>AIzaSyDKRsXm-MNvVebKbe7xh15M5F6yaQ9Z9ak</string>
+	<key>GCM_SENDER_ID</key>
+	<string>277802016891</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.notbad.Recipee</string>
+	<key>PROJECT_ID</key>
+	<string>recipee-3963d</string>
+	<key>STORAGE_BUCKET</key>
+	<string>recipee-3963d.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:277802016891:ios:9a305477a809dddc9fc2de</string>
+	<key>DATABASE_URL</key>
+	<string>https://recipee-3963d-default-rtdb.europe-west1.firebasedatabase.app</string>
+</dict>
+</plist>
