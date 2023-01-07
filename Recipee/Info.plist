@@ -2,6 +2,8 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>GIDClientID</key>
+	<string>277802016891-uq7sp6vi9a7toe49prdjs4fm5puofni9.apps.googleusercontent.com</string>
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
@@ -12,9 +14,27 @@
 				<string>com.googleusercontent.apps.277802016891-uq7sp6vi9a7toe49prdjs4fm5puofni9</string>
 			</array>
 		</dict>
+		<dict>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>fb876938206785639</string>
+			</array>
+		</dict>
 	</array>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>fbapi</string>
+		<string>fb-messenger-share-api</string>
+	</array>
+	<key>FacebookAppID</key>
+	<string>876938206785639</string>
+	<key>FacebookClientToken</key>
+	<string>c091fe9f705b8e0cf100a581c8451cd5</string>
+	<key>FacebookDisplayName</key>
+	<string>Recipee</string>
 	<key>UIAppFonts</key>
 	<array>
+		<string>Tinos-Bold.ttf</string>
 		<string>Tinos-Regular.ttf</string>
 	</array>
 	<key>UIApplicationSceneManifest</key>

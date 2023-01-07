@@ -235,8 +235,8 @@ class SearchViewController: UIViewController {
             }
         }
         
-        group.notify(queue: .main) {
-            self.feedCollectionView.reloadData()
+        group.notify(queue: .main) { [weak self] in
+            self?.feedCollectionView.reloadData()
         }
     }
     
@@ -598,12 +598,11 @@ extension SearchViewController {
     
     private func createButton(with option: String) -> UIButton {
         let button = UIButton()
-        button.setTitle(option, for: [])
+        button.setAttributedTitle(NSAttributedString(string: option, attributes: [.font: UIFont.appFont(of: 18)]), for: [])
         button.setImage(UIImage(systemName: "xmark.circle"), for: .normal)
         button.tintColor = .black
         button.semanticContentAttribute = .forceRightToLeft
         button.setTitleColor(.black, for: [])
-        button.titleLabel?.font = UIFont.appFont(of: 18)
         button.imageEdgeInsets = UIEdgeInsets(top: 0, left: 5, bottom: 0, right: 0)
         button.contentEdgeInsets = UIEdgeInsets(top: 8, left: 10, bottom: 8, right: 10)
         button.backgroundColor = .element

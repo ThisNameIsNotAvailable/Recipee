@@ -163,8 +163,7 @@ class SearchManager {
     
     public func createButton(with title: String) -> UIButton {
         let button = UIButton(type: .system)
-        button.setTitle(title, for: [])
-        button.titleLabel?.font = UIFont.appFont(of: 18)
+        button.setAttributedTitle(NSAttributedString(string: title, attributes: [.font: UIFont.appFont(of: 18)]), for: [])
         button.sizeToFit()
         button.layer.cornerRadius = button.frame.size.height / 2
         button.clipsToBounds = true

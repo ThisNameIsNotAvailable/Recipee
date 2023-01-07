@@ -8,7 +8,8 @@
 import UIKit
 
 extension UIFont {
-    static func appFont(of size: CGFloat) -> UIFont {
-        return UIFont.init(name: "Tinos-Regular", size: size)!
+    static func appFont(of size: CGFloat, isBold: Bool = false) -> UIFont {
+        return isBold ? UIFont.init(name: "Tinos-Bold", size: size)! :
+        UIFont.init(name: "Tinos-Regular", size: size)!
     }
 }

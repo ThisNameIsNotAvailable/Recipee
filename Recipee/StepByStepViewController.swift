@@ -91,10 +91,10 @@ class StepByStepViewController: UIViewController {
     }
     
     @objc private func ingredientsButtonTapped() {
-        UIView.animate(withDuration: 0.5) {
-            self.sideMenuLeadingConstraint?.constant = 0
-            self.sideMenuTrailingConstraint?.constant = 0
-            self.view.layoutIfNeeded()
+        UIView.animate(withDuration: 0.5) { [weak self] in
+            self?.sideMenuLeadingConstraint?.constant = 0
+            self?.sideMenuTrailingConstraint?.constant = 0
+            self?.view.layoutIfNeeded()
         }
     }
     
@@ -160,10 +160,10 @@ extension StepByStepViewController: UIScrollViewDelegate {
 
 extension StepByStepViewController: SideMenuDelegate {
     func hideMenu() {
-        UIView.animate(withDuration: 0.5) {
-            self.sideMenuLeadingConstraint?.constant = UIScreen.main.bounds.width
-            self.sideMenuTrailingConstraint?.constant = UIScreen.main.bounds.width
-            self.view.layoutIfNeeded()
+        UIView.animate(withDuration: 0.5) { [weak self] in
+            self?.sideMenuLeadingConstraint?.constant = UIScreen.main.bounds.width
+            self?.sideMenuTrailingConstraint?.constant = UIScreen.main.bounds.width
+            self?.view.layoutIfNeeded()
         }
     }
 }

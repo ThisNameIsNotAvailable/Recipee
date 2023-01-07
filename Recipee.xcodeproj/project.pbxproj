@@ -51,11 +51,14 @@
 		3A46EF022965D5F1003C29DD /* ItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A46EF012965D5F1003C29DD /* ItemView.swift */; };
 		3A46EF0429665104003C29DD /* RecipeWithRemoveButtonCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A46EF0329665104003C29DD /* RecipeWithRemoveButtonCollectionViewCell.swift */; };
 		3A46EF0929672EB6003C29DD /* DatabaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A46EF0829672EB6003C29DD /* DatabaseManager.swift */; };
-		3A46EF0B29673547003C29DD /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3A46EF0A29673547003C29DD /* GoogleService-Info.plist */; };
 		3A46EF0D296745AF003C29DD /* UICollectionView+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A46EF0C296745AF003C29DD /* UICollectionView+Utils.swift */; };
 		3A46EF0F29675E6A003C29DD /* NSNotification+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A46EF0E29675E6A003C29DD /* NSNotification+Utils.swift */; };
 		3A46EF1129676F2D003C29DD /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A46EF1029676F2D003C29DD /* LoginViewController.swift */; };
 		3A46EF13296774E1003C29DD /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A46EF12296774E1003C29DD /* LoginView.swift */; };
+		3A46EF15296789ED003C29DD /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3A46EF14296789ED003C29DD /* GoogleService-Info.plist */; };
+		3A46EF3E2968D72E003C29DD /* ProfileHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A46EF3D2968D72E003C29DD /* ProfileHeader.swift */; };
+		3A46EF402968FF28003C29DD /* NewFolderHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A46EF3F2968FF28003C29DD /* NewFolderHeader.swift */; };
+		3A46EF42296900C1003C29DD /* Tinos-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 3A46EF41296900C1003C29DD /* Tinos-Bold.ttf */; };
 		3A5610F12958D955005F9760 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A5610F02958D955005F9760 /* AppDelegate.swift */; };
 		3A5610F32958D955005F9760 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A5610F22958D955005F9760 /* SceneDelegate.swift */; };
 		3A5610F52958D955005F9760 /* TabBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A5610F42958D955005F9760 /* TabBarViewController.swift */; };
@@ -112,11 +115,15 @@
 		3A46EF012965D5F1003C29DD /* ItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemView.swift; sourceTree = "<group>"; };
 		3A46EF0329665104003C29DD /* RecipeWithRemoveButtonCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeWithRemoveButtonCollectionViewCell.swift; sourceTree = "<group>"; };
 		3A46EF0829672EB6003C29DD /* DatabaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseManager.swift; sourceTree = "<group>"; };
-		3A46EF0A29673547003C29DD /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		3A46EF0C296745AF003C29DD /* UICollectionView+Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UICollectionView+Utils.swift"; sourceTree = "<group>"; };
 		3A46EF0E29675E6A003C29DD /* NSNotification+Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSNotification+Utils.swift"; sourceTree = "<group>"; };
 		3A46EF1029676F2D003C29DD /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		3A46EF12296774E1003C29DD /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
+		3A46EF14296789ED003C29DD /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		3A46EF1629678ED5003C29DD /* Recipee.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Recipee.entitlements; sourceTree = "<group>"; };
+		3A46EF3D2968D72E003C29DD /* ProfileHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileHeader.swift; sourceTree = "<group>"; };
+		3A46EF3F2968FF28003C29DD /* NewFolderHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewFolderHeader.swift; sourceTree = "<group>"; };
+		3A46EF41296900C1003C29DD /* Tinos-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Tinos-Bold.ttf"; sourceTree = "<group>"; };
 		3A5610ED2958D955005F9760 /* Recipee.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Recipee.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3A5610F02958D955005F9760 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		3A5610F22958D955005F9760 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -161,6 +168,7 @@
 				3A46EF012965D5F1003C29DD /* ItemView.swift */,
 				3A46EF0329665104003C29DD /* RecipeWithRemoveButtonCollectionViewCell.swift */,
 				3A46EF12296774E1003C29DD /* LoginView.swift */,
+				3A46EF3F2968FF28003C29DD /* NewFolderHeader.swift */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -179,6 +187,7 @@
 		3A168ED5295F6799004F592A /* Fonts */ = {
 			isa = PBXGroup;
 			children = (
+				3A46EF41296900C1003C29DD /* Tinos-Bold.ttf */,
 				3A46EEDE2964600B003C29DD /* Tinos-Regular.ttf */,
 			);
 			name = Fonts;
@@ -274,6 +283,7 @@
 				3A168EEF296331FF004F592A /* InstructionView.swift */,
 				3A168EF1296339FF004F592A /* StepView.swift */,
 				3A46EEE029646352003C29DD /* SideMenuView.swift */,
+				3A46EF3D2968D72E003C29DD /* ProfileHeader.swift */,
 			);
 			path = Other;
 			sourceTree = "<group>";
@@ -321,7 +331,8 @@
 		3A5610EF2958D955005F9760 /* Recipee */ = {
 			isa = PBXGroup;
 			children = (
-				3A46EF0A29673547003C29DD /* GoogleService-Info.plist */,
+				3A46EF1629678ED5003C29DD /* Recipee.entitlements */,
+				3A46EF14296789ED003C29DD /* GoogleService-Info.plist */,
 				3A46EF0529671C3E003C29DD /* CoreData */,
 				3A168EB5295B14B4004F592A /* Models */,
 				3A168EB0295A35A1004F592A /* Views */,
@@ -452,10 +463,11 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3A46EF0B29673547003C29DD /* GoogleService-Info.plist in Resources */,
+				3A46EF42296900C1003C29DD /* Tinos-Bold.ttf in Resources */,
 				3A5610FD2958D957005F9760 /* LaunchScreen.storyboard in Resources */,
 				3A5610FA2958D957005F9760 /* Assets.xcassets in Resources */,
 				3A46EEDF2964600B003C29DD /* Tinos-Regular.ttf in Resources */,
+				3A46EF15296789ED003C29DD /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -521,6 +533,7 @@
 				3A46EF1129676F2D003C29DD /* LoginViewController.swift in Sources */,
 				3A168EC6295CAFA5004F592A /* RecipesResponse.swift in Sources */,
 				3A168EB9295B29FC004F592A /* SearchView.swift in Sources */,
+				3A46EF402968FF28003C29DD /* NewFolderHeader.swift in Sources */,
 				3A5610F12958D955005F9760 /* AppDelegate.swift in Sources */,
 				3A168EE6296209A6004F592A /* ExpandableLabel.swift in Sources */,
 				3A46EEFE2965C7C0003C29DD /* ListTableViewCell.swift in Sources */,
@@ -529,6 +542,7 @@
 				3A46EEFB2964CAC6003C29DD /* RecipeCoreData+CoreDataClass.swift in Sources */,
 				3A168EEA296237F9004F592A /* IngredientViewModel.swift in Sources */,
 				3A168EFE2963B7CD004F592A /* IngredientCollectionViewHeader.swift in Sources */,
+				3A46EF3E2968D72E003C29DD /* ProfileHeader.swift in Sources */,
 				3A46EF002965CAF0003C29DD /* ListViewModel.swift in Sources */,
 				3A168EE42961F79E004F592A /* String+Utils.swift in Sources */,
 				3A46EEE129646352003C29DD /* SideMenuView.swift in Sources */,
@@ -698,6 +712,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = Recipee/Recipee.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = S5766AV554;
@@ -726,6 +741,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = Recipee/Recipee.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = S5766AV554;

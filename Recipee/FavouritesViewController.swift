@@ -48,6 +48,7 @@ class FavouritesViewController: UIViewController {
         fetchData()
         NotificationCenter.default.addObserver(self, selector: #selector(fetchData), name: .updateCollectionView, object: nil)
         let tap = UITapGestureRecognizer(target: self, action: #selector(UIInputViewController.dismissKeyboard))
+        tap.cancelsTouchesInView = false
         view.addGestureRecognizer(tap)
     }
     

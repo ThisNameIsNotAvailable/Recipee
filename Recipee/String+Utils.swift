@@ -13,7 +13,8 @@ extension String {
         do {
             let str = try NSAttributedString(data: data, options: [
                 .documentType: NSAttributedString.DocumentType.html,
-                .characterEncoding: String.Encoding.utf8.rawValue], documentAttributes: nil).string
+                .characterEncoding: String.Encoding.utf8.rawValue
+            ], documentAttributes: nil).string
             return NSAttributedString(string: str, attributes: [.font: UIFont.appFont(of: 20)])
         } catch {
             return nil

@@ -28,17 +28,17 @@ class ImageViewWithStepButton: UIView {
     private let stepButton: UIButton = {
         let button = UIButton(type: .system)
         button.tintColor = .black
-        button.setTitle("Step By Step", for: [])
+        button.setAttributedTitle(NSAttributedString(string: "Step By Step", attributes: [.font: UIFont.appFont(of: 20)]), for: [])
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = .element
         button.clipsToBounds = true
         button.isHidden = true
-        button.titleLabel?.font = .appFont(of: 20)
-        button.contentEdgeInsets = UIEdgeInsets(top: 5, left: 8, bottom: 5, right: 8)
         button.setImage(UIImage(systemName: "chevron.right")?.withConfiguration(UIImage.SymbolConfiguration(font: .appFont(of: 12))), for: [])
         button.semanticContentAttribute = .forceRightToLeft
         button.layer.borderWidth = 1
         button.layer.borderColor = UIColor.black.cgColor
+        button.configuration = UIButton.Configuration.borderless()
+        button.configuration?.contentInsets = NSDirectionalEdgeInsets(top: 5, leading: 8, bottom: 5, trailing: 8)
         return button
     }()
     

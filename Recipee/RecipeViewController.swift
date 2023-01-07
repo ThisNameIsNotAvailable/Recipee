@@ -77,9 +77,7 @@ class RecipeViewController: UIViewController {
     }()
     
     private let readyTimeLabel: UIButton = {
-        let label = UIButton()
-        label.titleLabel?.font = .appFont(of: 16)
-        label.contentEdgeInsets = UIEdgeInsets(top: 5, left: 8, bottom: 5, right: 8)
+        let label = UIButton(type: .system)
         label.setTitleColor(.black, for: [])
         label.translatesAutoresizingMaskIntoConstraints = false
         label.backgroundColor = .secondaryBackground
@@ -87,13 +85,12 @@ class RecipeViewController: UIViewController {
         label.isUserInteractionEnabled = false
         label.layer.borderWidth = 1
         label.layer.borderColor = UIColor.black.cgColor
+        label.contentEdgeInsets = UIEdgeInsets(top: 5, left: 8, bottom: 5, right: 8)
         return label
     }()
     
     private let numOfServingsLabel: UIButton = {
-        let label = UIButton()
-        label.titleLabel?.font = .appFont(of: 16)
-        label.contentEdgeInsets = UIEdgeInsets(top: 5, left: 8, bottom: 5, right: 8)
+        let label = UIButton(type: .system)
         label.setTitleColor(.black, for: [])
         label.translatesAutoresizingMaskIntoConstraints = false
         label.backgroundColor = .secondaryBackground
@@ -101,6 +98,7 @@ class RecipeViewController: UIViewController {
         label.isUserInteractionEnabled = false
         label.layer.borderWidth = 1
         label.layer.borderColor = UIColor.black.cgColor
+        label.contentEdgeInsets = UIEdgeInsets(top: 5, left: 8, bottom: 5, right: 8)
         return label
     }()
     
@@ -169,9 +167,9 @@ class RecipeViewController: UIViewController {
                 }
             })
         } else {
-            DispatchQueue.main.async {
-                self.heartButton.image = UIImage(systemName: "heart")
-                self.heartButton.tag = 0
+            DispatchQueue.main.async { [weak self] in
+                self?.heartButton.image = UIImage(systemName: "heart")
+                self?.heartButton.tag = 0
             }
         }
     }
@@ -271,10 +269,10 @@ class RecipeViewController: UIViewController {
                         }
                     }
                     
-                    self?.readyTimeLabel.setTitle("Ready in \(recipeInfo.readyInMinutes) minutes", for: [])
+                    self?.readyTimeLabel.setAttributedTitle(NSAttributedString(string: "Ready in \(recipeInfo.readyInMinutes) minutes", attributes: [.font: UIFont.appFont(of: 16)]), for: [])
                     self?.readyTimeLabel.sizeToFit()
                     
-                    self?.numOfServingsLabel.setTitle("Servings: \(recipeInfo.servings)", for: [])
+                    self?.numOfServingsLabel.setAttributedTitle(NSAttributedString(string: "Servings: \(recipeInfo.servings)", attributes: [.font: UIFont.appFont(of: 16)]), for: [])
                     self?.numOfServingsLabel.sizeToFit()
                     
                     for dietTitle in recipeInfo.diets {

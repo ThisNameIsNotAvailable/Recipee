@@ -9,6 +9,7 @@ import UIKit
 import FirebaseAuth
 import GoogleSignIn
 import FirebaseCore
+import FBSDKLoginKit
 
 protocol LoginViewDelegate: AnyObject {
     func didSignIn()
@@ -45,7 +46,22 @@ class LoginView: UIView {
         button.layer.borderWidth = 1
         button.layer.borderColor = UIColor.black.cgColor
         button.configuration = UIButton.Configuration.borderless()
-        button.configuration?.contentInsets = NSDirectionalEdgeInsets(top: 5, leading: 10, bottom: 5, trailing: 10)
+        button.configuration?.contentInsets = NSDirectionalEdgeInsets(top: 10, leading: 10, bottom: 10, trailing: 10)
+        return button
+    }()
+    
+    private let facebookSignIn: UIButton = {
+        let button = UIButton(type: .system)
+        button.setAttributedTitle(NSAttributedString(string: "Sign In With Facebook", attributes: [.font: UIFont.appFont(of: 20)]), for: .normal)
+        button.layer.cornerRadius = 8
+        button.clipsToBounds = true
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.backgroundColor = .selection
+        button.tintColor = .black
+        button.layer.borderWidth = 1
+        button.layer.borderColor = UIColor.black.cgColor
+        button.configuration = UIButton.Configuration.borderless()
+        button.configuration?.contentInsets = NSDirectionalEdgeInsets(top: 10, leading: 10, bottom: 10, trailing: 10)
         return button
     }()
     
@@ -54,8 +70,10 @@ class LoginView: UIView {
     init() {
         super.init(frame: .zero)
         translatesAutoresizingMaskIntoConstraints = false
+        backgroundColor = .background
         layout()
         googleSignIn.addTarget(self, action: #selector(googleSignInTapped), for: .touchUpInside)
+        facebookSignIn.addTarget(self, action: #selector(facebookSignInTapped), for: .touchUpInside)
     }
     
     required init?(coder: NSCoder) {
@@ -65,6 +83,7 @@ class LoginView: UIView {
     private func layout() {
         stackView.addArrangedSubview(titleLabel)
         stackView.addArrangedSubview(googleSignIn)
+        stackView.addArrangedSubview(facebookSignIn)
         
         stackView.sizeToFit()
         addSubview(stackView)
@@ -77,37 +96,82 @@ class LoginView: UIView {
         ])
     }
     
+    private func lockButtons() {
+        googleSignIn.isUserInteractionEnabled = false
+        facebookSignIn.isUserInteractionEnabled = false
+    }
+    
+    private func unlockButtons() {
+        googleSignIn.isUserInteractionEnabled = true
+        facebookSignIn.isUserInteractionEnabled = true
+    }
+    
     @objc private func googleSignInTapped() {
-        guard let clientID = FirebaseApp.app()?.options.clientID else {
-            return
-        }
-        let config = GIDConfiguration(clientID: clientID)
-        
+        lockButtons()
         guard let rootVC = delegate as? UIViewController else {
+            unlockButtons()
             return
         }
         
-        GIDSignIn.sharedInstance.signIn(with: config, presenting: rootVC) { user, error in
+        GIDSignIn.sharedInstance.signIn(withPresenting: rootVC) { [weak self] result, error in
             if let error = error {
                 print(error.localizedDescription)
+                self?.unlockButtons()
                 return
             }
-            
+
             guard
-                let authentication = user?.authentication,
-                let idToken = authentication.idToken
+                let accessToken = result?.user.accessToken.tokenString,
+                let idToken = result?.user.idToken?.tokenString
             else {
+                self?.unlockButtons()
                 return
             }
             let credential = GoogleAuthProvider.credential(withIDToken: idToken,
-                                                           accessToken: authentication.accessToken)
+                                                           accessToken: accessToken)
+            
             FirebaseAuth.Auth.auth().signIn(with: credential) { authResult, error in
                 guard authResult != nil, error == nil else {
-                    print(error?.localizedDescription)
+                    print(error?.localizedDescription ?? "error occured")
+                    self?.unlockButtons()
                     return
                 }
                 NotificationCenter.default.post(name: .updateHeartButton, object: nil)
-                self.delegate?.didSignIn()
+                self?.delegate?.didSignIn()
+                self?.unlockButtons()
+            }
+        }
+    }
+    
+    @objc private func facebookSignInTapped() {
+        lockButtons()
+        guard let rootVC = delegate as? UIViewController else {
+            unlockButtons()
+            return
+        }
+        
+        FBSDKLoginKit.LoginManager().logIn(permissions: ["public_profile", "email"], from: rootVC) { [weak self] result, error in
+            if let error = error {
+                print(error.localizedDescription)
+                self?.unlockButtons()
+                return
+            }
+            
+            guard let token = AccessToken.current?.tokenString else {
+                self?.unlockButtons()
+                return
+            }
+            let credential = FacebookAuthProvider.credential(withAccessToken: token)
+            
+            FirebaseAuth.Auth.auth().signIn(with: credential) { authResult, error in
+                guard authResult != nil, error == nil else {
+                    self?.unlockButtons()
+                    print(error?.localizedDescription ?? "error occured")
+                    return
+                }
+                NotificationCenter.default.post(name: .updateHeartButton, object: nil)
+                self?.delegate?.didSignIn()
+                self?.unlockButtons()
             }
         }
     }
