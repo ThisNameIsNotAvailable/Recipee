@@ -10,7 +10,7 @@ import Foundation
 class APICaller {
     
     struct Constants {
-        static let apiKey = ""
+        static let apiKey = "8301eff77aa243689c332153181eeada"
         static let baseApiURL = "https://api.spoonacular.com/"
     }
     
