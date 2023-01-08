@@ -7,9 +7,15 @@
 
 import UIKit
 
+protocol NewFolderHeaderDelegate: AnyObject {
+    func createNewTapped()
+}
+
 class NewFolderHeader: UITableViewHeaderFooterView {
     
     static let identifier = "NewFolderHeader"
+    
+    weak var delegate: NewFolderHeaderDelegate?
     
     private let button: UIButton = {
         let button = UIButton(type: .system)
@@ -35,7 +41,7 @@ class NewFolderHeader: UITableViewHeaderFooterView {
     }
     
     @objc private func createTapped() {
-        print("gf")
+        delegate?.createNewTapped()
     }
     
     private func layout() {

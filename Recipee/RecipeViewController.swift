@@ -127,6 +127,8 @@ class RecipeViewController: UIViewController {
     private var heartButton: UIBarButtonItem!
     private var listButton: UIBarButtonItem!
     
+    private let notificationCenter = NotificationCenter.default
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationController?.navigationBar.tintColor = .black
@@ -147,8 +149,13 @@ class RecipeViewController: UIViewController {
         imageWithButton.delegate = self
         sourceButton.addTarget(self, action: #selector(sourceTapped), for: .touchUpInside)
         fetchData()
-        NotificationCenter.default.addObserver(self, selector: #selector(updateHeartButton), name: .updateHeartButton, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(updateListButton), name: .updateListButton, object: nil)
+        notificationCenter.addObserver(self, selector: #selector(updateHeartButton), name: .updateHeartButton, object: nil)
+        notificationCenter.addObserver(self, selector: #selector(updateListButton), name: .updateListButton, object: nil)
+    }
+    
+    deinit {
+        notificationCenter.removeObserver(self, name: .updateHeartButton, object: nil)
+        notificationCenter.removeObserver(self, name: .updateListButton, object: nil)
     }
     
     @objc private func updateHeartButton() {
@@ -200,18 +207,8 @@ class RecipeViewController: UIViewController {
     
     @objc private func heartTapped() {
         if heartButton.tag == 1 {
-            guard let currentUserEmail = FirebaseAuth.Auth.auth().currentUser?.email else {
-                return
-            }
-            DatabaseManager.shared.removeFavourite(with: id, for: currentUserEmail) { [weak self] success in
-                if success {
-                    DispatchQueue.main.async {
-                        self?.heartButton.image = UIImage(systemName: "heart")
-                    }
-                    self?.heartButton.tag = 0
-                    NotificationCenter.default.post(name: .updateCollectionView, object: nil)
-                }
-            }
+            let vc = FoldersWithRemoveViewController(recipe: recipeInfo)
+            present(vc, animated: true)
         } else {
             guard let currentUserEmail = FirebaseAuth.Auth.auth().currentUser?.email else {
                 let vc = LoginViewController()
@@ -219,7 +216,7 @@ class RecipeViewController: UIViewController {
                 return
             }
             let recipe = RecipeResponse(id: id, title: recipeInfo.title, image: "https://spoonacular.com/recipeImages/\(id)-480x360.jpg")
-            DatabaseManager.shared.addNewFavourite(with: recipe, for: currentUserEmail) { [weak self] success in
+            DatabaseManager.shared.addRecipe(recipe, to: "favourites", for: currentUserEmail) { [weak self] success in
                 if success {
                     DispatchQueue.main.async {
                         self?.heartButton.image = UIImage(systemName: "heart.fill")

@@ -32,6 +32,8 @@ class ShoppingListViewController: UIViewController {
     
     private var recipes = [ListViewModel]()
     
+    private let notificationCenter = NotificationCenter.default
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .background
@@ -46,7 +48,11 @@ class ShoppingListViewController: UIViewController {
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Edit", style: .plain, target: self, action: #selector(editTapped))
         navigationItem.rightBarButtonItem?.tag = 0
         
-        NotificationCenter.default.addObserver(self, selector: #selector(updateTableView), name: .updateTableView, object: nil)
+        notificationCenter.addObserver(self, selector: #selector(updateTableView), name: .updateTableView, object: nil)
+    }
+    
+    deinit {
+        notificationCenter.removeObserver(self, name: .updateTableView, object: nil)
     }
     
     @objc private func editTapped() {

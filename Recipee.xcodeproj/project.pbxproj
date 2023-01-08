@@ -59,6 +59,11 @@
 		3A46EF3E2968D72E003C29DD /* ProfileHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A46EF3D2968D72E003C29DD /* ProfileHeader.swift */; };
 		3A46EF402968FF28003C29DD /* NewFolderHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A46EF3F2968FF28003C29DD /* NewFolderHeader.swift */; };
 		3A46EF42296900C1003C29DD /* Tinos-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 3A46EF41296900C1003C29DD /* Tinos-Bold.ttf */; };
+		3A46EF44296A3AD9003C29DD /* FoldersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A46EF43296A3AD9003C29DD /* FoldersViewController.swift */; };
+		3A46EF46296A3D81003C29DD /* FolderTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A46EF45296A3D81003C29DD /* FolderTableViewCell.swift */; };
+		3A46EF48296A510C003C29DD /* FoldersWithRemoveViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A46EF47296A510C003C29DD /* FoldersWithRemoveViewController.swift */; };
+		3A46EF4A296A600A003C29DD /* FolderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A46EF49296A600A003C29DD /* FolderViewController.swift */; };
+		3A46EF4E296A8222003C29DD /* FoldersViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A46EF4D296A8222003C29DD /* FoldersViewModel.swift */; };
 		3A5610F12958D955005F9760 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A5610F02958D955005F9760 /* AppDelegate.swift */; };
 		3A5610F32958D955005F9760 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A5610F22958D955005F9760 /* SceneDelegate.swift */; };
 		3A5610F52958D955005F9760 /* TabBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A5610F42958D955005F9760 /* TabBarViewController.swift */; };
@@ -124,6 +129,11 @@
 		3A46EF3D2968D72E003C29DD /* ProfileHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileHeader.swift; sourceTree = "<group>"; };
 		3A46EF3F2968FF28003C29DD /* NewFolderHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewFolderHeader.swift; sourceTree = "<group>"; };
 		3A46EF41296900C1003C29DD /* Tinos-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Tinos-Bold.ttf"; sourceTree = "<group>"; };
+		3A46EF43296A3AD9003C29DD /* FoldersViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoldersViewController.swift; sourceTree = "<group>"; };
+		3A46EF45296A3D81003C29DD /* FolderTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FolderTableViewCell.swift; sourceTree = "<group>"; };
+		3A46EF47296A510C003C29DD /* FoldersWithRemoveViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoldersWithRemoveViewController.swift; sourceTree = "<group>"; };
+		3A46EF49296A600A003C29DD /* FolderViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FolderViewController.swift; sourceTree = "<group>"; };
+		3A46EF4D296A8222003C29DD /* FoldersViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoldersViewModel.swift; sourceTree = "<group>"; };
 		3A5610ED2958D955005F9760 /* Recipee.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Recipee.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3A5610F02958D955005F9760 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		3A5610F22958D955005F9760 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -169,6 +179,7 @@
 				3A46EF0329665104003C29DD /* RecipeWithRemoveButtonCollectionViewCell.swift */,
 				3A46EF12296774E1003C29DD /* LoginView.swift */,
 				3A46EF3F2968FF28003C29DD /* NewFolderHeader.swift */,
+				3A46EF45296A3D81003C29DD /* FolderTableViewCell.swift */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -213,6 +224,7 @@
 				3A168EF32963515D004F592A /* StepViewModel.swift */,
 				3A168EF9296375D9004F592A /* EquipmentViewModel.swift */,
 				3A46EEFF2965CAEF003C29DD /* ListViewModel.swift */,
+				3A46EF4D296A8222003C29DD /* FoldersViewModel.swift */,
 			);
 			name = "View Models";
 			sourceTree = "<group>";
@@ -295,6 +307,9 @@
 				3A168EDE2961DDC8004F592A /* RecipeViewController.swift */,
 				3A168EED29631CD9004F592A /* StepByStepViewController.swift */,
 				3A46EF1029676F2D003C29DD /* LoginViewController.swift */,
+				3A46EF43296A3AD9003C29DD /* FoldersViewController.swift */,
+				3A46EF47296A510C003C29DD /* FoldersWithRemoveViewController.swift */,
+				3A46EF49296A600A003C29DD /* FolderViewController.swift */,
 			);
 			name = OtherViewControllers;
 			sourceTree = "<group>";
@@ -532,6 +547,7 @@
 				3A168ECE295CDD4C004F592A /* RecipeModel.xcdatamodeld in Sources */,
 				3A46EF1129676F2D003C29DD /* LoginViewController.swift in Sources */,
 				3A168EC6295CAFA5004F592A /* RecipesResponse.swift in Sources */,
+				3A46EF44296A3AD9003C29DD /* FoldersViewController.swift in Sources */,
 				3A168EB9295B29FC004F592A /* SearchView.swift in Sources */,
 				3A46EF402968FF28003C29DD /* NewFolderHeader.swift in Sources */,
 				3A5610F12958D955005F9760 /* AppDelegate.swift in Sources */,
@@ -543,12 +559,14 @@
 				3A168EEA296237F9004F592A /* IngredientViewModel.swift in Sources */,
 				3A168EFE2963B7CD004F592A /* IngredientCollectionViewHeader.swift in Sources */,
 				3A46EF3E2968D72E003C29DD /* ProfileHeader.swift in Sources */,
+				3A46EF4A296A600A003C29DD /* FolderViewController.swift in Sources */,
 				3A46EF002965CAF0003C29DD /* ListViewModel.swift in Sources */,
 				3A168EE42961F79E004F592A /* String+Utils.swift in Sources */,
 				3A46EEE129646352003C29DD /* SideMenuView.swift in Sources */,
 				3A5611102958E657005F9760 /* ShoppingListViewController.swift in Sources */,
 				3A168EF629636955004F592A /* EquipmentView.swift in Sources */,
 				3A168EC4295CAC07004F592A /* APICaller.swift in Sources */,
+				3A46EF48296A510C003C29DD /* FoldersWithRemoveViewController.swift in Sources */,
 				3A46EF0D296745AF003C29DD /* UICollectionView+Utils.swift in Sources */,
 				3A56110E2958E62E005F9760 /* ProfileViewController.swift in Sources */,
 				3A168F002963BE4B004F592A /* UILabel+Utils.swift in Sources */,
@@ -560,10 +578,12 @@
 				3A46EF022965D5F1003C29DD /* ItemView.swift in Sources */,
 				3A168EF42963515D004F592A /* StepViewModel.swift in Sources */,
 				3A168EDF2961DDC8004F592A /* RecipeViewController.swift in Sources */,
+				3A46EF46296A3D81003C29DD /* FolderTableViewCell.swift in Sources */,
 				3A168EB4295A3BA7004F592A /* RecipeCollectionViewHeader.swift in Sources */,
 				3A168EE22961E63F004F592A /* RecipeInfoResponse.swift in Sources */,
 				3A168EE82962371D004F592A /* IngredientView.swift in Sources */,
 				3A168EBB295B622E004F592A /* OptionsTableViewCell.swift in Sources */,
+				3A46EF4E296A8222003C29DD /* FoldersViewModel.swift in Sources */,
 				3A46EF0F29675E6A003C29DD /* NSNotification+Utils.swift in Sources */,
 				3A168ECB295CD349004F592A /* ComplexSearchResponse.swift in Sources */,
 				3A46EF0929672EB6003C29DD /* DatabaseManager.swift in Sources */,

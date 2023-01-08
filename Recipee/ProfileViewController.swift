@@ -7,42 +7,33 @@
 
 import UIKit
 import FirebaseAuth
-import GoogleSignIn
-import FBSDKLoginKit
 
-class ProfileViewController: UIViewController {
-    
-    private let tableView: UITableView = {
-        let table = UITableView(frame: .zero, style: .grouped)
-        table.showsVerticalScrollIndicator = false
-        table.translatesAutoresizingMaskIntoConstraints = false
-        table.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
-        table.backgroundColor = .background
-        table.contentInsetAdjustmentBehavior = .never
-        table.register(NewFolderHeader.self, forHeaderFooterViewReuseIdentifier: NewFolderHeader.identifier)
-        return table
-    }()
+class ProfileViewController: FoldersViewController {
     
     private let tableViewHeader = ProfileHeader()
     
     private var loginView = LoginView()
     
-    private var folders = ["dfd"]
+    private let notificationCenter = NotificationCenter.default
 
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .element
         title = "Profile"
-        configureTableView()
-        loginView.delegate = self
-        layout()
-    }
-    
-    private func configureTableView() {
-        tableView.delegate = self
-        tableView.dataSource = self
         tableViewHeader.delegate = self
         tableViewHeader.configure()
+        loginView.delegate = self
+        layout()
+        notificationCenter.addObserver(self, selector: #selector(updateTableView), name: .updateFolders, object: nil)
+    }
+    
+    deinit {
+        notificationCenter.removeObserver(self, name: .updateFolders, object: nil)
+    }
+    
+    @objc private func updateTableView() {
+        fetchData()
+        print(folders)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -75,41 +66,13 @@ class ProfileViewController: UIViewController {
             
             tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
             
             loginView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             loginView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             loginView.topAnchor.constraint(equalTo: view.topAnchor),
             loginView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
-    }
-}
-
-extension ProfileViewController: UITableViewDelegate, UITableViewDataSource {
-    func numberOfSections(in tableView: UITableView) -> Int {
-        1
-    }
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        folders.count
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
-        cell.textLabel?.text = "Hello"
-        return cell
-    }
-    
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 70
-    }
-    
-    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        45
-    }
-    
-    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let header = NewFolderHeader()
-        return header
     }
 }
 
@@ -128,5 +91,28 @@ extension ProfileViewController: ProfileTableHeaderDelegate {
         tableView.isHidden = true
         tableViewHeader.isHidden = true
         NotificationCenter.default.post(name: .updateHeartButton, object: nil)
+    }
+}
+
+extension ProfileViewController {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let vc = UINavigationController(rootViewController: FolderViewController(folderName: folders[indexPath.row].title))
+        vc.title = folders[indexPath.row].title
+        vc.modalPresentationStyle = .fullScreen
+        present(vc, animated: true)
+    }
+    
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
+            guard let email = FirebaseAuth.Auth.auth().currentUser?.email else {
+                return
+            }
+            DatabaseManager.shared.removeFolder(with: folders[indexPath.row].title, for: email) { [weak self] success in
+                if success {
+                    self?.folders.remove(at: indexPath.row)
+                    tableView.deleteRows(at: [indexPath], with: .automatic)
+                }
+            }
+        }
     }
 }

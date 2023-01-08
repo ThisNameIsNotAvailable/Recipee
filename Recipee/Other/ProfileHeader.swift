@@ -89,6 +89,7 @@ class ProfileHeader: UIView {
             divider.widthAnchor.constraint(equalTo: widthAnchor),
             divider.heightAnchor.constraint(equalToConstant: 1),
             divider.bottomAnchor.constraint(equalTo: bottomAnchor),
+            divider.leadingAnchor.constraint(equalTo: leadingAnchor),
             
             profileImageView.heightAnchor.constraint(equalToConstant: width),
             profileImageView.widthAnchor.constraint(equalTo: profileImageView.heightAnchor),

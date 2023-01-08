@@ -14,4 +14,5 @@ extension NSNotification.Name {
     static let updateTableView = NSNotification.Name(rawValue: "Update Table View")
     static let updateHeartButton = NSNotification.Name(rawValue: "Update Heart Button")
     static let updateListButton = NSNotification.Name(rawValue: "Update List Button")
+    static let updateFolders = NSNotification.Name(rawValue: "Update Folders")
 }

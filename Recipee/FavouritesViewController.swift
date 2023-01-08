@@ -36,6 +36,8 @@ class FavouritesViewController: UIViewController {
     private var recipes = [RecipeResponse]()
     private var filteredRecipes = [RecipeResponse]()
     
+    private let notificationCenter = NotificationCenter.default
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .background
@@ -46,10 +48,14 @@ class FavouritesViewController: UIViewController {
         searchBar.delegate = self
         layout()
         fetchData()
-        NotificationCenter.default.addObserver(self, selector: #selector(fetchData), name: .updateCollectionView, object: nil)
+        notificationCenter.addObserver(self, selector: #selector(fetchData), name: .updateCollectionView, object: nil)
         let tap = UITapGestureRecognizer(target: self, action: #selector(UIInputViewController.dismissKeyboard))
         tap.cancelsTouchesInView = false
         view.addGestureRecognizer(tap)
+    }
+    
+    deinit {
+        notificationCenter.removeObserver(self, name: .updateCollectionView, object: nil)
     }
     
     @objc func dismissKeyboard() {
@@ -71,7 +77,7 @@ class FavouritesViewController: UIViewController {
         guard let email = FirebaseAuth.Auth.auth().currentUser?.email else {
             return
         }
-        DatabaseManager.shared.getFavourites(for: email) { [weak self] res in
+        DatabaseManager.shared.getFolder(with: "favourites", for: email) { [weak self] res in
             switch res {
             case .failure(let error):
                 print(error)
@@ -111,7 +117,7 @@ extension FavouritesViewController: RecipeWithRemoveButtonCollectionViewCellDele
         guard let indexPath = collectionView.indexPath(for: cell), let email = FirebaseAuth.Auth.auth().currentUser?.email else {
             return
         }
-        DatabaseManager.shared.removeFavourite(with: filteredRecipes[indexPath.row].id, for: email) { [weak self] success in
+        DatabaseManager.shared.removeRecipe(with: filteredRecipes[indexPath.row].id, from: "favourites", for: email) { [weak self] success in
             if success {
                 if let removed = self?.filteredRecipes.remove(at: indexPath.row)  {
                     if let index = self?.recipes.firstIndex(where: { recipe in
