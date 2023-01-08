@@ -64,6 +64,8 @@
 		3A46EF48296A510C003C29DD /* FoldersWithRemoveViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A46EF47296A510C003C29DD /* FoldersWithRemoveViewController.swift */; };
 		3A46EF4A296A600A003C29DD /* FolderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A46EF49296A600A003C29DD /* FolderViewController.swift */; };
 		3A46EF4E296A8222003C29DD /* FoldersViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A46EF4D296A8222003C29DD /* FoldersViewModel.swift */; };
+		3A46EF50296B3188003C29DD /* DynamicHeightCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A46EF4F296B3188003C29DD /* DynamicHeightCollectionView.swift */; };
+		3A46EF52296B4FC0003C29DD /* BackgroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A46EF51296B4FC0003C29DD /* BackgroundView.swift */; };
 		3A5610F12958D955005F9760 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A5610F02958D955005F9760 /* AppDelegate.swift */; };
 		3A5610F32958D955005F9760 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A5610F22958D955005F9760 /* SceneDelegate.swift */; };
 		3A5610F52958D955005F9760 /* TabBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A5610F42958D955005F9760 /* TabBarViewController.swift */; };
@@ -134,6 +136,8 @@
 		3A46EF47296A510C003C29DD /* FoldersWithRemoveViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoldersWithRemoveViewController.swift; sourceTree = "<group>"; };
 		3A46EF49296A600A003C29DD /* FolderViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FolderViewController.swift; sourceTree = "<group>"; };
 		3A46EF4D296A8222003C29DD /* FoldersViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoldersViewModel.swift; sourceTree = "<group>"; };
+		3A46EF4F296B3188003C29DD /* DynamicHeightCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DynamicHeightCollectionView.swift; sourceTree = "<group>"; };
+		3A46EF51296B4FC0003C29DD /* BackgroundView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundView.swift; sourceTree = "<group>"; };
 		3A5610ED2958D955005F9760 /* Recipee.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Recipee.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3A5610F02958D955005F9760 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		3A5610F22958D955005F9760 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -180,6 +184,8 @@
 				3A46EF12296774E1003C29DD /* LoginView.swift */,
 				3A46EF3F2968FF28003C29DD /* NewFolderHeader.swift */,
 				3A46EF45296A3D81003C29DD /* FolderTableViewCell.swift */,
+				3A46EF4F296B3188003C29DD /* DynamicHeightCollectionView.swift */,
+				3A46EF51296B4FC0003C29DD /* BackgroundView.swift */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -548,6 +554,7 @@
 				3A46EF1129676F2D003C29DD /* LoginViewController.swift in Sources */,
 				3A168EC6295CAFA5004F592A /* RecipesResponse.swift in Sources */,
 				3A46EF44296A3AD9003C29DD /* FoldersViewController.swift in Sources */,
+				3A46EF52296B4FC0003C29DD /* BackgroundView.swift in Sources */,
 				3A168EB9295B29FC004F592A /* SearchView.swift in Sources */,
 				3A46EF402968FF28003C29DD /* NewFolderHeader.swift in Sources */,
 				3A5610F12958D955005F9760 /* AppDelegate.swift in Sources */,
@@ -555,6 +562,7 @@
 				3A46EEFE2965C7C0003C29DD /* ListTableViewCell.swift in Sources */,
 				3A168EEE29631CD9004F592A /* StepByStepViewController.swift in Sources */,
 				3A168EF2296339FF004F592A /* StepView.swift in Sources */,
+				3A46EF50296B3188003C29DD /* DynamicHeightCollectionView.swift in Sources */,
 				3A46EEFB2964CAC6003C29DD /* RecipeCoreData+CoreDataClass.swift in Sources */,
 				3A168EEA296237F9004F592A /* IngredientViewModel.swift in Sources */,
 				3A168EFE2963B7CD004F592A /* IngredientCollectionViewHeader.swift in Sources */,

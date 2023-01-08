@@ -23,7 +23,7 @@ class ProfileHeader: UIView {
         let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.contentMode = .scaleAspectFit
-        imageView.layer.cornerRadius = 3/10 * UIScreen.main.bounds.height / 3
+        imageView.layer.cornerRadius = 1/4 * UIScreen.main.bounds.height / 3
         imageView.clipsToBounds = true
         return imageView
     }()
@@ -82,7 +82,7 @@ class ProfileHeader: UIView {
         divider.translatesAutoresizingMaskIntoConstraints = false
         addSubview(divider)
         
-        let width = 3/5 * UIScreen.main.bounds.height / 3
+        let width = 1/2 * UIScreen.main.bounds.height / 3
         
         NSLayoutConstraint.activate([
             

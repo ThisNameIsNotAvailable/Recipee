@@ -90,7 +90,6 @@ class OptionsTableViewCell: UITableViewCell {
         stackView.arrangedSubviews.forEach { view in
             view.removeFromSuperview()
         }
-        print(stackView.arrangedSubviews.count)
     }
     
     required init?(coder: NSCoder) {

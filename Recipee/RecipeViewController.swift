@@ -26,7 +26,7 @@ class RecipeViewController: UIViewController {
     private let stackView: UIStackView = {
         let stack = UIStackView()
         stack.axis = .vertical
-        stack.alignment = .top
+        stack.distribution = .fill
         stack.spacing = 6
         stack.translatesAutoresizingMaskIntoConstraints = false
         return stack
@@ -44,6 +44,7 @@ class RecipeViewController: UIViewController {
     
     private let sourceButton: UIButton = {
         let button = UIButton()
+        button.contentHorizontalAlignment = .leading
         button.setTitleColor(.black, for: [])
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
@@ -70,6 +71,7 @@ class RecipeViewController: UIViewController {
     private let additionalInfoStackView: UIStackView = {
         let stack = UIStackView()
         stack.axis = .horizontal
+        stack.distribution = .fillEqually
         stack.spacing = 10
         stack.translatesAutoresizingMaskIntoConstraints = false
         stack.alignment = .leading
@@ -111,6 +113,34 @@ class RecipeViewController: UIViewController {
         return stack
     }()
     
+    private let collectionView: UICollectionView = {
+        let collection = DynamicHeightCollectionView(frame: .zero, collectionViewLayout: UICollectionViewCompositionalLayout(sectionProvider: { section, _ in
+            switch section {
+            default:
+                let header = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .absolute(50)), elementKind: UICollectionView.elementKindSectionHeader, alignment: .top)
+                header.contentInsets = NSDirectionalEdgeInsets(top: 2, leading: 8, bottom: 2, trailing: 2)
+                let item = NSCollectionLayoutItem(layoutSize: NSCollectionLayoutSize(widthDimension: .absolute(150), heightDimension: .absolute(220)))
+                item.contentInsets = NSDirectionalEdgeInsets(top: 2, leading: 5, bottom: 2, trailing: 5)
+                let group = NSCollectionLayoutGroup.horizontal(layoutSize: NSCollectionLayoutSize(widthDimension: .absolute(150), heightDimension: .absolute(220)), repeatingSubitem: item, count: 1)
+                let section = NSCollectionLayoutSection(group: group)
+                section.orthogonalScrollingBehavior = .continuousGroupLeadingBoundary
+                section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 20, trailing: 0)
+                section.boundarySupplementaryItems = [header]
+                return section
+            }
+        }))
+        collection.clipsToBounds = true
+        collection.layer.cornerRadius = 8
+        collection.widthAnchor.constraint(greaterThanOrEqualToConstant: 1).isActive = true
+        collection.heightAnchor.constraint(greaterThanOrEqualToConstant: 1).isActive = true
+        collection.showsHorizontalScrollIndicator = false
+        collection.translatesAutoresizingMaskIntoConstraints = false
+        collection.backgroundColor = .background
+        collection.register(RecipeCollectionViewCell.self, forCellWithReuseIdentifier: RecipeCollectionViewCell.identifier)
+        collection.register(RecipeCollectionViewHeader.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: RecipeCollectionViewHeader.identifier)
+        return collection
+    }()
+    
     private let id: Int
     private var recipeInfo: RecipeInfoResponse!
     private var sourceURL = ""
@@ -127,6 +157,8 @@ class RecipeViewController: UIViewController {
     private var heartButton: UIBarButtonItem!
     private var listButton: UIBarButtonItem!
     
+    private var recipes = [RecipeResponse]()
+    
     private let notificationCenter = NotificationCenter.default
     
     override func viewDidLoad() {
@@ -142,13 +174,17 @@ class RecipeViewController: UIViewController {
         
         updateHeartButton()
         
+        configureCollectionView()
+        
         
         navigationItem.rightBarButtonItems = [heartButton, listButton]
         view.backgroundColor = .white
         title = "Recipe Info"
         imageWithButton.delegate = self
         sourceButton.addTarget(self, action: #selector(sourceTapped), for: .touchUpInside)
+        
         fetchData()
+        
         notificationCenter.addObserver(self, selector: #selector(updateHeartButton), name: .updateHeartButton, object: nil)
         notificationCenter.addObserver(self, selector: #selector(updateListButton), name: .updateListButton, object: nil)
     }
@@ -156,6 +192,11 @@ class RecipeViewController: UIViewController {
     deinit {
         notificationCenter.removeObserver(self, name: .updateHeartButton, object: nil)
         notificationCenter.removeObserver(self, name: .updateListButton, object: nil)
+    }
+    
+    private func configureCollectionView() {
+        collectionView.delegate = self
+        collectionView.dataSource = self
     }
     
     @objc private func updateHeartButton() {
@@ -292,6 +333,24 @@ class RecipeViewController: UIViewController {
                         self?.ingredientsStackView.addArrangedSubview(ingredientView)
                     }
                     
+                    guard let id = self?.id else {
+                        return
+                    }
+                    
+                    APICaller.shared.getSimilar(to: id) { [weak self] res in
+                        switch res {
+                        case .success(let recipes):
+                            self?.recipes = recipes.compactMap({ recipe in
+                                RecipeResponse(id: recipe.id, title: recipe.title, image: "https://spoonacular.com/recipeImages/\(recipe.id)-480x360.jpg")
+                            })
+                            DispatchQueue.main.async {
+                                self?.collectionView.reloadData()
+                                self?.view.layoutIfNeeded()
+                            }
+                        case .failure(let error):
+                            print(error)
+                        }
+                    }
                     self?.layout()
                 }
             }
@@ -306,6 +365,7 @@ class RecipeViewController: UIViewController {
         
         stackView.addArrangedSubview(imageWithButton)
         
+        dietsStackView.sizeToFit()
         dietsScrollView.addSubview(dietsStackView)
         if !dietsStackView.arrangedSubviews.isEmpty {
             stackView.addArrangedSubview(dietsScrollView)
@@ -313,11 +373,14 @@ class RecipeViewController: UIViewController {
         
         stackView.addArrangedSubview(summaryLabel)
         
+        additionalInfoStackView.sizeToFit()
         additionalInfoStackView.addArrangedSubview(readyTimeLabel)
         additionalInfoStackView.addArrangedSubview(numOfServingsLabel)
         stackView.addArrangedSubview(additionalInfoStackView)
         
         stackView.addArrangedSubview(ingredientsStackView)
+        
+        stackView.addArrangedSubview(collectionView)
         
         scrollView.addSubview(stackView)
         
@@ -356,5 +419,33 @@ extension RecipeViewController: ImageViewWithStepButtonDelegate {
         let vc = UINavigationController(rootViewController: StepByStepViewController(instructions: recipeInfo.analyzedInstructions, ingredients: recipeInfo.extendedIngredients))
         vc.modalPresentationStyle = .fullScreen
         present(vc, animated: true)
+    }
+}
+
+extension RecipeViewController: UICollectionViewDelegate, UICollectionViewDataSource {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return recipes.count
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: RecipeCollectionViewCell.identifier, for: indexPath) as? RecipeCollectionViewCell else {
+            return UICollectionViewCell()
+        }
+        cell.configure(text: recipes[indexPath.row].title, imageID: recipes[indexPath.row].id, fontSize: 20)
+        return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+        guard let header = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: RecipeCollectionViewHeader.identifier, for: indexPath) as? RecipeCollectionViewHeader else {
+            return UICollectionReusableView()
+        }
+
+        header.configure(title: "Similar Recipes", section: 0)
+        return header
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let vc = RecipeViewController(id: recipes[indexPath.row].id)
+        navigationController?.pushViewController(vc, animated: true)
     }
 }

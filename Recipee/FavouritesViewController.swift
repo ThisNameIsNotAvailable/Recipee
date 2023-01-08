@@ -94,7 +94,12 @@ class FavouritesViewController: UIViewController {
 
 extension FavouritesViewController: UICollectionViewDelegate, UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        filteredRecipes.count
+        if filteredRecipes.count == 0 {
+            collectionView.backgroundView = BackgroundView()
+        } else {
+            collectionView.backgroundView = nil
+        }
+        return filteredRecipes.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {

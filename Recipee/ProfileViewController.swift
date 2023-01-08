@@ -33,7 +33,6 @@ class ProfileViewController: FoldersViewController {
     
     @objc private func updateTableView() {
         fetchData()
-        print(folders)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -82,6 +81,7 @@ extension ProfileViewController: LoginViewDelegate {
         loginView.isHidden = true
         tableView.isHidden = false
         tableViewHeader.isHidden = false
+        updateTableView()
     }
 }
 

@@ -16,8 +16,10 @@ class FoldersViewController: UIViewController {
         table.translatesAutoresizingMaskIntoConstraints = false
         table.backgroundColor = .background
         table.contentInsetAdjustmentBehavior = .never
+        table.estimatedRowHeight = 80
         table.register(NewFolderHeader.self, forHeaderFooterViewReuseIdentifier: NewFolderHeader.identifier)
         table.register(FolderTableViewCell.self, forCellReuseIdentifier: FolderTableViewCell.identifier)
+        table.alwaysBounceVertical = false
         return table
     }()
     
@@ -25,6 +27,7 @@ class FoldersViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        tableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: -38, right: 0)
         configureTableView()
         fetchData()
     }
@@ -54,7 +57,12 @@ class FoldersViewController: UIViewController {
 
 extension FoldersViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        folders.count
+        if folders.count == 0 {
+            tableView.backgroundView = BackgroundView(labelText: "Create some folders to see them here.")
+        } else {
+            tableView.backgroundView = nil
+        }
+        return folders.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -79,6 +87,7 @@ extension FoldersViewController: UITableViewDelegate, UITableViewDataSource {
         header.delegate = self
         return header
     }
+
 }
 
 extension FoldersViewController: NewFolderHeaderDelegate {
@@ -102,7 +111,9 @@ extension FoldersViewController: NewFolderHeaderDelegate {
                         strongSelf.folders.insert(FoldersViewModel(image: "", title: text), at: 0)
                         DispatchQueue.main.async {
                             strongSelf.tableView.insertRows(at: [IndexPath(row: 0, section: 0)], with: .automatic)
-                            NotificationCenter.default.post(name: .updateFolders, object: nil)
+                            if self is FoldersWithRemoveViewController {
+                                NotificationCenter.default.post(name: .updateFolders, object: nil)
+                            }
                         }
                     }
                 }

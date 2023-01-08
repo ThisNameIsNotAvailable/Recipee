@@ -75,7 +75,12 @@ class FolderViewController: UIViewController {
 
 extension FolderViewController: UICollectionViewDelegate, UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        recipes.count
+        if recipes.count == 0 {
+            collectionView.backgroundView = BackgroundView(labelText: "Add some recipes to see them here.")
+        } else {
+            collectionView.backgroundView = nil
+        }
+        return recipes.count
     }
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {

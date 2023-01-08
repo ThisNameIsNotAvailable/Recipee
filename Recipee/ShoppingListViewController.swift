@@ -112,7 +112,12 @@ class ShoppingListViewController: UIViewController {
 extension ShoppingListViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        recipes.count
+        if recipes.count == 0 {
+            tableView.backgroundView = BackgroundView()
+        } else {
+            tableView.backgroundView = nil
+        }
+        return recipes.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -145,7 +150,12 @@ extension ShoppingListViewController: ListTableViewCellDelegate {
 
 extension ShoppingListViewController: UICollectionViewDelegate, UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        recipes.count
+        if recipes.count == 0 {
+            collectionView.backgroundView = BackgroundView()
+        } else {
+            collectionView.backgroundView = nil
+        }
+        return recipes.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {

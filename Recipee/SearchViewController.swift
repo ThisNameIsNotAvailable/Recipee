@@ -116,7 +116,7 @@ class SearchViewController: UIViewController {
             navigationController?.navigationBar.standardAppearance = appearance
             navigationController?.navigationBar.scrollEdgeAppearance = appearance
         }
-//        fetchData()
+        fetchData()
         configureCollectionViews()
         configureSearchView()
         layout()
@@ -456,15 +456,32 @@ extension SearchViewController: UICollectionViewDelegate, UICollectionViewDataSo
     }
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
+        collectionView.backgroundView = nil
         if collectionView == resultCollectionView {
             return 1
+        }
+        if SearchManager.shared.feedViewModels.contains(where: { recipes in
+            recipes.count == 0
+        }) {
+            collectionView.backgroundView = BackgroundView(labelText: "Something went wrong, Try to reload the page.")
+            return 0
         }
         return SearchManager.shared.feedViewModels.count
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         if collectionView == resultCollectionView {
+            if SearchManager.shared.resultsViewModels.count == 0 {
+                collectionView.backgroundView = BackgroundView(labelText: "Wait till the data is loaded or try to reload the page.")
+            } else {
+                collectionView.backgroundView = nil
+            }
             return SearchManager.shared.resultsViewModels.count
+        }
+        if SearchManager.shared.feedViewModels[section].count == 0 {
+            collectionView.backgroundView = BackgroundView()
+        } else {
+            collectionView.backgroundView = nil
         }
         return SearchManager.shared.feedViewModels[section].count
     }
