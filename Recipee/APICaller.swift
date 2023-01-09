@@ -178,4 +178,27 @@ class APICaller {
             }
         }.resume()
     }
+    
+    public func getRecipesByIgredients(_ ingredients: String, completion: @escaping (Result<[RecipeResponse], APICallerError>) -> ()) {
+        let urlString = "https://api.spoonacular.com/recipes/findByIngredients?ingredients=\(ingredients)&apiKey=\(Constants.apiKey)&number=20&ranking=2"
+        guard let url = URL(string: urlString) else {
+            return
+        }
+        var request = URLRequest(url: url)
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.httpMethod = "GET"
+        URLSession.shared.dataTask(with: request) { data, _, error in
+            guard let data = data, error == nil else {
+                completion(.failure(.failedToGetData(error!.localizedDescription)))
+                return
+            }
+            do {
+                let result = try JSONDecoder().decode([RecipeResponse].self, from: data)
+                completion(.success(result))
+            } catch {
+                print(error)
+                completion(.failure(.failedToDecodeData(error.localizedDescription)))
+            }
+        }.resume()
+    }
 }

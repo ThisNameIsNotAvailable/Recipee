@@ -66,6 +66,11 @@
 		3A46EF4E296A8222003C29DD /* FoldersViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A46EF4D296A8222003C29DD /* FoldersViewModel.swift */; };
 		3A46EF50296B3188003C29DD /* DynamicHeightCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A46EF4F296B3188003C29DD /* DynamicHeightCollectionView.swift */; };
 		3A46EF52296B4FC0003C29DD /* BackgroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A46EF51296B4FC0003C29DD /* BackgroundView.swift */; };
+		3A46EF54296C7DE1003C29DD /* WhatsInYourFridgeTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A46EF53296C7DE1003C29DD /* WhatsInYourFridgeTableViewCell.swift */; };
+		3A46EF56296C9C16003C29DD /* EnterProductsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A46EF55296C9C16003C29DD /* EnterProductsViewController.swift */; };
+		3A46EF58296CA061003C29DD /* TextField+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A46EF57296CA061003C29DD /* TextField+Utils.swift */; };
+		3A46EF5A296CA58D003C29DD /* TextFieldWithNumberView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A46EF59296CA58D003C29DD /* TextFieldWithNumberView.swift */; };
+		3A46EF5C296CAB23003C29DD /* TextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A46EF5B296CAB23003C29DD /* TextField.swift */; };
 		3A5610F12958D955005F9760 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A5610F02958D955005F9760 /* AppDelegate.swift */; };
 		3A5610F32958D955005F9760 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A5610F22958D955005F9760 /* SceneDelegate.swift */; };
 		3A5610F52958D955005F9760 /* TabBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A5610F42958D955005F9760 /* TabBarViewController.swift */; };
@@ -138,6 +143,11 @@
 		3A46EF4D296A8222003C29DD /* FoldersViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoldersViewModel.swift; sourceTree = "<group>"; };
 		3A46EF4F296B3188003C29DD /* DynamicHeightCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DynamicHeightCollectionView.swift; sourceTree = "<group>"; };
 		3A46EF51296B4FC0003C29DD /* BackgroundView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundView.swift; sourceTree = "<group>"; };
+		3A46EF53296C7DE1003C29DD /* WhatsInYourFridgeTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhatsInYourFridgeTableViewCell.swift; sourceTree = "<group>"; };
+		3A46EF55296C9C16003C29DD /* EnterProductsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnterProductsViewController.swift; sourceTree = "<group>"; };
+		3A46EF57296CA061003C29DD /* TextField+Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TextField+Utils.swift"; sourceTree = "<group>"; };
+		3A46EF59296CA58D003C29DD /* TextFieldWithNumberView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldWithNumberView.swift; sourceTree = "<group>"; };
+		3A46EF5B296CAB23003C29DD /* TextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextField.swift; sourceTree = "<group>"; };
 		3A5610ED2958D955005F9760 /* Recipee.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Recipee.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3A5610F02958D955005F9760 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		3A5610F22958D955005F9760 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -186,6 +196,9 @@
 				3A46EF45296A3D81003C29DD /* FolderTableViewCell.swift */,
 				3A46EF4F296B3188003C29DD /* DynamicHeightCollectionView.swift */,
 				3A46EF51296B4FC0003C29DD /* BackgroundView.swift */,
+				3A46EF53296C7DE1003C29DD /* WhatsInYourFridgeTableViewCell.swift */,
+				3A46EF59296CA58D003C29DD /* TextFieldWithNumberView.swift */,
+				3A46EF5B296CAB23003C29DD /* TextField.swift */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -219,6 +232,7 @@
 				3A168EFF2963BE4B004F592A /* UILabel+Utils.swift */,
 				3A46EF0C296745AF003C29DD /* UICollectionView+Utils.swift */,
 				3A46EF0E29675E6A003C29DD /* NSNotification+Utils.swift */,
+				3A46EF57296CA061003C29DD /* TextField+Utils.swift */,
 			);
 			name = Utils;
 			sourceTree = "<group>";
@@ -316,6 +330,7 @@
 				3A46EF43296A3AD9003C29DD /* FoldersViewController.swift */,
 				3A46EF47296A510C003C29DD /* FoldersWithRemoveViewController.swift */,
 				3A46EF49296A600A003C29DD /* FolderViewController.swift */,
+				3A46EF55296C9C16003C29DD /* EnterProductsViewController.swift */,
 			);
 			name = OtherViewControllers;
 			sourceTree = "<group>";
@@ -551,10 +566,13 @@
 				3A5610F52958D955005F9760 /* TabBarViewController.swift in Sources */,
 				3A46EEFC2964CAC6003C29DD /* RecipeCoreData+CoreDataProperties.swift in Sources */,
 				3A168ECE295CDD4C004F592A /* RecipeModel.xcdatamodeld in Sources */,
+				3A46EF58296CA061003C29DD /* TextField+Utils.swift in Sources */,
 				3A46EF1129676F2D003C29DD /* LoginViewController.swift in Sources */,
+				3A46EF5C296CAB23003C29DD /* TextField.swift in Sources */,
 				3A168EC6295CAFA5004F592A /* RecipesResponse.swift in Sources */,
 				3A46EF44296A3AD9003C29DD /* FoldersViewController.swift in Sources */,
 				3A46EF52296B4FC0003C29DD /* BackgroundView.swift in Sources */,
+				3A46EF54296C7DE1003C29DD /* WhatsInYourFridgeTableViewCell.swift in Sources */,
 				3A168EB9295B29FC004F592A /* SearchView.swift in Sources */,
 				3A46EF402968FF28003C29DD /* NewFolderHeader.swift in Sources */,
 				3A5610F12958D955005F9760 /* AppDelegate.swift in Sources */,
@@ -579,10 +597,12 @@
 				3A56110E2958E62E005F9760 /* ProfileViewController.swift in Sources */,
 				3A168F002963BE4B004F592A /* UILabel+Utils.swift in Sources */,
 				3A168EB7295B14E5004F592A /* SearchManager.swift in Sources */,
+				3A46EF56296C9C16003C29DD /* EnterProductsViewController.swift in Sources */,
 				3A168ED2295CF33D004F592A /* OptionsTableView.swift in Sources */,
 				3A168EDD295F6C36004F592A /* UIFont+Utils.swift in Sources */,
 				3A168EBF295C6C46004F592A /* OptionsViewController.swift in Sources */,
 				3A5610F32958D955005F9760 /* SceneDelegate.swift in Sources */,
+				3A46EF5A296CA58D003C29DD /* TextFieldWithNumberView.swift in Sources */,
 				3A46EF022965D5F1003C29DD /* ItemView.swift in Sources */,
 				3A168EF42963515D004F592A /* StepViewModel.swift in Sources */,
 				3A168EDF2961DDC8004F592A /* RecipeViewController.swift in Sources */,

@@ -44,6 +44,7 @@ class SearchViewController: UIViewController {
     
     private let optionsTableView: UITableView = {
         let tv = OptionsTableView(frame: .zero, style: .grouped)
+        tv.register(WhatsInYourFridgeTableViewCell.self, forCellReuseIdentifier: WhatsInYourFridgeTableViewCell.identifier)
         tv.isHidden = true
         return tv
     }()
@@ -116,7 +117,7 @@ class SearchViewController: UIViewController {
             navigationController?.navigationBar.standardAppearance = appearance
             navigationController?.navigationBar.scrollEdgeAppearance = appearance
         }
-        fetchData()
+//        fetchData()
         configureCollectionViews()
         configureSearchView()
         layout()
@@ -269,6 +270,9 @@ class SearchViewController: UIViewController {
         
         resultCollectionView.addInfiniteScroll { collection in
             guard var options = SearchManager.shared.getOptionsForURL(), !options.isEmpty else {
+                DispatchQueue.main.async {
+                    collection.finishInfiniteScroll()
+                }
                 return
             }
             options += "&offset=\(SearchManager.shared.offsetForResult)"
@@ -463,7 +467,7 @@ extension SearchViewController: UICollectionViewDelegate, UICollectionViewDataSo
         if SearchManager.shared.feedViewModels.contains(where: { recipes in
             recipes.count == 0
         }) {
-            collectionView.backgroundView = BackgroundView(labelText: "Something went wrong, Try to reload the page.")
+            collectionView.backgroundView = BackgroundView(labelText: "Something went wrong. Try to reload the page.")
             return 0
         }
         return SearchManager.shared.feedViewModels.count
@@ -542,21 +546,35 @@ extension SearchViewController: UICollectionViewDelegate, UICollectionViewDataSo
 
 extension SearchViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        if indexPath.section == 0 {
+            guard let cell = optionsTableView.dequeueReusableCell(withIdentifier: WhatsInYourFridgeTableViewCell.identifier, for: indexPath) as? WhatsInYourFridgeTableViewCell else {
+                return UITableViewCell()
+            }
+            cell.selectionStyle = .none
+            return cell
+        }
         guard let cell = optionsTableView.dequeueReusableCell(withIdentifier: OptionsTableViewCell.identifier, for: indexPath) as? OptionsTableViewCell else {
             return UITableViewCell()
         }
-        cell.configure(with: indexPath.section)
+        cell.configure(with: indexPath.section - 1)
         cell.selectionStyle = .none
         cell.delegate = self
         return cell
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        SearchManager.shared.buttons.count
+        SearchManager.shared.headersForSearch.count
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         1
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        if indexPath.section == 0 {
+            return 90
+        }
+        return UITableView.automaticDimension
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
@@ -566,6 +584,31 @@ extension SearchViewController: UITableViewDelegate, UITableViewDataSource {
         
         header.configure(title: SearchManager.shared.headersForSearch[section])
         return header
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if indexPath.section == 0 {
+            let vc = EnterProductsViewController()
+            let nc = UINavigationController(rootViewController: vc)
+            nc.modalPresentationStyle = .fullScreen
+            vc.onButtonTap = { [weak self] ingredients in
+                self?.dismiss(animated: true)
+                APICaller.shared.getRecipesByIgredients(ingredients) { res in
+                    switch res {
+                    case .success(let recipes):
+                        SearchManager.shared.resultsViewModels = recipes
+                        DispatchQueue.main.async {
+                            self?.resultsIsShown = true
+                            NotificationCenter.default.post(name: .hideRefine, object: nil)
+                            self?.resultCollectionView.reloadData()
+                        }
+                    case .failure(let error):
+                        print(error)
+                    }
+                }
+            }
+            present(nc, animated: true)
+        }
     }
 }
 

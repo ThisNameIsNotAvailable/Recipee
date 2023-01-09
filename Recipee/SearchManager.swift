@@ -28,7 +28,7 @@ class SearchManager {
     
     public let headers =  ["Meal Of The Day", "Breakfast", "Drinks", "American cuisine", "Chinese cuisine", "Middle Eastern cuisine", "Under 30 minutes", "You may like"]
     
-    public let headersForSearch = ["Difficulty", "Meal", "Diet", "Cuisine"]
+    public let headersForSearch = ["What's In Your Fridge?", "Difficulty", "Meal", "Diet", "Cuisine"]
     
     private let options = [
         [

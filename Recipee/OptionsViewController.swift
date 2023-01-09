@@ -67,7 +67,7 @@ extension OptionsViewController: UITableViewDelegate, UITableViewDataSource {
         guard let header = tableView.dequeueReusableHeaderFooterView(withIdentifier: SearchTableViewHeader.identifier) as? SearchTableViewHeader else {
             return nil
         }
-        header.configure(title: SearchManager.shared.headersForSearch[section])
+        header.configure(title: SearchManager.shared.headersForSearch[section + 1])
         return header
     }
 }
