@@ -82,6 +82,8 @@ extension ProfileViewController: LoginViewDelegate {
         tableView.isHidden = false
         tableViewHeader.isHidden = false
         updateTableView()
+        NotificationCenter.default.post(name: .updateCollectionView, object: nil)
+        NotificationCenter.default.post(name: .updateHeartButton, object: nil)
     }
 }
 
@@ -91,6 +93,7 @@ extension ProfileViewController: ProfileTableHeaderDelegate {
         tableView.isHidden = true
         tableViewHeader.isHidden = true
         NotificationCenter.default.post(name: .updateHeartButton, object: nil)
+        NotificationCenter.default.post(name: .updateCollectionView, object: nil)
     }
 }
 

@@ -75,6 +75,9 @@ class FavouritesViewController: UIViewController {
     
     @objc private func fetchData() {
         guard let email = FirebaseAuth.Auth.auth().currentUser?.email else {
+            recipes = []
+            filteredRecipes = []
+            collectionView.reloadData()
             return
         }
         DatabaseManager.shared.getFolder(with: "favourites", for: email) { [weak self] res in

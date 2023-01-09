@@ -39,6 +39,7 @@ class WhatsInYourFridgeTableViewCell: UITableViewCell {
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
+        backgroundColor = .element
         layout()
     }
     
@@ -54,7 +55,6 @@ class WhatsInYourFridgeTableViewCell: UITableViewCell {
         contentView.addSubview(stackView)
         
         NSLayoutConstraint.activate([
-//            fridgeImageView.heightAnchor.constraint(equalToConstant: 70),
             fridgeImageView.widthAnchor.constraint(equalTo: fridgeImageView.heightAnchor),
             
             stackView.leadingAnchor.constraint(equalToSystemSpacingAfter: contentView.leadingAnchor, multiplier: 0.5),

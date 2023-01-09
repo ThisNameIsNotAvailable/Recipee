@@ -550,6 +550,7 @@ extension SearchViewController: UITableViewDelegate, UITableViewDataSource {
             guard let cell = optionsTableView.dequeueReusableCell(withIdentifier: WhatsInYourFridgeTableViewCell.identifier, for: indexPath) as? WhatsInYourFridgeTableViewCell else {
                 return UITableViewCell()
             }
+            cell.accessoryType = .disclosureIndicator
             cell.selectionStyle = .none
             return cell
         }
