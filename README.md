@@ -19,7 +19,7 @@ In addition there are a possibility to find recipes by ingredients that you have
 
 To install this app you must have a machine running MacOS and a device/simulator with iOS. If both conditions are met after downloading repository on your computer,
 you need to run terminal, go to repository's directory and run `pod install`, also you need to create an account on https://spoonacular.com/food-api/ and 
-put your API key in a variable called `apiKey` inside `APICaller.swift`. After doing that you can press play button in Xcode and run the app 
+put your API key in a variable called `apiKey` inside `APICaller.swift`. After doing that open Recipee.xcworkspace file using Xcode and run the app 
 on the simulator or connected device.
 
 ## Technologies Used

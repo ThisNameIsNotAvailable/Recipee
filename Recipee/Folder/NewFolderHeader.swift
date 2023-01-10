@@ -18,15 +18,17 @@ class NewFolderHeader: UITableViewHeaderFooterView {
     weak var delegate: NewFolderHeaderDelegate?
     
     private let button: UIButton = {
-        let button = UIButton(type: .system)
+        
         let title = NSMutableAttributedString(string: "+", attributes: [
             .font: UIFont.appFont(of: 20, isBold: true),
             .foregroundColor: UIColor.black])
         title.append(NSAttributedString(string: " Create new folder", attributes: [
             .font: UIFont.appFont(of: 16, isBold: true),
             .foregroundColor: UIColor.black]))
+        let button = UIButtonBuilder(of: .system)
+            .setTAMIC(false)
+            .create()
         button.setAttributedTitle(title, for: [])
-        button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
     

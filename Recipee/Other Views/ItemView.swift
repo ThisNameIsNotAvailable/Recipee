@@ -19,10 +19,11 @@ class ItemView: UIView {
     }()
     
     private let checkButton: UIButton = {
-        let button = UIButton()
-        button.setImage(UIImage(systemName: "circle"), for: [])
-        button.tintColor = .black
-        button.translatesAutoresizingMaskIntoConstraints = false
+        let button =  UIButtonBuilder(of: .custom)
+            .setImage(UIImage(systemName: "circle"))
+            .setTintColor(.black)
+            .setTAMIC(false)
+            .create()
         button.tag = 0
         return button
     }()

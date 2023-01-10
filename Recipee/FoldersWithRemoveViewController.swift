@@ -11,16 +11,17 @@ import FirebaseAuth
 class FoldersWithRemoveViewController: FoldersViewController {
     
     private let removeButton: UIButton = {
-        let button = UIButton(type: .system)
-        button.setAttributedTitle(NSAttributedString(string: "Remove From Favourites", attributes: [
-            .font: UIFont.appFont(of: 20),
-            .foregroundColor: UIColor.black ]), for: .normal)
-        button.backgroundColor = .element
-        button.layer.borderColor = UIColor.black.cgColor
-        button.layer.borderWidth = 1
-        button.layer.cornerRadius = 8
-        button.clipsToBounds = true
-        button.translatesAutoresizingMaskIntoConstraints = false
+        let button = UIButtonBuilder(of: .system)
+            .setTitle("Remove From Favourites")
+            .setFontForTitle(.appFont(of: 20))
+            .setTitleColor(.black)
+            .setBackgroundColor(.element)
+            .setBorderColor(.black)
+            .setBorderWidth(1)
+            .setCornerRadius(8)
+            .setClipsToBounds(true)
+            .setTAMIC(false)
+            .create()
         return button
     }()
     

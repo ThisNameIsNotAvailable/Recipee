@@ -71,6 +71,7 @@
 		3A46EF58296CA061003C29DD /* TextField+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A46EF57296CA061003C29DD /* TextField+Utils.swift */; };
 		3A46EF5A296CA58D003C29DD /* TextFieldWithNumberView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A46EF59296CA58D003C29DD /* TextFieldWithNumberView.swift */; };
 		3A46EF5C296CAB23003C29DD /* TextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A46EF5B296CAB23003C29DD /* TextField.swift */; };
+		3A46EF64296DFAF0003C29DD /* UIButtonBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A46EF63296DFAF0003C29DD /* UIButtonBuilder.swift */; };
 		3A5610F12958D955005F9760 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A5610F02958D955005F9760 /* AppDelegate.swift */; };
 		3A5610F32958D955005F9760 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A5610F22958D955005F9760 /* SceneDelegate.swift */; };
 		3A5610F52958D955005F9760 /* TabBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A5610F42958D955005F9760 /* TabBarViewController.swift */; };
@@ -148,6 +149,7 @@
 		3A46EF57296CA061003C29DD /* TextField+Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TextField+Utils.swift"; sourceTree = "<group>"; };
 		3A46EF59296CA58D003C29DD /* TextFieldWithNumberView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldWithNumberView.swift; sourceTree = "<group>"; };
 		3A46EF5B296CAB23003C29DD /* TextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextField.swift; sourceTree = "<group>"; };
+		3A46EF63296DFAF0003C29DD /* UIButtonBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIButtonBuilder.swift; sourceTree = "<group>"; };
 		3A5610ED2958D955005F9760 /* Recipee.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Recipee.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3A5610F02958D955005F9760 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		3A5610F22958D955005F9760 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -183,22 +185,11 @@
 			isa = PBXGroup;
 			children = (
 				3A46EEE92964BA41003C29DD /* Recipe */,
-				3A46EEEB2964BA9A003C29DD /* Other */,
+				3A46EEEB2964BA9A003C29DD /* Other Views */,
 				3A46EEE82964BA2B003C29DD /* Options */,
-				3A168EBC295B88BE004F592A /* SearchTableViewHeader.swift */,
 				3A46EEE72964BA0E003C29DD /* Ingredient */,
 				3A46EEEA2964BA50003C29DD /* Equipment */,
-				3A46EEFD2965C7C0003C29DD /* ListTableViewCell.swift */,
-				3A46EF012965D5F1003C29DD /* ItemView.swift */,
-				3A46EF0329665104003C29DD /* RecipeWithRemoveButtonCollectionViewCell.swift */,
-				3A46EF12296774E1003C29DD /* LoginView.swift */,
-				3A46EF3F2968FF28003C29DD /* NewFolderHeader.swift */,
-				3A46EF45296A3D81003C29DD /* FolderTableViewCell.swift */,
-				3A46EF4F296B3188003C29DD /* DynamicHeightCollectionView.swift */,
-				3A46EF51296B4FC0003C29DD /* BackgroundView.swift */,
-				3A46EF53296C7DE1003C29DD /* WhatsInYourFridgeTableViewCell.swift */,
-				3A46EF59296CA58D003C29DD /* TextFieldWithNumberView.swift */,
-				3A46EF5B296CAB23003C29DD /* TextField.swift */,
+				3A46EF61296DF344003C29DD /* Folder */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -206,10 +197,10 @@
 		3A168EB5295B14B4004F592A /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				3A46EF60296DF2D8003C29DD /* View Models */,
 				3A168EC3295CAC07004F592A /* APICaller.swift */,
-				3A46EEE52964B9D1003C29DD /* Managers */,
-				3A46EEE62964B9DD003C29DD /* API Responses Models */,
-				3A46EEE42964B9C7003C29DD /* View Models */,
+				3A46EF5F296DF2C0003C29DD /* API Responses Models */,
+				3A46EF5E296DF2A7003C29DD /* Managers */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -233,40 +224,9 @@
 				3A46EF0C296745AF003C29DD /* UICollectionView+Utils.swift */,
 				3A46EF0E29675E6A003C29DD /* NSNotification+Utils.swift */,
 				3A46EF57296CA061003C29DD /* TextField+Utils.swift */,
+				3A46EF63296DFAF0003C29DD /* UIButtonBuilder.swift */,
 			);
 			name = Utils;
-			sourceTree = "<group>";
-		};
-		3A46EEE42964B9C7003C29DD /* View Models */ = {
-			isa = PBXGroup;
-			children = (
-				3A168EE9296237F9004F592A /* IngredientViewModel.swift */,
-				3A168EF32963515D004F592A /* StepViewModel.swift */,
-				3A168EF9296375D9004F592A /* EquipmentViewModel.swift */,
-				3A46EEFF2965CAEF003C29DD /* ListViewModel.swift */,
-				3A46EF4D296A8222003C29DD /* FoldersViewModel.swift */,
-			);
-			name = "View Models";
-			sourceTree = "<group>";
-		};
-		3A46EEE52964B9D1003C29DD /* Managers */ = {
-			isa = PBXGroup;
-			children = (
-				3A168EB6295B14E5004F592A /* SearchManager.swift */,
-				3A46EEE22964B999003C29DD /* RecipeManager.swift */,
-				3A46EF0829672EB6003C29DD /* DatabaseManager.swift */,
-			);
-			name = Managers;
-			sourceTree = "<group>";
-		};
-		3A46EEE62964B9DD003C29DD /* API Responses Models */ = {
-			isa = PBXGroup;
-			children = (
-				3A168EC5295CAFA5004F592A /* RecipesResponse.swift */,
-				3A168ECA295CD349004F592A /* ComplexSearchResponse.swift */,
-				3A168EE12961E63F004F592A /* RecipeInfoResponse.swift */,
-			);
-			name = "API Responses Models";
 			sourceTree = "<group>";
 		};
 		3A46EEE72964BA0E003C29DD /* Ingredient */ = {
@@ -292,6 +252,7 @@
 			isa = PBXGroup;
 			children = (
 				3A168EB1295A35C2004F592A /* RecipeCollectionViewCell.swift */,
+				3A46EF0329665104003C29DD /* RecipeWithRemoveButtonCollectionViewCell.swift */,
 				3A168EB3295A3BA7004F592A /* RecipeCollectionViewHeader.swift */,
 			);
 			path = Recipe;
@@ -306,18 +267,26 @@
 			path = Equipment;
 			sourceTree = "<group>";
 		};
-		3A46EEEB2964BA9A003C29DD /* Other */ = {
+		3A46EEEB2964BA9A003C29DD /* Other Views */ = {
 			isa = PBXGroup;
 			children = (
+				3A168EBC295B88BE004F592A /* SearchTableViewHeader.swift */,
 				3A168EB8295B29FC004F592A /* SearchView.swift */,
 				3A168EE5296209A6004F592A /* ExpandableLabel.swift */,
 				3A168EEB296314F7004F592A /* ImageViewWithStepButton.swift */,
 				3A168EEF296331FF004F592A /* InstructionView.swift */,
 				3A168EF1296339FF004F592A /* StepView.swift */,
+				3A46EF012965D5F1003C29DD /* ItemView.swift */,
+				3A46EF12296774E1003C29DD /* LoginView.swift */,
 				3A46EEE029646352003C29DD /* SideMenuView.swift */,
+				3A46EF4F296B3188003C29DD /* DynamicHeightCollectionView.swift */,
+				3A46EF5B296CAB23003C29DD /* TextField.swift */,
+				3A46EF62296DF36E003C29DD /* Cell */,
+				3A46EF51296B4FC0003C29DD /* BackgroundView.swift */,
+				3A46EF59296CA58D003C29DD /* TextFieldWithNumberView.swift */,
 				3A46EF3D2968D72E003C29DD /* ProfileHeader.swift */,
 			);
-			path = Other;
+			path = "Other Views";
 			sourceTree = "<group>";
 		};
 		3A46EEEC2964BAA9003C29DD /* OtherViewControllers */ = {
@@ -344,6 +313,56 @@
 				3A46EEF82964CAC6003C29DD /* RecipeCoreData+CoreDataProperties.swift */,
 			);
 			name = CoreData;
+			sourceTree = "<group>";
+		};
+		3A46EF5E296DF2A7003C29DD /* Managers */ = {
+			isa = PBXGroup;
+			children = (
+				3A168EB6295B14E5004F592A /* SearchManager.swift */,
+				3A46EEE22964B999003C29DD /* RecipeManager.swift */,
+				3A46EF0829672EB6003C29DD /* DatabaseManager.swift */,
+			);
+			path = Managers;
+			sourceTree = "<group>";
+		};
+		3A46EF5F296DF2C0003C29DD /* API Responses Models */ = {
+			isa = PBXGroup;
+			children = (
+				3A168EC5295CAFA5004F592A /* RecipesResponse.swift */,
+				3A168ECA295CD349004F592A /* ComplexSearchResponse.swift */,
+				3A168EE12961E63F004F592A /* RecipeInfoResponse.swift */,
+			);
+			path = "API Responses Models";
+			sourceTree = "<group>";
+		};
+		3A46EF60296DF2D8003C29DD /* View Models */ = {
+			isa = PBXGroup;
+			children = (
+				3A168EE9296237F9004F592A /* IngredientViewModel.swift */,
+				3A168EF32963515D004F592A /* StepViewModel.swift */,
+				3A168EF9296375D9004F592A /* EquipmentViewModel.swift */,
+				3A46EEFF2965CAEF003C29DD /* ListViewModel.swift */,
+				3A46EF4D296A8222003C29DD /* FoldersViewModel.swift */,
+			);
+			name = "View Models";
+			sourceTree = "<group>";
+		};
+		3A46EF61296DF344003C29DD /* Folder */ = {
+			isa = PBXGroup;
+			children = (
+				3A46EF3F2968FF28003C29DD /* NewFolderHeader.swift */,
+				3A46EF45296A3D81003C29DD /* FolderTableViewCell.swift */,
+			);
+			path = Folder;
+			sourceTree = "<group>";
+		};
+		3A46EF62296DF36E003C29DD /* Cell */ = {
+			isa = PBXGroup;
+			children = (
+				3A46EF53296C7DE1003C29DD /* WhatsInYourFridgeTableViewCell.swift */,
+				3A46EEFD2965C7C0003C29DD /* ListTableViewCell.swift */,
+			);
+			path = Cell;
 			sourceTree = "<group>";
 		};
 		3A5610E42958D955005F9760 = {
@@ -605,6 +624,7 @@
 				3A46EF5A296CA58D003C29DD /* TextFieldWithNumberView.swift in Sources */,
 				3A46EF022965D5F1003C29DD /* ItemView.swift in Sources */,
 				3A168EF42963515D004F592A /* StepViewModel.swift in Sources */,
+				3A46EF64296DFAF0003C29DD /* UIButtonBuilder.swift in Sources */,
 				3A168EDF2961DDC8004F592A /* RecipeViewController.swift in Sources */,
 				3A46EF46296A3D81003C29DD /* FolderTableViewCell.swift in Sources */,
 				3A168EB4295A3BA7004F592A /* RecipeCollectionViewHeader.swift in Sources */,

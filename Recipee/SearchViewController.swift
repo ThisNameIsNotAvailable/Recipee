@@ -36,6 +36,7 @@ class SearchViewController: UIViewController {
     private let stackView: UIStackView = {
         let stack = UIStackView()
         stack.axis = .horizontal
+        stack.distribution = .fillProportionally
         stack.spacing = 4
         stack.translatesAutoresizingMaskIntoConstraints = false
         stack.alignment = .leading
@@ -658,22 +659,25 @@ extension SearchViewController {
     }
     
     private func createButton(with option: String) -> UIButton {
-        let button = UIButton()
-        button.setAttributedTitle(NSAttributedString(string: option, attributes: [.font: UIFont.appFont(of: 18)]), for: [])
-        button.setImage(UIImage(systemName: "xmark.circle"), for: .normal)
-        button.tintColor = .black
-        button.semanticContentAttribute = .forceRightToLeft
-        button.setTitleColor(.black, for: [])
-        button.imageEdgeInsets = UIEdgeInsets(top: 0, left: 5, bottom: 0, right: 0)
-        button.contentEdgeInsets = UIEdgeInsets(top: 8, left: 10, bottom: 8, right: 10)
-        button.backgroundColor = .element
-        button.sizeToFit()
-        button.layer.cornerRadius = button.frame.size.height / 2
-        button.clipsToBounds = true
+        let button = UIButtonBuilder(of: .custom)
+            .setTitle(option)
+            .setTitleColor(.black)
+            .setFontForTitle(.appFont(of: 18))
+            .setImage(UIImage(systemName: "xmark.circle"))
+            .setTintColor(.black)
+            .setConfiguration(.plain())
+            .setContentInsets(NSDirectionalEdgeInsets(top: 8, leading: 10, bottom: 8, trailing: 10))
+            .setImagePlacement(.trailing)
+            .setImagePadding(5)
+            .setBackgroundColor(.element)
+            .makeSizeToFit()
+            .setRoundedCornerRadius()
+            .setClipsToBounds(true)
+            .setTAMIC(false)
+            .setBorderWidth(1)
+            .setBorderColor(.black)
+            .create()
         button.addTarget(self, action: #selector(didDeselectOption(_:)), for: .touchUpInside)
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.layer.borderWidth = 1
-        button.layer.borderColor = UIColor.black.cgColor
         return button
     }
 }

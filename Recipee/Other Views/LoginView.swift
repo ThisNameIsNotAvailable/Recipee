@@ -36,32 +36,36 @@ class LoginView: UIView {
     }()
     
     private let googleSignIn: UIButton = {
-        let button = UIButton(type: .system)
-        button.setAttributedTitle(NSAttributedString(string: "Sign In With Google", attributes: [.font: UIFont.appFont(of: 20)]), for: .normal)
-        button.layer.cornerRadius = 8
-        button.clipsToBounds = true
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = .element
-        button.tintColor = .black
-        button.layer.borderWidth = 1
-        button.layer.borderColor = UIColor.black.cgColor
-        button.configuration = UIButton.Configuration.borderless()
-        button.configuration?.contentInsets = NSDirectionalEdgeInsets(top: 10, leading: 10, bottom: 10, trailing: 10)
+        let button = UIButtonBuilder(of: .system)
+            .setTitle("Sign In With Google")
+            .setFontForTitle(.appFont(of: 20))
+            .setCornerRadius(8)
+            .setClipsToBounds(true)
+            .setTAMIC(false)
+            .setBackgroundColor(.element)
+            .setTintColor(.black)
+            .setBorderWidth(1)
+            .setBorderColor(.black)
+            .setConfiguration(.plain())
+            .setContentInsets(NSDirectionalEdgeInsets(top: 10, leading: 10, bottom: 10, trailing: 10))
+            .create()
         return button
     }()
     
     private let facebookSignIn: UIButton = {
-        let button = UIButton(type: .system)
-        button.setAttributedTitle(NSAttributedString(string: "Sign In With Facebook", attributes: [.font: UIFont.appFont(of: 20)]), for: .normal)
-        button.layer.cornerRadius = 8
-        button.clipsToBounds = true
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = .selection
-        button.tintColor = .black
-        button.layer.borderWidth = 1
-        button.layer.borderColor = UIColor.black.cgColor
-        button.configuration = UIButton.Configuration.borderless()
-        button.configuration?.contentInsets = NSDirectionalEdgeInsets(top: 10, leading: 10, bottom: 10, trailing: 10)
+        let button = UIButtonBuilder(of: .system)
+            .setTitle("Sign In With Facebook")
+            .setFontForTitle(.appFont(of: 20))
+            .setCornerRadius(8)
+            .setClipsToBounds(true)
+            .setTAMIC(false)
+            .setBackgroundColor(.selection)
+            .setTintColor(.black)
+            .setBorderWidth(1)
+            .setBorderColor(.black)
+            .setConfiguration(.plain())
+            .setContentInsets(NSDirectionalEdgeInsets(top: 10, leading: 10, bottom: 10, trailing: 10))
+            .create()
         return button
     }()
     

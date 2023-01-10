@@ -166,6 +166,11 @@ extension ShoppingListViewController: UICollectionViewDelegate, UICollectionView
         cell.delegate = self
         return cell
     }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let vc = RecipeViewController(id: recipes[indexPath.row].id)
+        navigationController?.pushViewController(vc, animated: true)
+    }
 }
 
 extension ShoppingListViewController: RecipeWithRemoveButtonCollectionViewCellDelegate {

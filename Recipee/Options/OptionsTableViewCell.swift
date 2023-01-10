@@ -42,11 +42,11 @@ class OptionsTableViewCell: UITableViewCell {
             stackView.axis = .horizontal
             stackView.spacing = 6
             stackView.alignment = .leading
+            stackView.distribution = .fillProportionally
             stackView.translatesAutoresizingMaskIntoConstraints = false
             for title in row.titles {
                 let button = SearchManager.shared.createButton(with: title)
                 button.tintColor = .black
-                button.contentEdgeInsets = UIEdgeInsets(top: 8, left: SearchManager.shared.optionButtonPadding, bottom: 8, right: SearchManager.shared.optionButtonPadding)
                 button.tag = section + 1
                 button.addTarget(self, action: #selector(optionTapped(_:)), for: .touchUpInside)
                 button.backgroundColor = .element

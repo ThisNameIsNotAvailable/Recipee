@@ -30,18 +30,19 @@ class EnterProductsViewController: UIViewController {
     }()
     
     private let findButton: UIButton = {
-        let button = UIButton(type: .system)
-        button.setAttributedTitle(NSAttributedString(string: "Find Recipes", attributes: [
-            .font: UIFont.appFont(of: 18),
-            .foregroundColor: UIColor.black]), for: [])
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.layer.borderWidth = 1
-        button.layer.borderColor = UIColor.black.cgColor
-        button.layer.cornerRadius = 8
-        button.clipsToBounds = true
-        button.backgroundColor = .element
-        button.configuration = UIButton.Configuration.plain()
-        button.configuration?.contentInsets = NSDirectionalEdgeInsets(top: 5, leading: 8, bottom: 5, trailing: 8)
+        let button = UIButtonBuilder(of: .system)
+            .setTitle("Find Recipes")
+            .setFontForTitle(.appFont(of: 18))
+            .setTitleColor(.black)
+            .setTAMIC(false)
+            .setBorderWidth(1)
+            .setBorderColor(.black)
+            .setCornerRadius(8)
+            .setClipsToBounds(true)
+            .setBackgroundColor(.element)
+            .setConfiguration(.plain())
+            .setContentInsets(NSDirectionalEdgeInsets(top: 5, leading: 8, bottom: 5, trailing: 8))
+            .create()
         return button
     }()
     

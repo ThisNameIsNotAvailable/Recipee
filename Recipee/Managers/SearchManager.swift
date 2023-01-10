@@ -162,13 +162,17 @@ class SearchManager {
     }
     
     public func createButton(with title: String) -> UIButton {
-        let button = UIButton(type: .system)
-        button.setAttributedTitle(NSAttributedString(string: title, attributes: [.font: UIFont.appFont(of: 18)]), for: [])
-        button.sizeToFit()
-        button.layer.cornerRadius = button.frame.size.height / 2
-        button.clipsToBounds = true
-        button.layer.borderWidth = 1
-        button.layer.borderColor = UIColor.black.cgColor
+        let button = UIButtonBuilder(of: .system)
+            .setTitle(title)
+            .setFontForTitle(.appFont(of: 18))
+            .setConfiguration(.plain())
+            .setContentInsets(NSDirectionalEdgeInsets(top: 8, leading: SearchManager.shared.optionButtonPadding, bottom: 8, trailing: SearchManager.shared.optionButtonPadding))
+            .makeSizeToFit()
+            .setRoundedCornerRadius()
+            .setClipsToBounds(true)
+            .setBorderWidth(1)
+            .setBorderColor(.black)
+            .create()
         return button
     }
 }

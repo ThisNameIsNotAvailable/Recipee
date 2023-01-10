@@ -16,11 +16,12 @@ class RecipeWithRemoveButtonCollectionViewCell: RecipeCollectionViewCell {
     weak var delegate: RecipeWithRemoveButtonCollectionViewCellDelegate?
     
     private let removeButton: UIButton = {
-        let button = UIButton(type: .custom)
-        button.setImage(UIImage(systemName: "xmark.circle.fill")?.withConfiguration(UIImage.SymbolConfiguration(font: .appFont(of: 30))), for: [])
-        button.tintColor = .systemRed
-        button.backgroundColor = .black
-        button.translatesAutoresizingMaskIntoConstraints = false
+        let button = UIButtonBuilder(of: .custom)
+            .setImage(UIImage(systemName: "xmark.circle.fill")?.withConfiguration(UIImage.SymbolConfiguration(font: .appFont(of: 30))))
+            .setTintColor(.systemRed)
+            .setBackgroundColor(.black)
+            .setTAMIC(false)
+            .create()
         return button
     }()
     

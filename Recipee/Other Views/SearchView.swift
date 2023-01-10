@@ -32,19 +32,21 @@ class SearchView: UIView {
     }()
     
     private let cancelButton: UIButton = {
-        let button = UIButton(type: .custom)
-        button.setImage(UIImage(systemName: "xmark")?.withConfiguration(UIImage.SymbolConfiguration(font: .systemFont(ofSize: 20, weight: .bold))), for: [])
-        button.tintColor = .black
-        button.translatesAutoresizingMaskIntoConstraints = false
+        let button = UIButtonBuilder(of: .custom)
+            .setImage(UIImage(systemName: "xmark")?.withConfiguration(UIImage.SymbolConfiguration(font: .systemFont(ofSize: 20, weight: .bold))))
+            .setTintColor(.black)
+            .setTAMIC(false)
+            .create()
         return button
     }()
     
     private let refineButton: UIButton = {
-        let button = UIButton(type: .system)
-        button.setTitle("Refine", for: [])
-        button.titleLabel?.font = UIFont.appFont(of: 18, isBold: true)
-        button.tintColor = .black
-        button.translatesAutoresizingMaskIntoConstraints = false
+        let button = UIButtonBuilder(of: .system)
+            .setTitle("Refine")
+            .setFontForTitle(.appFont(of: 18, isBold: true))
+            .setTitleColor(.black)
+            .setTAMIC(false)
+            .create()
         return button
     }()
     

@@ -47,16 +47,17 @@ class ListTableViewCell: UITableViewCell {
     }()
     
     private let removeButton: UIButton = {
-        let button = UIButton(type: .system)
-        button.setTitle("Remove From Shopping List", for: [])
-        button.titleLabel?.font = .appFont(of: 14)
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = .selection
-        button.setTitleColor(.black, for: [])
-        button.layer.borderColor = UIColor.black.cgColor
-        button.layer.borderWidth = 1
-        button.layer.cornerRadius = 4
-        button.clipsToBounds = true
+        let button = UIButtonBuilder(of: .system)
+            .setTitle("Remove From Shopping List")
+            .setFontForTitle(.appFont(of: 14))
+            .setTitleColor(.black)
+            .setTAMIC(false)
+            .setBackgroundColor(.selection)
+            .setBorderColor(.black)
+            .setBorderWidth(1)
+            .setCornerRadius(4)
+            .setClipsToBounds(true)
+            .create()
         return button
     }()
     

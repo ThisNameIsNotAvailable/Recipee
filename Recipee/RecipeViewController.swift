@@ -43,10 +43,12 @@ class RecipeViewController: UIViewController {
     }()
     
     private let sourceButton: UIButton = {
-        let button = UIButton()
-        button.contentHorizontalAlignment = .leading
-        button.setTitleColor(.black, for: [])
-        button.translatesAutoresizingMaskIntoConstraints = false
+        let button = UIButtonBuilder(of: .custom)
+            .setContentHorizontalAlignment(.leading)
+            .setTitle("Show More")
+            .setTitleColor(.black)
+            .setTAMIC(false)
+            .create()
         return button
     }()
     
@@ -60,6 +62,7 @@ class RecipeViewController: UIViewController {
     private let dietsStackView: UIStackView = {
         let stack = UIStackView()
         stack.axis = .horizontal
+        stack.distribution = .fillProportionally
         stack.alignment = .leading
         stack.spacing = 10
         stack.translatesAutoresizingMaskIntoConstraints = false
@@ -79,28 +82,32 @@ class RecipeViewController: UIViewController {
     }()
     
     private let readyTimeLabel: UIButton = {
-        let label = UIButton(type: .system)
-        label.setTitleColor(.black, for: [])
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.backgroundColor = .secondaryBackground
-        label.clipsToBounds = true
+        let label = UIButtonBuilder(of: .system)
+            .setTitleColor(.black)
+            .setTAMIC(false)
+            .setBackgroundColor(.secondaryBackground)
+            .setClipsToBounds(true)
+            .setBorderWidth(1)
+            .setBorderColor(.black)
+            .setConfiguration(.plain())
+            .setContentInsets(NSDirectionalEdgeInsets(top: 5, leading: 8, bottom: 5, trailing: 8))
+            .create()
         label.isUserInteractionEnabled = false
-        label.layer.borderWidth = 1
-        label.layer.borderColor = UIColor.black.cgColor
-        label.contentEdgeInsets = UIEdgeInsets(top: 5, left: 8, bottom: 5, right: 8)
         return label
     }()
     
     private let numOfServingsLabel: UIButton = {
-        let label = UIButton(type: .system)
-        label.setTitleColor(.black, for: [])
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.backgroundColor = .secondaryBackground
-        label.clipsToBounds = true
+        let label = UIButtonBuilder(of: .system)
+            .setTitleColor(.black)
+            .setTAMIC(false)
+            .setBackgroundColor(.secondaryBackground)
+            .setClipsToBounds(true)
+            .setBorderWidth(1)
+            .setBorderColor(.black)
+            .setConfiguration(.plain())
+            .setContentInsets(NSDirectionalEdgeInsets(top: 5, leading: 8, bottom: 5, trailing: 8))
+            .create()
         label.isUserInteractionEnabled = false
-        label.layer.borderWidth = 1
-        label.layer.borderColor = UIColor.black.cgColor
-        label.contentEdgeInsets = UIEdgeInsets(top: 5, left: 8, bottom: 5, right: 8)
         return label
     }()
     
@@ -307,10 +314,14 @@ class RecipeViewController: UIViewController {
                         }
                     }
                     
-                    self?.readyTimeLabel.setAttributedTitle(NSAttributedString(string: "Ready in \(recipeInfo.readyInMinutes) minutes", attributes: [.font: UIFont.appFont(of: 16)]), for: [])
+                    self?.readyTimeLabel.setAttributedTitle(NSAttributedString(string: "Ready in \(recipeInfo.readyInMinutes) minutes", attributes: [
+                                .font: UIFont.appFont(of: 16),
+                                .foregroundColor: UIColor.black]), for: [])
                     self?.readyTimeLabel.sizeToFit()
                     
-                    self?.numOfServingsLabel.setAttributedTitle(NSAttributedString(string: "Servings: \(recipeInfo.servings)", attributes: [.font: UIFont.appFont(of: 16)]), for: [])
+                    self?.numOfServingsLabel.setAttributedTitle(NSAttributedString(string: "Servings: \(recipeInfo.servings)", attributes: [
+                        .font: UIFont.appFont(of: 16),
+                        .foregroundColor: UIColor.black]), for: [])
                     self?.numOfServingsLabel.sizeToFit()
                     
                     for dietTitle in recipeInfo.diets {
@@ -318,7 +329,6 @@ class RecipeViewController: UIViewController {
                         label.backgroundColor = .secondaryBackground
                         label.isUserInteractionEnabled = false
                         label.translatesAutoresizingMaskIntoConstraints = false
-                        label.contentEdgeInsets = UIEdgeInsets(top: 5, left: 8, bottom: 5, right: 8)
                         label.tintColor = .black
                         self?.dietsStackView.addArrangedSubview(label)
                     }

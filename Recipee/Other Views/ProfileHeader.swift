@@ -38,16 +38,17 @@ class ProfileHeader: UIView {
     }()
     
     private let signOutButton: UIButton = {
-        let button = UIButton()
-        button.setTitle("Sign Out", for: .normal)
-        button.titleLabel?.font = .appFont(of: 24)
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.setTitleColor(.black, for: .normal)
-        button.backgroundColor = .selection
-        button.layer.cornerRadius = 8
-        button.layer.borderColor = UIColor.black.cgColor
-        button.layer.borderWidth = 1
-        button.clipsToBounds = true
+        let button = UIButtonBuilder(of: .custom)
+            .setTitle("Sign Out")
+            .setFontForTitle(.appFont(of: 24))
+            .setTitleColor(.black)
+            .setTAMIC(false)
+            .setBackgroundColor(.selection)
+            .setCornerRadius(8)
+            .setBorderColor(.black)
+            .setBorderWidth(1)
+            .setClipsToBounds(true)
+            .create()
         return button
     }()
     

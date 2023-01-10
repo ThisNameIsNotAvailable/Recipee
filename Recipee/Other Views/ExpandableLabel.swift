@@ -20,11 +20,12 @@ class ExpandableLabel: UIView {
     }()
     
     private let showMoreLessButton: UIButton = {
-        let button = UIButton()
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.setTitle("Show More", for: [])
-        button.setTitleColor(.darkGray, for: [])
-        button.titleLabel?.font = .appFont(of: 14)
+        let button = UIButtonBuilder(of: .custom)
+            .setTAMIC(false)
+            .setTitle("Show More")
+            .setFontForTitle(.appFont(of: 14))
+            .setTitleColor(.darkGray)
+            .create()
         return button
     }()
     
@@ -44,11 +45,15 @@ class ExpandableLabel: UIView {
     @objc private func didTapShowMoreLess() {
         if isExpanded {
             label.numberOfLines = 3
-            showMoreLessButton.setTitle("Show More", for: [])
+            showMoreLessButton.setAttributedTitle(NSAttributedString(string: "Show More", attributes: [
+                .font: UIFont.appFont(of: 14),
+                .foregroundColor: UIColor.darkGray]), for: [])
             isExpanded = false
         } else {
             label.numberOfLines = 0
-            showMoreLessButton.setTitle("Show Less", for: [])
+            showMoreLessButton.setAttributedTitle(NSAttributedString(string: "Show Less", attributes: [
+                .font: UIFont.appFont(of: 14),
+                .foregroundColor: UIColor.darkGray]), for: [])
             isExpanded = true
         }
     }
