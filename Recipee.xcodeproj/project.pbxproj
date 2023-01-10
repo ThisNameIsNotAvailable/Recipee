@@ -181,30 +181,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		3A168EB0295A35A1004F592A /* Views */ = {
-			isa = PBXGroup;
-			children = (
-				3A46EEE92964BA41003C29DD /* Recipe */,
-				3A46EEEB2964BA9A003C29DD /* Other Views */,
-				3A46EEE82964BA2B003C29DD /* Options */,
-				3A46EEE72964BA0E003C29DD /* Ingredient */,
-				3A46EEEA2964BA50003C29DD /* Equipment */,
-				3A46EF61296DF344003C29DD /* Folder */,
-			);
-			name = Views;
-			sourceTree = "<group>";
-		};
-		3A168EB5295B14B4004F592A /* Models */ = {
-			isa = PBXGroup;
-			children = (
-				3A46EF60296DF2D8003C29DD /* View Models */,
-				3A168EC3295CAC07004F592A /* APICaller.swift */,
-				3A46EF5F296DF2C0003C29DD /* API Responses Models */,
-				3A46EF5E296DF2A7003C29DD /* Managers */,
-			);
-			name = Models;
-			sourceTree = "<group>";
-		};
 		3A168ED5295F6799004F592A /* Fonts */ = {
 			isa = PBXGroup;
 			children = (
@@ -212,21 +188,7 @@
 				3A46EEDE2964600B003C29DD /* Tinos-Regular.ttf */,
 			);
 			name = Fonts;
-			sourceTree = "<group>";
-		};
-		3A168EE02961DDD0004F592A /* Utils */ = {
-			isa = PBXGroup;
-			children = (
-				3A5611042958E2C8005F9760 /* UIColor+Utils.swift */,
-				3A168EDC295F6C36004F592A /* UIFont+Utils.swift */,
-				3A168EE32961F79E004F592A /* String+Utils.swift */,
-				3A168EFF2963BE4B004F592A /* UILabel+Utils.swift */,
-				3A46EF0C296745AF003C29DD /* UICollectionView+Utils.swift */,
-				3A46EF0E29675E6A003C29DD /* NSNotification+Utils.swift */,
-				3A46EF57296CA061003C29DD /* TextField+Utils.swift */,
-				3A46EF63296DFAF0003C29DD /* UIButtonBuilder.swift */,
-			);
-			name = Utils;
+			path = ..;
 			sourceTree = "<group>";
 		};
 		3A46EEE72964BA0E003C29DD /* Ingredient */ = {
@@ -237,6 +199,7 @@
 				3A168EFD2963B7CD004F592A /* IngredientCollectionViewHeader.swift */,
 			);
 			name = Ingredient;
+			path = ..;
 			sourceTree = "<group>";
 		};
 		3A46EEE82964BA2B003C29DD /* Options */ = {
@@ -302,22 +265,13 @@
 				3A46EF55296C9C16003C29DD /* EnterProductsViewController.swift */,
 			);
 			name = OtherViewControllers;
-			sourceTree = "<group>";
-		};
-		3A46EF0529671C3E003C29DD /* CoreData */ = {
-			isa = PBXGroup;
-			children = (
-				3A46EEF52964CAC6003C29DD /* IngredientCoreData+CoreDataClass.swift */,
-				3A46EEF62964CAC6003C29DD /* IngredientCoreData+CoreDataProperties.swift */,
-				3A46EEF72964CAC6003C29DD /* RecipeCoreData+CoreDataClass.swift */,
-				3A46EEF82964CAC6003C29DD /* RecipeCoreData+CoreDataProperties.swift */,
-			);
-			name = CoreData;
+			path = ..;
 			sourceTree = "<group>";
 		};
 		3A46EF5E296DF2A7003C29DD /* Managers */ = {
 			isa = PBXGroup;
 			children = (
+				3A168EC3295CAC07004F592A /* APICaller.swift */,
 				3A168EB6295B14E5004F592A /* SearchManager.swift */,
 				3A46EEE22964B999003C29DD /* RecipeManager.swift */,
 				3A46EF0829672EB6003C29DD /* DatabaseManager.swift */,
@@ -345,6 +299,7 @@
 				3A46EF4D296A8222003C29DD /* FoldersViewModel.swift */,
 			);
 			name = "View Models";
+			path = ..;
 			sourceTree = "<group>";
 		};
 		3A46EF61296DF344003C29DD /* Folder */ = {
@@ -363,6 +318,79 @@
 				3A46EEFD2965C7C0003C29DD /* ListTableViewCell.swift */,
 			);
 			path = Cell;
+			sourceTree = "<group>";
+		};
+		3A46EF65296E2B22003C29DD /* CoreData */ = {
+			isa = PBXGroup;
+			children = (
+				3A168ECC295CDD4C004F592A /* RecipeModel.xcdatamodeld */,
+				3A46EEF52964CAC6003C29DD /* IngredientCoreData+CoreDataClass.swift */,
+				3A46EEF62964CAC6003C29DD /* IngredientCoreData+CoreDataProperties.swift */,
+				3A46EEF72964CAC6003C29DD /* RecipeCoreData+CoreDataClass.swift */,
+				3A46EEF82964CAC6003C29DD /* RecipeCoreData+CoreDataProperties.swift */,
+			);
+			path = CoreData;
+			sourceTree = "<group>";
+		};
+		3A46EF66296E2B3F003C29DD /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				3A46EF60296DF2D8003C29DD /* View Models */,
+				3A46EF5F296DF2C0003C29DD /* API Responses Models */,
+				3A46EF5E296DF2A7003C29DD /* Managers */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		3A46EF67296E2B5D003C29DD /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				3A5610FB2958D957005F9760 /* LaunchScreen.storyboard */,
+				3A46EEE92964BA41003C29DD /* Recipe */,
+				3A46EEEB2964BA9A003C29DD /* Other Views */,
+				3A46EEE82964BA2B003C29DD /* Options */,
+				3A46EEE72964BA0E003C29DD /* Ingredient */,
+				3A46EEEA2964BA50003C29DD /* Equipment */,
+				3A46EF61296DF344003C29DD /* Folder */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		3A46EF6A296E2B98003C29DD /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				3A46EF14296789ED003C29DD /* GoogleService-Info.plist */,
+				3A168ED5295F6799004F592A /* Fonts */,
+				3A5610F02958D955005F9760 /* AppDelegate.swift */,
+				3A5610F22958D955005F9760 /* SceneDelegate.swift */,
+				3A5610F92958D957005F9760 /* Assets.xcassets */,
+				3A5610FE2958D957005F9760 /* Info.plist */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		3A46EF6B296E2BB9003C29DD /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				3A5611072958E5C5005F9760 /* MainViewControllers */,
+				3A46EEEC2964BAA9003C29DD /* OtherViewControllers */,
+			);
+			path = Controllers;
+			sourceTree = "<group>";
+		};
+		3A46EF6C296E2BEE003C29DD /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				3A5611042958E2C8005F9760 /* UIColor+Utils.swift */,
+				3A168EDC295F6C36004F592A /* UIFont+Utils.swift */,
+				3A168EE32961F79E004F592A /* String+Utils.swift */,
+				3A168EFF2963BE4B004F592A /* UILabel+Utils.swift */,
+				3A46EF0C296745AF003C29DD /* UICollectionView+Utils.swift */,
+				3A46EF0E29675E6A003C29DD /* NSNotification+Utils.swift */,
+				3A46EF57296CA061003C29DD /* TextField+Utils.swift */,
+				3A46EF63296DFAF0003C29DD /* UIButtonBuilder.swift */,
+			);
+			path = Utils;
 			sourceTree = "<group>";
 		};
 		3A5610E42958D955005F9760 = {
@@ -386,30 +414,15 @@
 		3A5610EF2958D955005F9760 /* Recipee */ = {
 			isa = PBXGroup;
 			children = (
+				3A46EF66296E2B3F003C29DD /* Models */,
+				3A46EF67296E2B5D003C29DD /* Views */,
+				3A46EF6B296E2BB9003C29DD /* Controllers */,
+				3A46EF6C296E2BEE003C29DD /* Utils */,
+				3A46EF6A296E2B98003C29DD /* Resources */,
+				3A46EF65296E2B22003C29DD /* CoreData */,
 				3A46EF1629678ED5003C29DD /* Recipee.entitlements */,
-				3A46EF14296789ED003C29DD /* GoogleService-Info.plist */,
-				3A46EF0529671C3E003C29DD /* CoreData */,
-				3A168EB5295B14B4004F592A /* Models */,
-				3A168EB0295A35A1004F592A /* Views */,
-				3A5611062958E4D5005F9760 /* Resources */,
-				3A5611082958E5DD005F9760 /* Controllers */,
-				3A5610FB2958D957005F9760 /* LaunchScreen.storyboard */,
-				3A168EE02961DDD0004F592A /* Utils */,
-				3A168ECC295CDD4C004F592A /* RecipeModel.xcdatamodeld */,
 			);
 			path = Recipee;
-			sourceTree = "<group>";
-		};
-		3A5611062958E4D5005F9760 /* Resources */ = {
-			isa = PBXGroup;
-			children = (
-				3A168ED5295F6799004F592A /* Fonts */,
-				3A5610F02958D955005F9760 /* AppDelegate.swift */,
-				3A5610F22958D955005F9760 /* SceneDelegate.swift */,
-				3A5610F92958D957005F9760 /* Assets.xcassets */,
-				3A5610FE2958D957005F9760 /* Info.plist */,
-			);
-			name = Resources;
 			sourceTree = "<group>";
 		};
 		3A5611072958E5C5005F9760 /* MainViewControllers */ = {
@@ -422,15 +435,7 @@
 				3A56110F2958E657005F9760 /* ShoppingListViewController.swift */,
 			);
 			name = MainViewControllers;
-			sourceTree = "<group>";
-		};
-		3A5611082958E5DD005F9760 /* Controllers */ = {
-			isa = PBXGroup;
-			children = (
-				3A5611072958E5C5005F9760 /* MainViewControllers */,
-				3A46EEEC2964BAA9003C29DD /* OtherViewControllers */,
-			);
-			name = Controllers;
+			path = ..;
 			sourceTree = "<group>";
 		};
 		DD6A71C7D5C359005F53699A /* Pods */ = {
@@ -785,7 +790,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = S5766AV554;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = Recipee/Info.plist;
+				INFOPLIST_FILE = Recipee/Resources/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
@@ -814,7 +819,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = S5766AV554;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = Recipee/Info.plist;
+				INFOPLIST_FILE = Recipee/Resources/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
