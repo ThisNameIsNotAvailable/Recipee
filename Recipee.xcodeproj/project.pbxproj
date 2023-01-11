@@ -77,6 +77,7 @@
 		3A46EF96296E2F33003C29DD /* RecipeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A46EF8E296E2F33003C29DD /* RecipeViewController.swift */; };
 		3A46EF99296E2F49003C29DD /* Tinos-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 3A46EF97296E2F49003C29DD /* Tinos-Regular.ttf */; };
 		3A46EF9A296E2F49003C29DD /* Tinos-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 3A46EF98296E2F49003C29DD /* Tinos-Bold.ttf */; };
+		3A46EF9F296EFD0C003C29DD /* NotificationCustom.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A46EF9E296EFD0C003C29DD /* NotificationCustom.swift */; };
 		3A5610F12958D955005F9760 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A5610F02958D955005F9760 /* AppDelegate.swift */; };
 		3A5610F32958D955005F9760 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A5610F22958D955005F9760 /* SceneDelegate.swift */; };
 		3A5610FA2958D957005F9760 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3A5610F92958D957005F9760 /* Assets.xcassets */; };
@@ -155,6 +156,7 @@
 		3A46EF8E296E2F33003C29DD /* RecipeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RecipeViewController.swift; path = "Controllers/Other View Controllers/RecipeViewController.swift"; sourceTree = "<group>"; };
 		3A46EF97296E2F49003C29DD /* Tinos-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Tinos-Regular.ttf"; path = "Resources/Fonts/Tinos-Regular.ttf"; sourceTree = "<group>"; };
 		3A46EF98296E2F49003C29DD /* Tinos-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Tinos-Bold.ttf"; path = "Resources/Fonts/Tinos-Bold.ttf"; sourceTree = "<group>"; };
+		3A46EF9E296EFD0C003C29DD /* NotificationCustom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationCustom.swift; sourceTree = "<group>"; };
 		3A5610ED2958D955005F9760 /* Recipee.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Recipee.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3A5610F02958D955005F9760 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		3A5610F22958D955005F9760 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -389,6 +391,7 @@
 				3A46EF0E29675E6A003C29DD /* NSNotification+Utils.swift */,
 				3A46EF57296CA061003C29DD /* TextField+Utils.swift */,
 				3A46EF63296DFAF0003C29DD /* UIButtonBuilder.swift */,
+				3A46EF9E296EFD0C003C29DD /* NotificationCustom.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -605,6 +608,7 @@
 				3A5610F12958D955005F9760 /* AppDelegate.swift in Sources */,
 				3A46EF7C296E2F0A003C29DD /* StepViewModel.swift in Sources */,
 				3A168EE6296209A6004F592A /* ExpandableLabel.swift in Sources */,
+				3A46EF9F296EFD0C003C29DD /* NotificationCustom.swift in Sources */,
 				3A46EF70296E2EEC003C29DD /* IngredientCollectionViewCell.swift in Sources */,
 				3A46EEFE2965C7C0003C29DD /* ListTableViewCell.swift in Sources */,
 				3A46EF72296E2EEC003C29DD /* IngredientCollectionViewHeader.swift in Sources */,

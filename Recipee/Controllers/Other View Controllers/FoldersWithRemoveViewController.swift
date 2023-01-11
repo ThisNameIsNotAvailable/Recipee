@@ -88,7 +88,7 @@ extension FoldersWithRemoveViewController {
         DatabaseManager.shared.addRecipe(RecipeResponse(id: recipe.id, title: recipe.title, image: "https://spoonacular.com/recipeImages/\(recipe.id)-480x360.jpg"), to: folders[indexPath.row].title, for: email) { [weak self] success in
             self?.dismiss(animated: true)
             if success {
-                NotificationCenter.default.post(name: .updateFolders, object: nil)
+                NotificationCustom.shared.post(name: .updateFolders)
             }
         }
     }

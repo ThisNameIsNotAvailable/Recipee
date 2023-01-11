@@ -112,7 +112,7 @@ extension FoldersViewController: NewFolderHeaderDelegate {
                         DispatchQueue.main.async {
                             strongSelf.tableView.insertRows(at: [IndexPath(row: 0, section: 0)], with: .automatic)
                             if self is FoldersWithRemoveViewController {
-                                NotificationCenter.default.post(name: .updateFolders, object: nil)
+                                NotificationCustom.shared.post(name: .updateFolders)
                             }
                         }
                     }

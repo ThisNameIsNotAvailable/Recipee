@@ -82,6 +82,7 @@ class SearchManager {
     public private(set) var buttons = [[Row]]()
     
     public var currentlySelected = [String: Set<String>]()
+    
     public var translateHeaderToAPIField = [
         "Difficulty": "maxReadyTime",
         "Meal": "type",
@@ -112,7 +113,7 @@ class SearchManager {
                         str += "\(time),"
                     }
                     str.removeLast()
-                }else {
+                } else {
                     str += "&\(translateHeaderToAPIField[title.key]!)="
                     title.value.forEach { option in
                         str += "\(option),"

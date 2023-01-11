@@ -109,7 +109,7 @@ extension FolderViewController: RecipeWithRemoveButtonCollectionViewCellDelegate
                 DispatchQueue.main.async {
                     self?.collectionView.deleteItems(at: [indexPath])
                 }
-                NotificationCenter.default.post(name: .updateFolders, object: nil)
+                NotificationCustom.shared.post(name: .updateFolders)
             }
         }
     }

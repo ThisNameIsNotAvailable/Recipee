@@ -140,6 +140,7 @@ class SearchView: UIView {
 }
 
 extension SearchView: UISearchBarDelegate {
+    
     @discardableResult
     func searchBarShouldBeginEditing(_ searchBar: UISearchBar) -> Bool {
         UIViewPropertyAnimator(duration: 0.2, curve: .easeInOut) { [weak self] in

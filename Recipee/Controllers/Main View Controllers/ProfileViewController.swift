@@ -7,6 +7,7 @@
 
 import UIKit
 import FirebaseAuth
+import AVFoundation
 
 class ProfileViewController: FoldersViewController {
     
@@ -24,11 +25,9 @@ class ProfileViewController: FoldersViewController {
         tableViewHeader.configure()
         loginView.delegate = self
         layout()
-        notificationCenter.addObserver(self, selector: #selector(updateTableView), name: .updateFolders, object: nil)
-    }
-    
-    deinit {
-        notificationCenter.removeObserver(self, name: .updateFolders, object: nil)
+        NotificationCustom.shared.addObserver(observer: self, name: .updateFolders) { [weak self] in
+            self?.updateTableView()
+        }
     }
     
     @objc private func updateTableView() {

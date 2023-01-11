@@ -118,7 +118,7 @@ class SearchViewController: UIViewController {
             navigationController?.navigationBar.standardAppearance = appearance
             navigationController?.navigationBar.scrollEdgeAppearance = appearance
         }
-        fetchData()
+//        fetchData()
         configureCollectionViews()
         configureSearchView()
         layout()
